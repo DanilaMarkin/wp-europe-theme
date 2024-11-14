@@ -8,54 +8,296 @@
 </head>
 
 <body <?php body_class(); ?>>
+    <div id="overlay" class="overlay"></div>
     <header>
-        <div class="header-blocks container">
-            <div class="header-block-main">
-                <nav class="header-block-main-menu">
-                    <button id="menuToogle" title="Open menu">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu icon">
-                        Menu
-                    </button>
-                    <aside id="sideMenu" aria-label="Site navigation">
-                    </aside>
-                </nav>
-                <nav class="header-block-main-general">
-                    <ul class="header-block-main-general-lists">
+        <div class="header-block">
+            <div class="header-blocks container">
+                <div class="header-block-main">
+                    <nav class="header-block-main-menu">
+                        <button id="menuToogle" title="Open menu">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu icon">
+                            Menu
+                        </button>
+                        <aside id="sideMenu" aria-label="Site navigation">
+                            <img src="http://europe/wp-content/themes/europe/assets/icons/close.svg" alt="" class="menu-close">
+                            <div class="menu-blocks">
+                                <div class="menu-blocks-header">
+                                    <button class="menu-blocks-header-btn-general active menu-blocks-header-categories">Categories</button>
+                                    <span>|</span>
+                                    <button class="menu-blocks-header-btn-general menu-blocks-header-brands">Brands</button>
+                                </div>
+                                <ul id="brandsMenu" class="menu-blocks-links hidden">
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Apple</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Asus</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Supermicro</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Intel</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>AMD</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Gigabyte</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>      
+                                <ul id="categoriesMenu" class="menu-blocks-links">
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Server Equipment</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Computers and Laptops</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Storage</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Workstations</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Network Equipment</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-blocks-link">
+                                        <button class="menu-blocks-link-toggle" aria-expanded="false">
+                                            <span>Components</span>
+                                            <img src="http://europe/wp-content/themes/europe/assets/icons/arrow-list.svg" alt="Expand subcategories">
+                                        </button>
+                                        <ul class="menu-blocks-links-submenu">
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Subcategory</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="menu-blocks-pages-general">
+                                    <li><a href="#">About us</a></li>
+                                    <li><a href="#">Payment and Delivery</a></li>
+                                    <li><a href="#">Contacts</a></li>
+                                </ul>
+                                <ul class="menu-blocks-contact">
+                                    <li>
+                                        <a href="">+34 666 359 259</a>
+                                        <span>Phone, WhatsApp, Telegram</span>
+                                    </li>
+                                    <li>
+                                        <a href="">info@info.com</a>
+                                        <span>For questions regarding acquisition and cooperation</span>
+                                    </li>
+                                    <li>
+                                        <a href="">Address</a>
+                                        <span>08912, Spain, Barcelona, Badalona, Cervantes 68 </span>
+                                    </li>
+                                </ul>
+                                <ul class="menu-blocks-social-blocks">
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </nav>
+                    <nav class="header-block-main-general">
+                        <ul class="header-block-main-general-lists">
+                            <li>
+                                <a href="" title="Learn more about us">About us</a>
+                            </li>
+                            <li>
+                                <a href="" title="Payment and delivery terms">Payment and Delivery</a>
+                            </li>
+                            <li>
+                                <a href="" title="Contact information">Contacts</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="header-block-social">
+                    <ul class="header-block-social-list">
                         <li>
-                            <a href="" title="Learn more about us">About us</a>
+                            <a href="" title="Telegram">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram.svg" alt="Telegram icon">
+                            </a>
                         </li>
                         <li>
-                            <a href="" title="Payment and delivery terms">Payment and Delivery</a>
+                            <a href="" title="WhatsApp">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="WhatsApp icon">
+                            </a>
                         </li>
                         <li>
-                            <a href="" title="Contact information">Contacts</a>
+                            <a href="" title="Call us">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg" alt="Phone icon">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" title="Send an email">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="Mail icon">
+                            </a>
                         </li>
                     </ul>
-                </nav>
-            </div>
-            <div class="header-block-social">
-                <ul class="header-block-social-list">
-                    <li>
-                        <a href="" title="Telegram">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram.svg" alt="Telegram icon">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" title="WhatsApp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="WhatsApp icon">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" title="Call us">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg" alt="Phone icon">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" title="Send an email">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="Mail icon">
-                        </a>
-                    </li>
-                </ul>
+                </div>
             </div>
         </div>
 
@@ -101,6 +343,8 @@
                             </div>
                             <div class="search-popup-block-results">
                                 <!-- <p class="search-popup-block-results-header">No results were found for your request</p> -->
+                                <p class="search-popup-block-results-header">
+                                    Based on your request we found <span class="search-popup-block-results-header-count-offers">17 offers</span></p>
                                 <ul class="search-popup-block-results-products products-blocks-cards ">
                                     <?php for ($i = 0; $i < 4; $i++) { ?>
                                         <li class="products-blocks-card">
@@ -125,30 +369,6 @@
             </div>
         </nav>
     </header>
-
-
-    <style>
-        #sideMenu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 608px;
-            height: 947px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            /* Легкая тень для контраста */
-            transform: translateX(-100%);
-            /* Изначально меню скрыто за пределами экрана */
-            transition: transform 0.3s ease;
-            /* Плавный переход */
-            z-index: 9;
-            overflow-y: auto;
-        }
-
-        #sideMenu.open {
-            transform: translateX(0);
-        }
-    </style>
     <script>
         // Получаем ссылки на элементы
         const menuToggle = document.getElementById('menuToogle');
@@ -156,37 +376,78 @@
         const searchToggle = document.getElementById('searchToogle');
         const searchPopup = document.getElementById('searchPopup');
         const searchCloseBtn = document.querySelector('.search-popup-block-close');
+        const overlay = document.getElementById('overlay');
 
-        // Функция для переключения видимости элемента
-        function toggleClass(element, className) {
-            if (element) element.classList.toggle(className);
+        // Переключение overlay
+        function toggleOverlay(isVisible) {
+            if (overlay) overlay.classList.toggle("active", isVisible);
+        }
+
+        // Обновление состояния overlay
+        function updateOverlayState() {
+            const isOverlayActive = sideMenu.classList.contains("open") || searchPopup.classList.contains("open");
+            toggleOverlay(isOverlayActive);
         }
 
         // Открытие/закрытие бокового меню
         if (menuToggle && sideMenu) {
-            menuToggle.addEventListener("click", () => toggleClass(sideMenu, "open"));
+            menuToggle.addEventListener("click", () => {
+                sideMenu.classList.toggle("open");
+                updateOverlayState();
+            });
         }
 
         // Открытие/закрытие поиска
         if (searchToggle && searchPopup) {
-            searchToggle.addEventListener("click", () => toggleClass(searchPopup, "open"));
+            searchToggle.addEventListener("click", () => {
+                searchPopup.classList.toggle("open");
+                updateOverlayState();
+            });
         }
 
         // Закрытие поиска при клике на кнопку закрытия
         if (searchCloseBtn && searchPopup) {
-            searchCloseBtn.addEventListener("click", () => searchPopup.classList.remove("open"));
+            searchCloseBtn.addEventListener("click", () => {
+                searchPopup.classList.remove("open");
+                updateOverlayState();
+            });
         }
 
-        // Закрытие по клику вне блока
+        // Закрытие по клику вне блока или на overlay
         document.addEventListener("click", (event) => {
-            // Проверка клика вне бокового меню
-            if (sideMenu && !sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            if (overlay && event.target === overlay) {
                 sideMenu.classList.remove("open");
-            }
-
-            // Проверка клика вне всплывающего окна поиска
-            if (searchPopup && !searchPopup.contains(event.target) && !searchToggle.contains(event.target)) {
                 searchPopup.classList.remove("open");
+                toggleOverlay(false);
             }
         });
+
+        const menuListMain = document.querySelectorAll(".menu-blocks-link-toggle");
+        const menuSubMenu = document.querySelectorAll(".menu-blocks-links-submenu");
+
+        menuListMain.forEach((key, value) => {
+            key.addEventListener("click", () => {
+                menuListMain[value].classList.toggle("open");
+                menuSubMenu[value].classList.toggle("open");
+            });
+        });
+
+        const categoriesMenuBtn = document.querySelector(".menu-blocks-header-categories");
+        const categoriesMenu = document.getElementById("categoriesMenu");
+        const brandsMenu = document.getElementById("brandsMenu");
+        const brandsMenuBtn = document.querySelector(".menu-blocks-header-brands");
+
+        brandsMenuBtn.addEventListener("click", () => {
+            brandsMenuBtn.classList.add("active");
+            categoriesMenuBtn.classList.remove("active");
+            brandsMenu.classList.remove("hidden");
+            categoriesMenu.classList.add("hidden");
+        });      
+
+        categoriesMenuBtn.addEventListener("click", () => {
+            brandsMenuBtn.classList.remove("active");
+            categoriesMenuBtn.classList.add("active");
+            brandsMenu.classList.add("hidden");
+            categoriesMenu.classList.remove("hidden");
+        }); 
     </script>

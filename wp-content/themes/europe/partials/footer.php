@@ -57,7 +57,7 @@
                     </ul>
                 </div>
                 <div class="footer-blocks-category-general">
-                <p>Storage</p>
+                    <p>Storage</p>
                     <ul class="footer-blocks-category-list footer-blocks-category-right-list">
                         <li>
                             <a href="">Subcategory 1</a>
@@ -81,7 +81,7 @@
                     </ul>
                 </div>
                 <div class="footer-blocks-category-general">
-                <p>Workstations</p>
+                    <p>Workstations</p>
                     <ul class="footer-blocks-category-list footer-blocks-category-right-list">
                         <li>
                             <a href="">Subcategory 1</a>
@@ -110,4 +110,5 @@
 </footer>
 <?php wp_footer(); ?>
 </body>
+
 </html>

@@ -60,19 +60,19 @@
             </div>
             <ul class="products-blocks-cards">
                 <?php for ($i = 0; $i < 8; $i++) { ?>
-                <li class="products-blocks-card">
-                    <div class="products-blocks-card-preview">
-                        <img src="" alt="" class="products-blocks-card-preview-image">
-                        <p class="products-blocks-card-preview-title">DELL EMC PowerEdge R630 (8xSFF/3xLP) Performance Rack test</p>
-                        <span class="products-blocks-card-preview-price">from $428</span>
-                    </div>
-                    <div class="products-blocks-card-btn">
-                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
-                        <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                        </button>
-                    </div>
-                </li>
+                    <li class="products-blocks-card">
+                        <div class="products-blocks-card-preview">
+                            <img src="" alt="" class="products-blocks-card-preview-image">
+                            <p class="products-blocks-card-preview-title">DELL EMC PowerEdge R630 (8xSFF/3xLP) Performance Rack test</p>
+                            <span class="products-blocks-card-preview-price">from $428</span>
+                        </div>
+                        <div class="products-blocks-card-btn">
+                            <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                            <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                            </button>
+                        </div>
+                    </li>
                 <?php } ?>
             </ul>
         </div>
