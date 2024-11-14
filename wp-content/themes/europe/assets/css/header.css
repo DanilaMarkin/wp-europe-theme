@@ -1,0 +1,215 @@
+header {
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-blocks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.header-block-main {
+    display: flex;
+    gap: 76px;
+}
+
+.header-block-main-menu>button {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 12px;
+}
+
+.header-block-main-general-lists {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.header-block-main-general-lists>li>a {
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.header-block-main-general-lists>li>a:hover {
+    color: #F0AC15;
+}
+
+.header-block-social-list {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.header-block-social-list>li>a {
+    transition: 0.3s;
+}
+
+.header-block-social-list>li>a:hover {
+    filter: brightness(0) saturate(100%) invert(63%) sepia(83%) saturate(585%) hue-rotate(-20deg) brightness(1.1) contrast(1.1);
+}
+
+
+.nav-line {
+    width: 100vw;
+    /* Растягиваем на всю ширину экрана */
+    margin-left: calc(50% - 50vw);
+    /* Центрируем относительно экрана */
+    border-top: 2px solid #7D7D7D;
+    border-bottom: 2px solid #7D7D7D;
+    box-sizing: border-box;
+    /* Чтобы линии не создавали скролл */
+}
+
+.nav-blocks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 16px;
+}
+
+.nav-block-catalog-lists {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.nav-block-catalog-lists>li>a {
+    display: flex;
+    gap: 14.5px;
+    align-items: center;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-block-catalog-lists>li>a:hover {
+    color: #F0AC15;
+    filter: brightness(0) saturate(100%) invert(63%) sepia(83%) saturate(585%) hue-rotate(-20deg) brightness(1.1) contrast(1.1);
+}
+
+.nav-blocks-detail {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-blocks-cart-search {
+    cursor: pointer;
+}
+
+.nav-blocks-cart-search>img {
+    width: 27.5px;
+    height: auto;
+}
+#searchPopup {
+    position: fixed;
+    top: 41px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Легкая тень для контраста */
+    transform: translateX(-100%);
+    /* Изначально меню скрыто за пределами экрана */
+    transition: transform 0.3s ease;
+    /* Плавный переход */
+    z-index: 9;
+    overflow-y: auto;
+}
+
+#searchPopup.open {
+    transform: translateX(0);
+}
+
+.search-popup-block {
+    position: relative;
+    margin: 13px 0 30px 0;
+}
+
+.search-popup-block-action {
+    display: flex;
+    align-items: center;
+    gap: 47.5px;
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #7D7D7D;
+}
+
+.search-popup-block-inlet {
+    width: 100%;
+    font-size: 14px;
+    line-height: 16px;
+    color: #000;
+}
+
+.search-popup-block-inlet::placeholder {
+    font-size: 14px;
+    line-height: 16px;
+    color: #7D7D7D;
+}
+
+.search-popup-block-inlet::-webkit-search-cancel-button {
+    -webkit-appearance: none; 
+    appearance: none;
+}
+
+.search-popup-block-inlet {
+    -webkit-appearance: textfield; 
+    appearance: textfield;
+}
+
+.search-popup-block-icon {
+    width: 27px;
+    height: 27px;
+}
+
+.search-popup-block-close {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    width: 23px;
+    height: 23px;
+}
+
+.search-popup-block-results-header {
+    padding: 0 0 40px 0;
+    font-size: 14px;
+}
+
+.search-popup-block-results-products {
+    margin-bottom: 60px;
+}
+
+.nav-block-cart {
+    position: relative;
+    padding-right: 10px;
+    transition: 0.3s;
+}
+
+.nav-block-cart:hover {
+    filter: brightness(0) saturate(100%) invert(63%) sepia(83%) saturate(585%) hue-rotate(-20deg) brightness(1.1) contrast(1.1);
+}
+
+.nav-block-cart-img {
+    width: 25px;
+    height: 27px;
+}
+
+.nav-block-cart-count {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    font-size: 12px;
+    line-height: 13px;
+}
