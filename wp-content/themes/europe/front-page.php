@@ -39,22 +39,22 @@
                     <ul class="menu-blocks-social-blocks">
                         <li>
                             <a href="#">
-                                <img src="http://europe/wp-content/themes/europe/assets/icons/phone-sidemenu.svg" alt="">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <img src="http://europe/wp-content/themes/europe/assets/icons/whatsapp-sidemenu.svg" alt="">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="">
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <img src="http://europe/wp-content/themes/europe/assets/icons/telegram-sidemenu.svg" alt="">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <img src="http://europe/wp-content/themes/europe/assets/icons/phone-sidemenu.svg" alt="">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
                             </a>
                         </li>
                     </ul>
