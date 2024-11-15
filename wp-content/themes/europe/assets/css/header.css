@@ -4,7 +4,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 21;
 }
 
 .header-block {
@@ -66,13 +66,10 @@ header {
 
 .nav-line {
     width: 100vw;
-    /* Растягиваем на всю ширину экрана */
     margin-left: calc(50% - 50vw);
-    /* Центрируем относительно экрана */
     border-top: 2px solid #7D7D7D;
     border-bottom: 2px solid #7D7D7D;
     box-sizing: border-box;
-    /* Чтобы линии не создавали скролл */
 }
 
 .nav-blocks {
@@ -231,7 +228,7 @@ header {
     border-right: 1px solid #7D7D7D;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    z-index: 12;
+    z-index: 20;
     overflow-y: scroll;
     scrollbar-width: none;
     display: flex;
