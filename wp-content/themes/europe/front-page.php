@@ -27,7 +27,7 @@
                     <div class="contact-popup-blocks-form-action">
                         <input type="tel" placeholder="+7 (999) 999 99 99" name="" id="">
                         <input type="text" placeholder="Name" name="" id="">
-                        <button class="contact-popup-blocks-form-action-btn">Contact me</button>
+                        <button class="contact-popup-blocks-form-action-btn" aria-label="Press to Contact me button">Contact me</button>
                     </div>
                     <div class="custom-checkbox-wrapper">
                         <label class="custom-checkbox-label">
