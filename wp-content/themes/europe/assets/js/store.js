@@ -9,6 +9,8 @@ const productsBlocksCard = document.querySelectorAll(".products-blocks-id");
 const productsBlocksCardPreviewImage = document.querySelectorAll(".products-blocks-card-preview-image");
 const productsBlocksCardPreviewTitle = document.querySelectorAll(".products-blocks-card-preview-title");
 const productsBlocksCardPreviewPrice = document.querySelectorAll(".products-blocks-card-preview-price");
+// toogle menu click in btn Contact Us
+const productsBlocksCardBtnContactFull = document.querySelectorAll(".products-blocks-card-btn-contact-full");
 
 // Функция для изменения общего кол-ва товаров в корзину
 function updateCartQuantity() {
@@ -82,6 +84,18 @@ productsBlocksCardBtnCart.forEach((key, value) => {
         // Переключение видимости при клике
         productsBlocksCardBtnContact[value].classList.toggle("hidden");
         productsBlocksCardBtnCount[value].classList.toggle("open");
+        if (productsBlocksCardBtnContactFull[value].classList.contains("open") && !productsBlocksCardBtnContact[value].classList.contains("hidden")) {
+            productsBlocksCardBtnContactFull[value].classList.remove("open");
+            productsBlocksCardBtnContact[value].classList.add("hidden");
+        };
+    });
+});
+
+// Открытие блока "Контакты"
+productsBlocksCardBtnContact.forEach((key, value) => {
+    key.addEventListener("click", () => {
+        productsBlocksCardBtnContactFull[value].classList.toggle("open");
+        productsBlocksCardBtnContact[value].classList.toggle("hidden");
     });
 });
 

@@ -317,6 +317,30 @@ body {
 .count-number {
   font-size: 18px;
 }
+
+.products-blocks-card-btn-contact-full {
+  display: none;
+}
+
+.products-blocks-card-btn-contact-full.open {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+
+.products-blocks-card-btn-contact-full-general {
+  width: 50%;
+  height: 100%;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+}
+.products-blocks-card-btn-contact-full-general > img {
+  width: 27px;
+  height: 29px;
+}
 /* --------------END products-------------- */
 
 /* --------------START all-categories-------------- */
@@ -345,11 +369,16 @@ body {
   height: 64px;
   border: 2px solid #ffffff;
   border-radius: 50%;
-  color: #ffffff;
-  font-size: 24px;
   background-color: transparent;
 }
 
+.all-categories-blocks-arrow-img {
+  transform: rotate(-45deg);
+  width: 21px;
+  height: 9px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(2%)
+    hue-rotate(352deg) brightness(113%) contrast(101%);
+}
 /* --------------END all-categories-------------- */
 
 /* --------------START contactPopup-------------- */
@@ -523,3 +552,178 @@ body {
   margin-bottom: 0;
 }
 /* --------------END pricePopup-------------- */
+
+/* --------------START responsive style-------------- */
+@media (max-width: 576px) {
+  /* --------------START banner-------------- */
+  .banner {
+    padding: 20px 0 30px 0;
+  }
+
+  .banner-content-title {
+    max-width: 314px;
+    font-size: 15px;
+    line-height: 17px;
+    margin-bottom: 30px;
+  }
+
+  .banner-content-buttons {
+    gap: 10px;
+  }
+
+  .button-content-general {
+    padding: 9px 0 10px 0;
+    font-size: 12px;
+    line-height: 11px;
+  }
+
+  .button-content-download img {
+    width: 8px;
+    height: 11px;
+    margin-right: 10px;
+  }
+  /* --------------END banner-------------- */
+  /* --------------START all-categories-------------- */
+  .all-categories-blocks {
+    height: 47px;
+    padding: 0 15px;
+  }
+
+  .all-categories-blocks-title {
+    font-size: 15px;
+  }
+
+  .all-categories-blocks-arrow {
+    width: 31px;
+    height: 31px;
+    border: 1px solid #ffffff;
+  }
+  .all-categories-blocks-arrow-img {
+    width: 10px;
+  }
+  /* --------------END all-categories-------------- */
+
+  /* --------------START brands-------------- */
+  .brands-blocks-slider-lists {
+    height: 81px;
+    gap: 20px;
+    overflow-x: scroll;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .brands-blocks-slider-lists::-webkit-scrollbar {
+    display: none;
+  }
+
+  .brands {
+    padding: 30px 0;
+    border-top: 1px solid #7d7d7d;
+    border-bottom: 1px solid #7d7d7d;
+  }
+
+  .brands-title {
+    font-size: 15px;
+    line-height: 17px;
+    margin-bottom: 0;
+  }
+
+  .brands-blocks-slider-lists-circle > a > h3 {
+    width: 67px;
+    height: 67px;
+    font-size: 12px;
+  }
+
+  .brands-blocks-slider-lists-circle > a > h3::before {
+    border: 1px solid #fedc32;
+    top: -7px;
+    left: -7px;
+    right: -7px;
+    bottom: -7px;
+  }
+  /* --------------END brands-------------- */
+
+  /* --------------START products-------------- */
+  .products {
+    padding: 30px 0;
+  }
+
+  .products-blocks-header {
+    margin-bottom: 20px;
+  }
+
+  .products-blocks-header-title {
+    font-size: 15px;
+    line-height: 17px;
+  }
+
+  .products-blocks-header-all {
+    color: #7d7d7d;
+    font-size: 8px;
+  }
+
+  .products-blocks-header-all-link {
+    gap: 5px;
+  }
+
+  .products-blocks-header-all-link > img {
+    width: 10px;
+  }
+
+  .products-blocks-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+  }
+
+  .products-blocks-card-preview {
+    padding: 15px;
+  }
+
+  .products-blocks-card-preview-image {
+    height: 100px;
+  }
+
+  .products-blocks-card-preview-title {
+    margin: 15px 0;
+    font-size: 12px;
+  }
+
+  .products-blocks-card-preview-price {
+    font-size: 12px;
+  }
+
+  .products-blocks-card-btn {
+    margin-top: 15px;
+    gap: 10px;
+  }
+
+  .products-blocks-card-btn-general {
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .products-blocks-card-btn-cart {
+    max-width: 51px;
+  }
+
+  .products-blocks-card-btn-cart > img,
+  .products-blocks-card-btn-contact-full-general > img {
+    width: 16px;
+  }
+
+  .products-blocks-card-btn-contact-full.open {
+    gap: 10px;
+  }
+
+  .products-blocks-card-btn-count.open {
+    padding: 8px 40px 8px 40px;
+  }
+
+  .count-btn,
+  .count-number {
+    font-size: 12px;
+  }
+  /* --------------END products-------------- */
+}
+/* --------------END responsive style-------------- */

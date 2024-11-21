@@ -329,7 +329,7 @@
                 </div>
                 <div class="nav-blocks-detail">
                     <div id="searchToogle" class="nav-blocks-cart-search">
-                        <input type="search" name="" id="">
+                        <input type="search" name="" id="" placeholder="Search on the Site" class="nav-blocks-detail-search-input">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search icon">
                     </div>
                     <aside id="searchPopup" aria-label="Search Popup">

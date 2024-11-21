@@ -155,6 +155,14 @@
                             <span class="products-blocks-card-preview-price">from $428</span>
                         </div>
                         <div class="products-blocks-card-btn">
+                            <div class="products-blocks-card-btn-contact-full">
+                                <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                                </button>
+                                <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                                </button>
+                            </div>
                             <div class="products-blocks-card-btn-count">
                                 <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
                                 <span class="count-number">0</span>
@@ -173,7 +181,9 @@
     <section class="all-categories container">
         <a href="#" class="all-categories-blocks">
             <h2 class="all-categories-blocks-title">View All Categories</h2>
-            <span class="all-categories-blocks-arrow">&#8599;</span>
+            <div class="all-categories-blocks-arrow">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="" class="all-categories-blocks-arrow-img">
+            </div>
         </a>
     </section>
 </main>
