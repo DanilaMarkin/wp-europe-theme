@@ -71,7 +71,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* --------------START banner-------------- */
@@ -233,7 +233,8 @@ body {
 
 .products-blocks-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
   justify-content: space-between;
   gap: 40px 20px;
 }
@@ -701,6 +702,7 @@ body {
   .products-blocks-card-btn-general {
     height: 30px;
     font-size: 12px;
+    border-radius: 10px;
   }
 
   .products-blocks-card-btn-cart {
@@ -712,12 +714,17 @@ body {
     width: 16px;
   }
 
+  .products-blocks-card-btn-contact-full-general {
+    border-radius: 10px;
+  }
+
   .products-blocks-card-btn-contact-full.open {
     gap: 10px;
   }
 
   .products-blocks-card-btn-count.open {
     padding: 8px 40px 8px 40px;
+    border-radius: 10px;
   }
 
   .count-btn,
@@ -725,5 +732,98 @@ body {
     font-size: 12px;
   }
   /* --------------END products-------------- */
+  /* --------------START contactPopup-------------- */
+  .contact-popup-blocks-header {
+    padding: 15px 20px;
+  }
+
+  .contact-popup-blocks-header-btn-close {
+    width: 20px;
+  }
+
+  .contact-popup-blocks-header > p {
+    font-size: 15px;
+    font-size: 15px;
+    line-height: 17px;
+  }
+
+  .contact-popup-blocks-form {
+    padding: 20px;
+  }
+
+  .contact-popup-blocks-form-head {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .contact-popup-blocks-form-action {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-popup-blocks-form-action > input {
+    max-width: 100%;
+    padding: 9px 15px 10px 15px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .contact-popup-blocks-form-action > input::placeholder {
+    font-size: 12px;
+  }
+
+  .contact-popup-blocks-form-action-btn {
+    width: 100%;
+    padding: 9px 0 10px 0;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .custom-checkbox-wrapper {
+    margin-bottom: 20px;
+  }
+
+  .custom-check-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    margin-right: 10px;
+  }
+
+  .custom-check-icon::before {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+  }
+
+  .custom-checkbox-label {
+    font-size: 12px;
+  }
+  /* --------------END contactPopup-------------- */
+
+  /* --------------START pricePopup-------------- */
+  .price-popup-blocks-form-action {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .price-popup-blocks-form-action > input {
+    width: 100%;
+    padding: 9px 15px 10px 15px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .price-popup-blocks-form-action-btn {
+    width: 100%;
+    padding: 9px 0 10px 0;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  #contactPopup, #pricePopup {
+    width: 95%;
+  }
+  /* --------------END pricePopup-------------- */
 }
 /* --------------END responsive style-------------- */

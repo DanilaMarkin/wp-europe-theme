@@ -143,3 +143,52 @@ categoriesMenuBtn.addEventListener("click", () => {
   brandsMenu.classList.add("hidden");
   categoriesMenu.classList.remove("hidden");
 });
+
+// action bottom-tab-bar Contact Us
+const bottomTabBarListAction = document.querySelector(".bottom-tab-bar-list-action-contacts");
+const bottomTabBarListMore = document.querySelector(".bottom-tab-bar-list-contacts");
+
+
+bottomTabBarListAction.addEventListener("click", () => {
+  bottomTabBarListMore.classList.toggle("open");
+  bottomTabBarListAction.classList.toggle("active");
+});
+
+// action bottom-tab-bar Catalog
+const bottomTabBarListActionCatalog = document.querySelector(".bottom-tab-bar-list-action-catalog");
+const bottomTabBarListActionMore = document.querySelector(".bottom-tab-bar-list-action-more");
+
+const menuBlocksContact = document.querySelector(".menu-blocks-contact");
+const menuBlocksPagesGeneral = document.querySelector(".menu-blocks-pages-general");
+
+const menuBlocksHeader = document.querySelector(".menu-blocks-header");
+
+bottomTabBarListActionCatalog.addEventListener("click", () => {
+  sideMenu.classList.toggle("open");
+  bottomTabBarListActionCatalog.classList.toggle("active");
+  
+  if (menuBlocksContact.classList.contains("hidden") && menuBlocksPagesGeneral.classList.contains("hidden")) {
+    setTimeout(() => {
+      menuBlocksContact.classList.toggle("hidden");
+      menuBlocksPagesGeneral.classList.toggle("hidden");
+    }, 300);
+  } else {
+    menuBlocksContact.classList.toggle("hidden");
+    menuBlocksPagesGeneral.classList.toggle("hidden");
+  }
+});
+
+bottomTabBarListActionMore.addEventListener("click", () => {
+  sideMenu.classList.toggle("open");
+  bottomTabBarListActionMore.classList.toggle("active");
+
+  if (menuBlocksHeader.classList.contains("hidden") && categoriesMenu.classList.contains("hidden")) {
+    setTimeout(() => {
+      menuBlocksHeader.classList.toggle("hidden");
+      categoriesMenu.classList.toggle("hidden");
+    }, 300);
+  } else {
+    menuBlocksHeader.classList.toggle("hidden");
+    categoriesMenu.classList.toggle("hidden");
+  }
+});

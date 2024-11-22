@@ -1,5 +1,5 @@
 <footer>
-    <div class="footer-blocks container">
+    <nav class="footer-blocks container">
         <div class="footer-blocks-social">
             <ul class="footer-social-block-list">
                 <li>
@@ -106,6 +106,62 @@
                 </li>
             </ul>
         </div>
+    </nav>
+    <div class="bottom-tab-bar">
+        <ul class="bottom-tab-bar-lists">
+            <li class="bottom-tab-bar-list">
+                <a href="/" class="bottom-tab-bar-list-action">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/home.svg" alt="" class="bottom-tab-bar-list-action-img">
+                    <span class="bottom-tab-bar-list-action-title">Home</span>
+                </a>
+            </li>
+            <li class="bottom-tab-bar-list">
+                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-catalog">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/catalog.svg" alt="" class="bottom-tab-bar-list-action-img">
+                    <span class="bottom-tab-bar-list-action-title">Catalog</span>
+                </button>
+            </li>
+            <li class="bottom-tab-bar-list">
+                <button href="/" class="bottom-tab-bar-list-action">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/assistant.svg" alt="" class="bottom-tab-bar-list-action-img">
+                    <span class="bottom-tab-bar-list-action-title">Assistant</span>
+                </button>
+            </li>
+            <li class="bottom-tab-bar-list">
+                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-contacts">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/contacts-people.svg" alt="" class="bottom-tab-bar-list-action-img">
+                    <span class="bottom-tab-bar-list-action-title">Contacts</span>
+                </button>
+                <ul class="bottom-tab-bar-list-contacts">
+                    <li>
+                        <a href="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg" alt="">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="bottom-tab-bar-list">
+                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-more">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/more.svg" alt="" class="bottom-tab-bar-list-action-img">
+                    <span class="bottom-tab-bar-list-action-title">More</span>
+                </button>
+            </li>
+        </ul>
     </div>
 </footer>
 <?php wp_footer(); ?>

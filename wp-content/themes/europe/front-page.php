@@ -33,7 +33,9 @@
                         <label class="custom-checkbox-label">
                             <input type="checkbox" class="custom-checkbox">
                             <span class="custom-check-icon"></span>
-                            I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
+                            <div class="custom-checkbox-label-text-agree">
+                                I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
+                            </div>
                         </label>
                     </div>
                     <ul class="menu-blocks-social-blocks">
@@ -82,7 +84,9 @@
                         <label class="custom-checkbox-label">
                             <input type="checkbox" class="custom-checkbox">
                             <span class="custom-check-icon"></span>
-                            I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
+                            <div class="custom-checkbox-label-text-agree">
+                                I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
+                            </div>
                         </label>
                     </div>
                 </form>
