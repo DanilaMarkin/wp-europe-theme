@@ -18,6 +18,18 @@ const pricePopupForm = document.getElementById("pricePopup");
 const pricePopupСlose = document.querySelector(
   ".price-popup-blocks-header-btn"
 );
+// action bottom-tab-bar Catalog
+const bottomTabBarListActionCatalog = document.querySelector(
+  ".bottom-tab-bar-list-action-catalog"
+);
+const bottomTabBarListActionMore = document.querySelector(
+  ".bottom-tab-bar-list-action-more"
+);
+const menuBlocksContact = document.querySelector(".menu-blocks-contact");
+const menuBlocksPagesGeneral = document.querySelector(
+  ".menu-blocks-pages-general"
+);
+const menuBlocksHeader = document.querySelector(".menu-blocks-header");
 // Variadble general
 const overlay = document.getElementById("overlay");
 
@@ -81,6 +93,21 @@ if (menuCloseBtn && sideMenu) {
   menuCloseBtn.addEventListener("click", () => {
     sideMenu.classList.remove("open");
     updateOverlayState();
+    // Сбрасываем активное состояние кнопок
+    if (
+      bottomTabBarListActionCatalog.classList.contains("active") ||
+      bottomTabBarListActionMore.classList.contains("active")
+    ) {
+      bottomTabBarListActionCatalog.classList.remove("active");
+      bottomTabBarListActionMore.classList.remove("active");
+
+      // Скрываем все элементы меню
+      menuBlocksHeader.classList.add("hidden");
+      brandsMenu.classList.add("hidden");
+      categoriesMenu.classList.add("hidden");
+      menuBlocksPagesGeneral.classList.add("hidden");
+      menuBlocksContact.classList.add("hidden");
+    }
   });
 }
 
@@ -145,9 +172,12 @@ categoriesMenuBtn.addEventListener("click", () => {
 });
 
 // action bottom-tab-bar Contact Us
-const bottomTabBarListAction = document.querySelector(".bottom-tab-bar-list-action-contacts");
-const bottomTabBarListMore = document.querySelector(".bottom-tab-bar-list-contacts");
-
+const bottomTabBarListAction = document.querySelector(
+  ".bottom-tab-bar-list-action-contacts"
+);
+const bottomTabBarListMore = document.querySelector(
+  ".bottom-tab-bar-list-contacts"
+);
 
 bottomTabBarListAction.addEventListener("click", () => {
   bottomTabBarListMore.classList.toggle("open");
@@ -155,40 +185,65 @@ bottomTabBarListAction.addEventListener("click", () => {
 });
 
 // action bottom-tab-bar Catalog
-const bottomTabBarListActionCatalog = document.querySelector(".bottom-tab-bar-list-action-catalog");
-const bottomTabBarListActionMore = document.querySelector(".bottom-tab-bar-list-action-more");
-
-const menuBlocksContact = document.querySelector(".menu-blocks-contact");
-const menuBlocksPagesGeneral = document.querySelector(".menu-blocks-pages-general");
-
-const menuBlocksHeader = document.querySelector(".menu-blocks-header");
-
+// Логика для кнопки "Catalog"
 bottomTabBarListActionCatalog.addEventListener("click", () => {
-  sideMenu.classList.toggle("open");
-  bottomTabBarListActionCatalog.classList.toggle("active");
-  
-  if (menuBlocksContact.classList.contains("hidden") && menuBlocksPagesGeneral.classList.contains("hidden")) {
-    setTimeout(() => {
-      menuBlocksContact.classList.toggle("hidden");
-      menuBlocksPagesGeneral.classList.toggle("hidden");
-    }, 300);
-  } else {
-    menuBlocksContact.classList.toggle("hidden");
-    menuBlocksPagesGeneral.classList.toggle("hidden");
+  // Если Catalog уже активен, закрываем меню
+  if (bottomTabBarListActionCatalog.classList.contains("active")) {
+    sideMenu.classList.remove("open");
+    bottomTabBarListActionCatalog.classList.remove("active");
+
+    // Скрываем элементы для Catalog
+    menuBlocksHeader.classList.add("hidden");
+    categoriesMenu.classList.add("hidden");
+    return; // Прерываем дальнейшее выполнение
   }
+
+  // Открываем sideMenu, если не открыт
+  if (!sideMenu.classList.contains("open")) {
+    sideMenu.classList.add("open");
+  }
+
+  // Устанавливаем активное состояние для Catalog
+  bottomTabBarListActionCatalog.classList.add("active");
+  bottomTabBarListActionMore.classList.remove("active");
+
+  // Показываем элементы для Catalog
+  menuBlocksHeader.classList.remove("hidden");
+  categoriesMenu.classList.remove("hidden");
+
+  // Скрываем элементы для More
+  menuBlocksPagesGeneral.classList.add("hidden");
+  menuBlocksContact.classList.add("hidden");
 });
 
+// Логика для кнопки "More"
 bottomTabBarListActionMore.addEventListener("click", () => {
-  sideMenu.classList.toggle("open");
-  bottomTabBarListActionMore.classList.toggle("active");
+  // Если More уже активен, закрываем меню
+  if (bottomTabBarListActionMore.classList.contains("active")) {
+    sideMenu.classList.remove("open");
+    bottomTabBarListActionMore.classList.remove("active");
 
-  if (menuBlocksHeader.classList.contains("hidden") && categoriesMenu.classList.contains("hidden")) {
-    setTimeout(() => {
-      menuBlocksHeader.classList.toggle("hidden");
-      categoriesMenu.classList.toggle("hidden");
-    }, 300);
-  } else {
-    menuBlocksHeader.classList.toggle("hidden");
-    categoriesMenu.classList.toggle("hidden");
+    // Скрываем элементы для More
+    menuBlocksPagesGeneral.classList.add("hidden");
+    menuBlocksContact.classList.add("hidden");
+    return; // Прерываем дальнейшее выполнение
   }
+
+  // Открываем sideMenu, если не открыт
+  if (!sideMenu.classList.contains("open")) {
+    sideMenu.classList.add("open");
+  }
+
+  // Устанавливаем активное состояние для More
+  bottomTabBarListActionMore.classList.add("active");
+  bottomTabBarListActionCatalog.classList.remove("active");
+
+  // Показываем элементы для More
+  menuBlocksPagesGeneral.classList.remove("hidden");
+  menuBlocksContact.classList.remove("hidden");
+
+  // Скрываем элементы для Catalog
+  menuBlocksHeader.classList.add("hidden");
+  brandsMenu.classList.add("hidden");
+  categoriesMenu.classList.add("hidden");
 });
