@@ -29,13 +29,41 @@ add_action('after_setup_theme', 'europe_woocommerce_setup');
 
 function europe_get_header()
 {
-    get_template_part('partials/header');
+    get_template_part('templates/partials/header');
 }
 
 function europe_get_footer()
 {
-    get_template_part('partials/footer');
+    get_template_part('templates/partials/footer');
 }
+
+add_filter('theme_page_templates', function ($templates) {
+    // Добавляем новые шаблоны
+    $templates['templates/pages/payment.php'] = 'Payment and Delivery';
+    $templates['templates/pages/about.php'] = 'About Us';
+    $templates['templates/pages/contacts.php'] = 'Contacts';
+    return $templates;
+});
+
+add_filter('template_include', function ($template) {
+    // Обработка шаблона "Payment and Delivery"
+    if (get_page_template_slug() === 'templates/pages/payment.php') {
+        return get_stylesheet_directory() . '/templates/pages/payment.php';
+    }
+
+    // Обработка шаблона "About Us"
+    if (get_page_template_slug() === 'templates/pages/about.php') {
+        return get_stylesheet_directory() . '/templates/pages/about.php';
+    }
+
+    // Обработка шаблона "Contacts"
+    if (get_page_template_slug() === 'templates/pages/contacts.php') {
+        return get_stylesheet_directory() . '/templates/pages/contacts.php';
+    }
+
+    return $template;
+});
+
 
 // Регистрация меню в теме
 function register_my_menus()
