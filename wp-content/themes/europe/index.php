@@ -1,8 +1,29 @@
-<?php europe_get_header(); ?>
-
+<?php
+/* Template Name: Главная страница */
+europe_get_header();
+?>
 <section class="banner">
     <div class="banner-content container">
-        <h1 class="banner-content-title">Electronic Components Distributor with a Huge Selection in Stock and Ready to Ship with no Minimum Orders</h1>
+        <?php
+        // Получаем записи из категории "Баннеры"
+        $args = array(
+            'category_name'  => 'banner', // Слаг категории
+            'posts_per_page' => -1,       // Все записи из категории
+        );
+
+        $query = new WP_Query($args);
+
+        if ($query->have_posts()) :
+            while ($query->have_posts()) : $query->the_post();
+        ?>
+                <h1 class="banner-content-title"><?php the_content(); ?></h1>
+        <?php
+            endwhile;
+            wp_reset_postdata();
+        else :
+            echo '<p>В категории "Баннеры" пока нет записей.</p>';
+        endif;
+        ?>
         <div class="banner-content-buttons">
             <button class="button-content-general button-content-contact">Contact us</button>
             <button class="button-content-general button-content-download">

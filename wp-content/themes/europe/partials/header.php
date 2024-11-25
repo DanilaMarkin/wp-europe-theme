@@ -99,196 +99,26 @@
                                 <span>|</span>
                                 <button class="menu-blocks-header-btn-general menu-blocks-header-brands">Brands</button>
                             </div>
-                            <ul id="brandsMenu" class="menu-blocks-links hidden">
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Apple</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Asus</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Supermicro</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Intel</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>AMD</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Gigabyte</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <ul id="categoriesMenu" class="menu-blocks-links">
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Server Equipment</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Computers and Laptops</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Storage</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Workstations</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Network Equipment</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-blocks-link">
-                                    <button class="menu-blocks-link-toggle" aria-expanded="false">
-                                        <span>Components</span>
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow-list.svg" alt="Expand subcategories">
-                                    </button>
-                                    <ul class="menu-blocks-links-submenu">
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Subcategory</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'side-menu-brands',
+                                'container' => 'ul', // Убираем обертку div
+                                'menu_id' => 'brandsMenu', // Присваиваем ID
+                                'menu_class' => 'menu-blocks-links hidden', // Присваиваем класс
+                                'depth' => 2, // Поддержка вложенных пунктов
+                                'walker' => new Custom_Walker_Nav_Menu() // Добавляем кастомный walker для точной структуры
+                            ));
+                            ?>
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'side-menu-categories',
+                                'container' => 'ul', // Убираем обертку div
+                                'menu_id' => 'categoriesMenu', // Присваиваем ID
+                                'menu_class' => 'menu-blocks-links', // Присваиваем класс
+                                'depth' => 2, // Поддержка вложенных пунктов
+                                'walker' => new Custom_Walker_Nav_Menu() // Добавляем кастомный walker для точной структуры
+                            ));
+                            ?>
                             <ul class="menu-blocks-pages-general">
                                 <li><a href="#">About us</a></li>
                                 <li><a href="#">Payment and Delivery</a></li>
