@@ -184,7 +184,7 @@ bottomTabBarListAction.addEventListener("click", () => {
   bottomTabBarListAction.classList.toggle("active");
 });
 
-// action bottom-tab-bar Catalog
+// action bottom-tab-bar Catalog and More
 // Логика для кнопки "Catalog"
 bottomTabBarListActionCatalog.addEventListener("click", () => {
   // Если Catalog уже активен, закрываем меню

@@ -64,26 +64,16 @@
             <div class="nav-blocks container">
                 <div class="nav-block-catalog">
                     <ul class="nav-block-catalog-lists">
-                        <li>
-                            <a href="" title="View server equipment catalog">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/server_equipment.svg" alt="Server equipment icon">Server Equipment
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" title="View computers and laptops catalog">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/computers_and_laptops.svg" alt="Computers and laptops icon"> Computers and Laptops
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" title="View storage catalog">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/storage.svg" alt="Storage icon"> Storage
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" title="View workstations catalog">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/workstations.svg" alt="Workstations icon"> Workstations
-                            </a>
-                        </li>
+                        <?php
+                        wp_nav_menu(array(
+                            'theme_location' => 'side-menu-categories',  // Замените на ваше место расположения меню
+                            'container' => false,                         // Убираем контейнер вокруг меню
+                            'menu_class' => 'nav-block-catalog-lists',    // Присваиваем класс для списка
+                            'items_wrap' => '%3$s',                       // Выводим только элементы <li>
+                            'walker' => new Custom_Walker_Nav_Menu(),     // Используем кастомный walker
+                            'depth' => 1                                  // Убираем вложенные пункты меню
+                        ));
+                        ?>
                     </ul>
                 </div>
                 <div class="nav-blocks-detail">
@@ -106,7 +96,7 @@
                                 'menu_id' => 'brandsMenu', // Присваиваем ID
                                 'menu_class' => 'menu-blocks-links hidden', // Присваиваем класс
                                 'depth' => 2, // Поддержка вложенных пунктов
-                                'walker' => new Custom_Walker_Nav_Menu() // Добавляем кастомный walker для точной структуры
+                                'walker' => new Custom_Walker_Side_Menu() // Добавляем кастомный walker для точной структуры
                             ));
                             ?>
                             <?php
@@ -116,7 +106,7 @@
                                 'menu_id' => 'categoriesMenu', // Присваиваем ID
                                 'menu_class' => 'menu-blocks-links', // Присваиваем класс
                                 'depth' => 2, // Поддержка вложенных пунктов
-                                'walker' => new Custom_Walker_Nav_Menu() // Добавляем кастомный walker для точной структуры
+                                'walker' => new Custom_Walker_Side_Menu() // Добавляем кастомный walker для точной структуры
                             ));
                             ?>
                             <ul class="menu-blocks-pages-general">
