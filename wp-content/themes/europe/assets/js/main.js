@@ -41,10 +41,10 @@ function toggleOverlay(isVisible) {
 // Обновление состояния overlay
 function updateOverlayState() {
   const isOverlayActive =
-    sideMenu.classList.contains("open") ||
-    searchPopup.classList.contains("open") ||
-    contactPopupForm.classList.contains("open") ||
-    pricePopupForm.classList.contains("open");
+    (sideMenu && sideMenu.classList.contains("open")) ||
+    (searchPopup && searchPopup.classList.contains("open")) ||
+    (contactPopupForm && contactPopupForm.classList.contains("open")) ||
+    (pricePopupForm && pricePopupForm.classList.contains("open"));
   toggleOverlay(isOverlayActive);
 }
 
