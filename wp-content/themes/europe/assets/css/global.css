@@ -91,7 +91,7 @@ body {
   max-width: 794px;
   width: 100%;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 33px;
   margin-bottom: 71px;
 }
@@ -105,7 +105,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 387px;
+  max-width: 300px;
   width: 100%;
   color: #000;
   font-weight: 700;
@@ -163,6 +163,7 @@ body {
 
 .brands-blocks-slider-lists {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 }
@@ -177,6 +178,17 @@ body {
   height: 153px;
   background-color: #000;
   border-radius: 50%;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  white-space: normal;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #e1e7d7;
+  text-align: center;
 }
 
 .brands-blocks-slider-lists-circle > a > h3::before {
@@ -189,16 +201,6 @@ body {
   border: 2px solid #fedc32;
   border-radius: 50%;
 }
-
-.brands-blocks-slider-lists-circle a > h3 {
-  position: relative;
-  z-index: 0;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 22px;
-  color: #e1e7d7;
-}
-
 /* --------------END brands-------------- */
 
 /* --------------START products-------------- */
@@ -606,6 +608,7 @@ body {
 
   /* --------------START brands-------------- */
   .brands-blocks-slider-lists {
+    flex-wrap: wrap;
     height: 81px;
     gap: 20px;
     overflow-x: scroll;
@@ -821,7 +824,8 @@ body {
     border-radius: 10px;
   }
 
-  #contactPopup, #pricePopup {
+  #contactPopup,
+  #pricePopup {
     width: 95%;
   }
   /* --------------END pricePopup-------------- */

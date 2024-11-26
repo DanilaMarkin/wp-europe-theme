@@ -26,15 +26,16 @@
         </div>
         <div class="footer-blocks-general-pages">
             <ul class="footer-blocks-general-pages-list">
-                <li>
-                    <a href="#">Catalog</a>
-                </li>
-                <li>
-                    <a href="#">About us</a>
-                </li>
-                <li>
-                    <a href="#">Payment and Delivery</a>
-                </li>
+                <?php
+                wp_nav_menu(array(
+                    'theme_location' => "nav-general-pages",
+                    'container' => false,
+                    'menu_class' => 'header-block-main-general-list',
+                    'items_wrap' => '%3$s',
+                    'walker' => new Custom_Walker_Nav_Menu_Pages(),
+                    'depth' => 1,
+                ));
+                ?>
             </ul>
         </div>
         <div class="footer-blocks-categorys">

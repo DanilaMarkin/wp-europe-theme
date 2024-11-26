@@ -21,15 +21,16 @@
                     </nav>
                     <nav class="header-block-main-general">
                         <ul class="header-block-main-general-lists">
-                            <li>
-                                <a href="" title="Learn more about us">About us</a>
-                            </li>
-                            <li>
-                                <a href="" title="Payment and delivery terms">Payment and Delivery</a>
-                            </li>
-                            <li>
-                                <a href="" title="Contact information">Contacts</a>
-                            </li>
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => "nav-general-pages",
+                                'container' => false,
+                                'menu_class' => 'header-block-main-general-list',
+                                'items_wrap' => '%3$s',
+                                'walker' => new Custom_Walker_Nav_Menu_Pages(),
+                                'depth' => 1,
+                            ));
+                            ?>
                         </ul>
                     </nav>
                 </div>
@@ -110,9 +111,16 @@
                             ));
                             ?>
                             <ul class="menu-blocks-pages-general">
-                                <li><a href="#">About us</a></li>
-                                <li><a href="#">Payment and Delivery</a></li>
-                                <li><a href="#">Contacts</a></li>
+                                <?php
+                                wp_nav_menu(array(
+                                    'theme_location' => "nav-general-pages",
+                                    'container' => false,
+                                    'menu_class' => 'header-block-main-general-list',
+                                    'items_wrap' => '%3$s',
+                                    'walker' => new Custom_Walker_Nav_Menu_Pages(),
+                                    'depth' => 1,
+                                ));
+                                ?>
                             </ul>
                             <ul class="menu-blocks-contact">
                                 <li>

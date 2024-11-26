@@ -44,6 +44,7 @@ function include_custom_walkers()
 {
     require_once get_template_directory() . '/includes/walkers/custom-walker-side-menu.php';
     require_once get_template_directory() . '/includes/walkers/custom-walker-nav-menu.php';
+    require_once get_template_directory() . '/includes/walkers/custom-walker-nav-menu-pages.php';
 }
 
 add_action('after_setup_theme', 'include_custom_walkers');
@@ -55,6 +56,7 @@ function register_my_menus()
         array(
             'side-menu-categories' => __('Categories Menu'),
             'side-menu-brands' => __('Brands Menu'),
+            'nav-general-pages' => __('Menu General Pages'),
         )
     );
 }
