@@ -557,7 +557,7 @@ body {
 /* --------------END pricePopup-------------- */
 
 /* --------------START responsive style-------------- */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   /* --------------START banner-------------- */
   .banner {
     padding: 20px 0 30px 0;
@@ -608,7 +608,7 @@ body {
 
   /* --------------START brands-------------- */
   .brands-blocks-slider-lists {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     height: 81px;
     gap: 20px;
     overflow-x: scroll;

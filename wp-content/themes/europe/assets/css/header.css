@@ -393,8 +393,29 @@ header {
   border: 1px solid #000;
 }
 
+/* --------------START bread-crumbs-------------- */
+.bread-crumbs > ol {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.bread-crumbs > ol > li,
+.bread-crumbs > ol > li > span,
+.bread-crumbs > ol > li > a > span {
+  font-size: 12px;
+  color: #7d7d7d;
+}
+
+.bread-crumbs-active {
+  font-weight: bold;
+}
+/* --------------END bread-crumbs-------------- */
+
 /* --------------START responsive style-------------- */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   /* --------------START header-------------- */
   .nav-line {
     border-bottom: 1px solid #7d7d7d;
@@ -559,5 +580,14 @@ header {
     padding: 15px 0 20px 0;
   }
   /* --------------END sidemenu-------------- */
+  /* --------------START bread-crumbs-------------- */
+  .bread-crumbs > ol {
+    gap: 8px;
+  }
+
+  .bread-crumbs-separator {
+    transform: rotate(90deg);
+  }
+  /* --------------END bread-crumbs-------------- */
 }
 /* --------------END responsive style-------------- */

@@ -1,6 +1,5 @@
 <?php
 /* Template Name: Payment and Delivery */
-
 europe_get_header();
 ?>
 
@@ -8,7 +7,7 @@ europe_get_header();
     .page-title {
         font-weight: 700;
         font-size: 32px;
-        margin: 60px 0 40px 0;
+        margin: 47px 0 40px 0;
     }
 
     .page-content p {
@@ -44,7 +43,7 @@ europe_get_header();
     @media (max-width: 768px) {
         .page-title {
             font-size: 16px;
-            margin: 30px 0 20px 0;
+            margin: 20px 0 20px 0;
         }
 
         .page-content p,

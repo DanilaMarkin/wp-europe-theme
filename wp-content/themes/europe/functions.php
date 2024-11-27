@@ -19,7 +19,6 @@ function enqueue_custom_scripts()
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
-
 // Поддержка WooCommerce в теме
 function europe_woocommerce_setup()
 {
@@ -61,6 +60,69 @@ function register_my_menus()
     );
 }
 add_action("init", "register_my_menus");
+
+function custom_breadcrumbs()
+{
+    if (is_front_page()) {
+        return;
+    }
+
+    $home = 'Home';
+    $separator = ' | ';
+    echo '<nav class="container bread-crumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList"><ol>';
+
+    // Главная страница
+    echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+    echo '<a href="' . home_url() . '" itemprop="item"><span itemprop="name">' . $home . '</span></a>';
+    echo '<meta itemprop="position" content="1" /></li>';
+
+    $position = 2;
+
+    if (is_category() || is_single()) {
+        $category = get_the_category();
+        if ($category) {
+            echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+            echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+            echo '<a href="' . get_category_link($category[0]->term_id) . '" itemprop="item">';
+            echo '<span itemprop="name">' . $category[0]->name . '</span></a>';
+            echo '<meta itemprop="position" content="' . $position++ . '" />';
+            echo '</li>';
+        }
+    }
+
+    if (is_single()) {
+        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . get_the_title() . '</span>';
+        echo '<meta itemprop="position" content="' . $position++ . '" />';
+        echo '</li>';
+    }
+
+    if (is_page() && !is_front_page()) {
+        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name" class="bread-crumbs-active">' . get_the_title() . '</span>';
+        echo '<meta itemprop="position" content="' . $position++ . '" />';
+        echo '</li>';
+    }
+
+    if (is_search()) {
+        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">Search results for: ' . get_search_query() . '</span>';
+        echo '<meta itemprop="position" content="' . $position++ . '" />';
+        echo '</li>';
+    }
+
+    if (is_404()) {
+        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">404 - Page not found</span>';
+        echo '<meta itemprop="position" content="' . $position++ . '" />';
+        echo '</li>';
+    }
+    echo '</ol></nav>';
+}
 
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны

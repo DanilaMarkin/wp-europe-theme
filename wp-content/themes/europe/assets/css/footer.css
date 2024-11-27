@@ -120,7 +120,9 @@ footer {
 /* --------------START responsive style-------------- */
 @media (max-width: 768px) {
   footer {
+    position: relative;
     margin-top: 30px;
+    height: 336px;
   }
 
   .footer-blocks {
@@ -142,6 +144,12 @@ footer {
 
   .footer-blocks-categorys {
     gap: 0;
+  }
+
+  .footer-blocks-contacts {
+    position: absolute;
+    top: 65px;
+    width: calc(50% - 20px);
   }
 
   .footer-blocks-category-general > p,
