@@ -2,6 +2,12 @@
 /* Template Name: Главная страница */
 europe_get_header();
 ?>
+<div class="contact-info">
+    <p>Email: <?php echo get_option('contact_info_email'); ?></p>
+    <p>Phone: <?php echo get_option('contact_info_phone'); ?></p>
+    <p>Address: <?php echo get_option('contact_info_address'); ?></p>
+</div>
+
 <section class="banner">
     <div class="banner-content container">
         <h1 class="banner-content-title">Electronic Components Distributor with a Huge Selection in Stock and Ready to Ship with no Minimum Orders</h1>
