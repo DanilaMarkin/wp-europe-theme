@@ -5,11 +5,15 @@
   margin: 47px 0 40px 0;
 }
 
-.page-content p {
+.page-content
+  p:not(
+    .contacts-content-social-list-head,
+    .contacts-content-social-list-desc
+  ) {
   font-size: 20px;
 }
 
-.page-content h2 {
+.page-content h2:not(.contacts-content-social-block-title) {
   font-weight: 600;
   font-size: 30px;
   margin: 60px 0 40px 0;
@@ -25,7 +29,12 @@
   margin-top: 15px;
 }
 
-.page-content ul li:not(.brands-blocks-slider-lists-circle) {
+.page-content
+  ul
+  li:not(
+    .brands-blocks-slider-lists-circle,
+    .contacts-content-social-list-circle
+  ) {
   font-size: 20px;
   list-style: disc;
   margin-left: 20px;
@@ -46,18 +55,72 @@
 }
 /* --------------END about.php-------------- */
 
+/* --------------START contacts.php-------------- */
+.contacts-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: start;
+}
+
+.contacts-content-social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 283px;
+  width: 100%;
+}
+
+.contacts-content-social-list-head > a,
+.contacts-content-social-list-head {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.contacts-content-social-list-desc,
+address {
+  font-size: 12px;
+}
+
+.contacts-content-map-block {
+  max-width: 793px;
+  width: 100%;
+}
+
+.contacts-content-map > iframe {
+  max-width: 793px;
+  height: 327px;
+}
+
+.contacts-content-social-block-title {
+  font-weight: 600;
+  font-size: 26px;
+  margin: 20px 0 40px 0;
+}
+/* --------------END contacts.php-------------- */
+
 @media (max-width: 768px) {
   .page-title {
     font-size: 16px;
     margin: 20px 0 20px 0;
   }
 
-  .page-content p,
-  .page-content ul li:not(.brands-blocks-slider-lists-circle) {
+  .page-content
+    p:not(
+      .contacts-content-social-list-head,
+      .contacts-content-social-list-desc
+    ),
+  .page-content
+    ul
+    li:not(
+      .brands-blocks-slider-lists-circle,
+      .contacts-content-social-list-circle
+    ) {
     font-size: 12px;
   }
 
-  .page-content h2 {
+  .page-content h2:not(.contacts-content-social-block-title) {
     font-size: 15px;
     margin: 30px 0 20px 0;
   }
@@ -78,4 +141,37 @@
     margin-top: 30px;
   }
   /* --------------END about.php-------------- */
+
+  /* --------------START contacts.php-------------- */
+  .contacts-content-social-block {
+    width: 100%;
+    border-bottom: 1px solid #7d7d7d;
+  }
+
+  .contacts-content-social-list {
+    max-width: 100%;
+    gap: 30px;
+  }
+
+  .contacts-content-social-block-title {
+    font-size: 14px;
+  }
+
+  .contacts-content-social-block > .contacts-content-social-block-title {
+    margin: 20px 0 20px 0;
+  }
+  .contacts-content-map-block > .contacts-content-social-block-title {
+    margin: 30px 0 20px 0;
+  }
+
+  .contacts-content-social-list-head > a,
+  .contacts-content-social-list-head {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  address {
+    margin-bottom: 30px;
+  }
+  /* --------------END contacts.php-------------- */
 }
