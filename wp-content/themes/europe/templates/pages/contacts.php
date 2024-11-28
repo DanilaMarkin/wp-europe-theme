@@ -36,7 +36,7 @@ europe_get_header();
                 <h2 class="contacts-content-social-block-title"><?= esc_html(get_field('contact_heading_2_')) ?: 'Default Heading'; ?></h2>
                 <div class="contacts-content-map" aria-label="Location Map">
                     <?php
-                    if (!get_field('map_google_src')) { ?>
+                    if (get_field('map_google_src')) { ?>
                         <iframe
                             src="<?= get_field('map_google_src'); ?>"
                             width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
