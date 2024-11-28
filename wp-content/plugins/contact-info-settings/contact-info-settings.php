@@ -7,7 +7,8 @@ Author: Данила Маркин
 */
 
 // Регистрируем настройки
-function contact_info_register_settings() {
+function contact_info_register_settings()
+{
     // Регистрируем поля для почты, телефона и адреса
     register_setting('contact_info_group', 'contact_info_email');
     register_setting('contact_info_group', 'contact_info_email_down_descr');
@@ -19,7 +20,8 @@ function contact_info_register_settings() {
 add_action('admin_init', 'contact_info_register_settings');
 
 // Добавляем меню в админку
-function contact_info_menu() {
+function contact_info_menu()
+{
     add_menu_page(
         'Контактная инфорация',  // Название страницы
         'Конт. инфо',  // Название меню
@@ -33,8 +35,9 @@ function contact_info_menu() {
 add_action('admin_menu', 'contact_info_menu');
 
 // Страница настроек
-function contact_info_page() {
-    ?>
+function contact_info_page()
+{
+?>
     <div class="wrap">
         <h1>Настройки контактной информации</h1>
         <form method="post" action="options.php">
@@ -70,5 +73,5 @@ function contact_info_page() {
             <?php submit_button(); ?>
         </form>
     </div>
-    <?php
+<?php
 }

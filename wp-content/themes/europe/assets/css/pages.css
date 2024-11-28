@@ -154,11 +154,11 @@ address {
   }
 
   .contacts-content-social-block-title {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .contacts-content-social-block > .contacts-content-social-block-title {
-    margin: 20px 0 20px 0;
+    margin: 5px 0 20px 0;
   }
   .contacts-content-map-block > .contacts-content-social-block-title {
     margin: 30px 0 20px 0;
@@ -166,7 +166,7 @@ address {
 
   .contacts-content-social-list-head > a,
   .contacts-content-social-list-head {
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 5px;
   }
 

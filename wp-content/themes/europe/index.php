@@ -2,11 +2,6 @@
 /* Template Name: Главная страница */
 europe_get_header();
 ?>
-<!-- <div class="contact-info">
-    <p>Email: <?php echo get_option('contact_info_email'); ?></p>
-    <p>Phone: <?php echo get_option('contact_info_phone'); ?></p>
-    <p>Address: <?php echo get_option('contact_info_address'); ?></p>
-</div> -->
 
 <section class="banner">
     <div class="banner-content container">
@@ -191,10 +186,10 @@ europe_get_header();
         </div>
     </section>
     <section class="all-categories container">
-        <a href="#" class="all-categories-blocks">
+        <a href="#" class="all-categories-blocks" title="View all categories">
             <h2 class="all-categories-blocks-title">View All Categories</h2>
             <div class="all-categories-blocks-arrow">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="" class="all-categories-blocks-arrow-img">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="View all categories" class="all-categories-blocks-arrow-img">
             </div>
         </a>
     </section>
