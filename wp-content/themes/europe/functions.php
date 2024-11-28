@@ -7,6 +7,7 @@ function europe_enqueue_styles()
     wp_enqueue_style('europe-global', get_template_directory_uri() . '/assets/css/global.css');
     wp_enqueue_style('europe-header', get_template_directory_uri() . '/assets/css/header.css');
     wp_enqueue_style('europe-footer', get_template_directory_uri() . '/assets/css/footer.css');
+    wp_enqueue_style('europe-pages', get_template_directory_uri() . '/assets/css/pages.css');
     wp_enqueue_style('europe-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css');
 }
 add_action('wp_enqueue_scripts', 'europe_enqueue_styles');

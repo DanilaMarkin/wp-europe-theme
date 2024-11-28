@@ -1,0 +1,81 @@
+/* --------------START general-------------- */
+.page-title {
+  font-weight: 700;
+  font-size: 32px;
+  margin: 47px 0 40px 0;
+}
+
+.page-content p {
+  font-size: 20px;
+}
+
+.page-content h2 {
+  font-weight: 600;
+  font-size: 30px;
+  margin: 60px 0 40px 0;
+}
+
+.page-content h3 {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.page-content ul {
+  margin-top: 15px;
+}
+
+.page-content ul li:not(.brands-blocks-slider-lists-circle) {
+  font-size: 20px;
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.wp-block-group__inner-container {
+  margin: 40px 0;
+}
+/* --------------END general-------------- */
+
+/* --------------START about.php-------------- */
+.about-content {
+  margin-bottom: 60px;
+}
+
+.page-content-main > .all-categories {
+  margin-top: 60px;
+}
+/* --------------END about.php-------------- */
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 16px;
+    margin: 20px 0 20px 0;
+  }
+
+  .page-content p,
+  .page-content ul li:not(.brands-blocks-slider-lists-circle) {
+    font-size: 12px;
+  }
+
+  .page-content h2 {
+    font-size: 15px;
+    margin: 30px 0 20px 0;
+  }
+
+  .page-content h3 {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .wp-block-group__inner-container {
+    margin: 20px 0;
+  }
+  /* --------------START about.php-------------- */
+  .about-content {
+    margin-bottom: 30px;
+  }
+  .page-content-main > .all-categories {
+    margin-top: 30px;
+  }
+  /* --------------END about.php-------------- */
+}
