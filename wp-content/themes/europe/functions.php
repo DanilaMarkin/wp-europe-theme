@@ -79,16 +79,37 @@ function custom_breadcrumbs()
 
     $position = 2;
 
-    if (is_category() || is_single()) {
-        $category = get_the_category();
+    // Хлебные крошки для категории продукта WooCommerce
+    if (is_product_category()) {
+        $category = get_queried_object();
         if ($category) {
             echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
             echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-            echo '<a href="' . get_category_link($category[0]->term_id) . '" itemprop="item">';
-            echo '<span itemprop="name">' . $category[0]->name . '</span></a>';
+            echo '<a href="' . get_term_link($category) . '" itemprop="item">';
+            echo '<span itemprop="name" class="bread-crumbs-active">' . esc_html($category->name) . '</span></a>';
             echo '<meta itemprop="position" content="' . $position++ . '" />';
             echo '</li>';
         }
+    }
+
+    // Хлебные крошки для товаров WooCommerce
+    if (is_product()) {
+        $categories = wc_get_product_terms(get_the_ID(), 'product_cat');
+        if (!empty($categories)) {
+            echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+            foreach ($categories as $category) {
+                echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+                echo '<a href="' . get_term_link($category) . '" itemprop="item">';
+                echo '<span itemprop="name">' . esc_html($category->name) . '</span></a>';
+                echo '<meta itemprop="position" content="' . $position++ . '" />';
+                echo '</li>';
+            }
+        }
+        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . get_the_title() . '</span>';
+        echo '<meta itemprop="position" content="' . $position++ . '" />';
+        echo '</li>';
     }
 
     if (is_single()) {
@@ -125,7 +146,8 @@ function custom_breadcrumbs()
     echo '</ol></nav>';
 }
 
-function get_global_settings($page_id) {
+function get_global_settings($page_id)
+{
     return [
         'phone' => get_field('contact_info_phone', $page_id),
         'phone_desc' => get_field('contact_info_phone_down_descr', $page_id),

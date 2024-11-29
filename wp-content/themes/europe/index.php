@@ -155,18 +155,34 @@ europe_get_header();
     <section class="products">
         <div class="products-blocks container">
             <div class="products-blocks-header">
-                <h2 class="products-blocks-header-title">Server Equipment</h2>
-                <a href="#" class="products-blocks-header-all-link">
-                    <span class="products-blocks-header-all">View All Products</span>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="">
-                </a>
+                <?php
+                // Получаем данные категории
+                $category_slug = 'server-equipment';
+                $category = get_term_by('slug', $category_slug, 'product_cat'); 
+
+                if ($category): ?>
+                    <h2 class="products-blocks-header-title"><?php echo esc_html($category->name); ?></h2>
+                    <a href="<?php echo esc_url(get_term_link($category)); ?>" class="products-blocks-header-all-link">
+                        <span class="products-blocks-header-all">View All Products</span>
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="">
+                    </a>
+                <?php endif; ?>
             </div>
             <ul class="products-blocks-cards">
                 <?php
                 $args = array(
                     "post_type" => "product",
                     "posts_per_page" => 8,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product_cat',
+                            'field'    => 'slug',
+                            'terms'    => $category_slug,
+                            'operator' => 'IN',
+                        ),
+                    ),
                 );
+
                 $loop = new WP_Query($args);
                 if ($loop->have_posts()) {
                     while ($loop->have_posts()) {
