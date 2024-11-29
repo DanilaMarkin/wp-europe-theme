@@ -39,6 +39,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
     $products = new WP_Query($args);
 ?>
     <style>
+        /* --------------START category-blocks-cards-------------- */
         .category-blocks-cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -53,6 +54,12 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
         }
 
+        .filter-btn-mob {
+            display: none;
+        }
+
+        /* --------------END category-blocks-cards-------------- */
+
         /* --------------START category-block-filter-------------- */
         .category-block-filter {
             max-width: 253px;
@@ -62,9 +69,9 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         }
 
         .category-block-filter-hide {
+            cursor: pointer;
             font-size: 12px;
             color: #7D7D7D;
-            margin-bottom: 30px;
         }
 
         .category-blocks-filter-head-lists {
@@ -147,138 +154,243 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         }
 
         /* --------------END category-block-filter-------------- */
+
+        /* --------------START category-banner-------------- */
+        .category-banner {
+            margin-top: 47px;
+        }
+
+        .category-banner-title {
+            font-weight: 700;
+            font-size: 30px;
+        }
+
+        .category-banner-description {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        /* --------------END category-banner-------------- */
+
+        /* --------------START responsive style-------------- */
+        @media (max-width: 768px) {
+
+            /* --------------START category-banner-------------- */
+            .category-banner,
+            .category-banner-description {
+                margin-top: 20px;
+            }
+
+            .category-banner-description {
+                gap: 10px;
+                font-size: 12px;
+            }
+
+            .category-banner-title {
+                font-size: 15px;
+            }
+
+            /* --------------END category-banner-------------- */
+
+            /* --------------START category-blocks-cards-------------- */
+            .category-blocks-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .category-blocks {
+                flex-direction: column;
+                padding-top: 30px;
+            }
+
+            /* --------------END category-blocks-cards-------------- */
+
+            /* --------------START category-block-filter-------------- */
+            .category-block-filter {
+                max-width: 100%;
+                border-right: unset;
+
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background-color: white;
+                transform: translateX(0);
+                transition: transform 0.3s ease;
+                z-index: 21;
+                overflow-y: scroll;
+                scrollbar-width: none;
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                padding: 20px 10px;
+            }
+
+            .category-block-filter-list-title {
+                font-size: 15px;
+            }
+
+            .category-blocks-filter-head-lists {
+                width: 100%;
+                margin: 20px 0;
+            }
+
+            .category-block-filter-list-head {
+                max-width: 80px;
+                width: 100%;
+            }
+
+            /* --------------END category-block-filter-------------- */
+        }
+
+        /* --------------END responsive style-------------- */
     </style>
 
-    <main class="container category-blocks">
-        <aside class="category-block-filter">
-            <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters">Hide All</span>
-            <div class="category-blocks-filter-head-lists">
-                <ul class="category-block-filter-lists">
-                    <li class="category-block-filter-list">
-                        <div class="category-block-filter-list-head">
-                            <p class="category-block-filter-list-title">Brand</p>
-                            <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
-                                <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
-                            </button>
-                        </div>
-                        <ul class="category-block-filter-list-full">
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Dell</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Asus</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Intel</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>AMD</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="category-block-filter-list">
-                        <div class="category-block-filter-list-head">
-                            <p class="category-block-filter-list-title">Brand</p>
-                            <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
-                                <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
-                            </button>
-                        </div>
-                        <ul class="category-block-filter-list-full">
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Dell</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Asus</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>Intel</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="category-block-filter-list-full-subfilter">
-                                    <p>AMD</p>
-                                    <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                </label>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+    <main class="container">
+        <section class="category-banner">
+            <?php if ($category->name) { ?>
+                <h1 class="category-banner-title"><?= $category->name; ?></h1>
+            <?php } ?>
+            <div class="category-banner-description">
+                <?php if ($category->description) { ?>
+                    <?= wp_kses_post(wpautop($category->description)); ?>
+                <?php } ?>
             </div>
-        </aside>
-        <section class="products-blocks container">
-            <?php if ($products->have_posts()) : ?>
-                <ul class="category-blocks-cards">
-                    <?php while ($products->have_posts()) : $products->the_post();
-                        global $product; ?>
-                        <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                            <div class="products-blocks-card-preview">
-                                <a href="<?php the_permalink(); ?>">
-                                    <?php
-                                    $thumbnail_id = $product->get_image_id();
-                                    $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                                    $title_text = get_the_title($thumbnail_id);
-                                    ?>
-                                    <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
-                                        alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
-                                        title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
-                                        class="products-blocks-card-preview-image">
-                                </a>
-                                <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
-                                <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
-                            </div>
-                            <div class="products-blocks-card-btn">
-                                <div class="products-blocks-card-btn-contact-full">
-                                    <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
-                                    </button>
-                                    <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
-                                    </button>
-                                </div>
-                                <div class="products-blocks-card-btn-count">
-                                    <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                                    <span class="count-number">0</span>
-                                    <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                                </div>
-                                <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
-                                <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                                    <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+        </section>
+        <section class="category-blocks">
+            <button class="filter-btn-mob">Filters</button>
+            <aside class="category-block-filter">
+                <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters">Hide All</span>
+                <div class="category-blocks-filter-head-lists">
+                    <ul class="category-block-filter-lists">
+                        <li class="category-block-filter-list">
+                            <div class="category-block-filter-list-head">
+                                <p class="category-block-filter-list-title">Brand</p>
+                                <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
+                                    <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
                                 </button>
                             </div>
+                            <ul class="category-block-filter-list-full">
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Dell</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Asus</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Intel</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>AMD</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                            </ul>
                         </li>
-                    <?php endwhile; ?>
-                </ul>
-            <?php else : ?>
-                <p>No products found</p>
-            <?php endif; ?>
+                        <li class="category-block-filter-list">
+                            <div class="category-block-filter-list-head">
+                                <p class="category-block-filter-list-title">Brand</p>
+                                <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
+                                    <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
+                                </button>
+                            </div>
+                            <ul class="category-block-filter-list-full">
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Dell</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Asus</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>Intel</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="category-block-filter-list-full-subfilter">
+                                        <p>AMD</p>
+                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
+                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <section class="products-blocks">
+                <?php if ($products->have_posts()) : ?>
+                    <ul class="category-blocks-cards">
+                        <?php while ($products->have_posts()) : $products->the_post();
+                            global $product; ?>
+                            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
+                                <div class="products-blocks-card-preview">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php
+                                        $thumbnail_id = $product->get_image_id();
+                                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+                                        $title_text = get_the_title($thumbnail_id);
+                                        ?>
+                                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
+                                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
+                                            class="products-blocks-card-preview-image">
+                                    </a>
+                                    <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
+                                    <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
+                                </div>
+                                <div class="products-blocks-card-btn">
+                                    <div class="products-blocks-card-btn-contact-full">
+                                        <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                                        </button>
+                                        <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                                        </button>
+                                    </div>
+                                    <div class="products-blocks-card-btn-count">
+                                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
+                                        <span class="count-number">0</span>
+                                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
+                                    </div>
+                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                                    </button>
+                                </div>
+                            </li>
+                        <?php endwhile; ?>
+                    </ul>
+                <?php else : ?>
+                    <p>No products found</p>
+                <?php endif; ?>
+            </section>
         </section>
     </main>
 
