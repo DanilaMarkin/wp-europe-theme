@@ -5,7 +5,7 @@ europe_get_header();
 
 <section class="banner">
     <div class="banner-content container">
-        <h1 class="banner-content-title">Electronic Components Distributor with a Huge Selection in Stock and Ready to Ship with no Minimum Orders</h1>
+        <h1 class="banner-content-title"><?= esc_html(get_field("title_banner")) ?: "There's nothing here yet" ?></h1>
         <div class="banner-content-buttons">
             <button class="button-content-general button-content-contact">Contact us</button>
             <button class="button-content-general button-content-download">
@@ -14,7 +14,15 @@ europe_get_header();
         </div>
     </div>
     <div class="banner-image">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/thumbnails/banner-image.webp" alt="Electronic components image">
+        <?php
+        $img_banner = get_field("img_banner");
+        if ($img_banner) {
+            $img_banner_url = $img_banner["url"];
+            $img_banner_alt = $img_banner["alt"] ?: "banner";
+            $img_banner_title = $img_banner["title"];
+        }
+        ?>
+        <img src="<?= $img_banner_url; ?>" title="<?= $img_banner_title; ?>" alt="<?= $img_banner_alt; ?>">
     </div>
     <aside id="contactPopup" aria-label="Contact us">
         <div class="contact-popup-blocks">

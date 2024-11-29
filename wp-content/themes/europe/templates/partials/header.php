@@ -1,3 +1,9 @@
+<?php
+// Global data all site
+$global_settings = get_global_settings(190);
+
+$phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 
@@ -124,16 +130,22 @@
                             </ul>
                             <ul class="menu-blocks-contact">
                                 <li>
-                                    <a href="">+34 666 359 259</a>
-                                    <span>Phone, WhatsApp, Telegram</span>
+                                    <a href="tel:<?php echo esc_attr($phone_number); ?>" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Phone number">
+                                        <?php echo esc_html($global_settings['phone']); ?>
+                                    </a>
+                                    <span><?php echo esc_html($global_settings['phone_desc']); ?></span>
                                 </li>
                                 <li>
-                                    <a href="">info@info.com</a>
-                                    <span>For questions regarding acquisition and cooperation</span>
+                                    <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email address">
+                                        <?php echo esc_html($global_settings['email']); ?>
+                                    </a>
+                                    <span><?php echo esc_html($global_settings['email_desc']); ?></span>
                                 </li>
                                 <li>
-                                    <a href="">Address</a>
-                                    <span>08912, Spain, Barcelona, Badalona, Cervantes 68 </span>
+                                    <p aria-label="Company Address">
+                                        <?php echo esc_html($global_settings['address']); ?>
+                                    </p>
+                                    <span><?php echo esc_html($global_settings['address_desc']); ?></span>
                                 </li>
                             </ul>
                             <ul class="menu-blocks-social-blocks">

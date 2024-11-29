@@ -12,23 +12,23 @@ europe_get_header();
                 <ul class="contacts-content-social-list">
                     <li class="contacts-content-social-list-circle">
                         <p class="contacts-content-social-list-head">
-                            <a href="tel:<?= str_replace(" ", "", get_option("contact_info_phone")); ?>"
+                            <a href="tel:<?= str_replace(" ", "", get_field("contact_info_phone")); ?>"
                                 title="Call via Phone, WhatsApp, or Telegram"
-                                aria-label="Call via Phone"><?= get_option("contact_info_phone"); ?></a>
+                                aria-label="Call via Phone"><?= get_field("contact_info_phone"); ?></a>
                         </p>
-                        <p class="contacts-content-social-list-desc"><?= get_option("contact_info_phone_down_descr"); ?></p>
+                        <p class="contacts-content-social-list-desc"><?= esc_html(get_field("contact_info_phone_down_descr")); ?></p>
                     </li>
                     <li class="contacts-content-social-list-circle">
                         <p class="contacts-content-social-list-head">
-                            <a href="mailto:<?= get_option("contact_info_email"); ?>"
-                                title="Send an email to <?= get_option("contact_info_email"); ?>"
-                                aria-label="Send an email"><?= get_option("contact_info_email"); ?></a>
+                            <a href="mailto:<?= get_field("contact_info_email"); ?>"
+                                title="Send an email to <?= get_field("contact_info_email"); ?>"
+                                aria-label="Send an email"><?= get_field("contact_info_email"); ?></a>
                         </p>
-                        <p class="contacts-content-social-list-desc"><?= get_option("contact_info_email_down_descr"); ?></p>
+                        <p class="contacts-content-social-list-desc"><?= get_field("contact_info_email_down_descr"); ?></p>
                     </li>
                     <li class="contacts-content-social-list-circle">
-                        <p class="contacts-content-social-list-head" aria-label="Company Address"><?= get_option("contact_info_address"); ?></p>
-                        <address class="contacts-content-social-list-desc" aria-label="Address details"><?= get_option("contact_info_address_down_descr"); ?></address>
+                        <p class="contacts-content-social-list-head" aria-label="Company Address"><?= get_field("contact_info_address"); ?></p>
+                        <address class="contacts-content-social-list-desc" aria-label="Address details"><?= get_field("contact_info_address_down_descr"); ?></address>
                     </li>
                 </ul>
             </section>

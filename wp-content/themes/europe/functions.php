@@ -125,6 +125,17 @@ function custom_breadcrumbs()
     echo '</ol></nav>';
 }
 
+function get_global_settings($page_id) {
+    return [
+        'phone' => get_field('contact_info_phone', $page_id),
+        'phone_desc' => get_field('contact_info_phone_down_descr', $page_id),
+        'email' => get_field('contact_info_email', $page_id),
+        'email_desc' => get_field('contact_info_email_down_descr', $page_id),
+        'address' => get_field('contact_info_address', $page_id),
+        'address_desc' => get_field('contact_info_address_down_descr', $page_id),
+    ];
+}
+
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны
     $templates['templates/pages/payment.php'] = 'Payment and Delivery';

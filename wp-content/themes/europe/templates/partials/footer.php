@@ -1,3 +1,10 @@
+<?php
+// Global data all site
+$global_settings = get_global_settings(190);
+
+// Убираем пробелы из номера телефона
+$phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
+?>
 <footer>
     <nav class="footer-blocks container">
         <div class="footer-blocks-social">
@@ -94,16 +101,22 @@
         <div class="footer-blocks-contacts">
             <ul class="footer-blocks-contacts-list">
                 <li>
-                    <p>+34 666 359 259</p>
-                    <span>Phone, WhatsApp, Telegram</span>
+                    <a href="tel:<?php echo esc_attr($phone_number); ?>" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Phone number">
+                        <?php echo esc_html($global_settings['phone']); ?>
+                    </a>
+                    <span><?php echo esc_html($global_settings['phone_desc']); ?></span>
                 </li>
                 <li>
-                    <p>info@info.com</p>
-                    <span>For questions regarding acquisition and cooperation</span>
+                    <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email address">
+                        <?php echo esc_html($global_settings['email']); ?>
+                    </a>
+                    <span><?php echo esc_html($global_settings['email_desc']); ?></span>
                 </li>
                 <li>
-                    <p>Address</p>
-                    <span>08912, Spain, Barcelona, Badalona, Cervantes 68 </span>
+                    <p aria-label="Company Address">
+                        <?php echo esc_html($global_settings['address']); ?>
+                    </p>
+                    <span><?php echo esc_html($global_settings['address_desc']); ?></span>
                 </li>
             </ul>
         </div>
