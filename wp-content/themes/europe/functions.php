@@ -158,6 +158,92 @@ function get_global_settings($page_id)
     ];
 }
 
+add_action('wp_ajax_filter_products_sort', 'filter_products_sort');
+add_action('wp_ajax_nopriv_filter_products_sort', 'filter_products_sort');
+
+function filter_products_sort()
+{
+    if (isset($_GET['sort'])) {
+        $sort = sanitize_text_field($_GET['sort']);
+
+        // WP_Query параметры для сортировки
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => -1,
+            'orderby' => 'date', // Сортировка по дате по умолчанию
+            'order' => 'DESC'
+        );
+
+        // Изменение параметров сортировки в зависимости от выбранного варианта
+        if ($sort == 'price_asc') {
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_price';
+            $args['order'] = 'ASC';
+        } elseif ($sort == 'price_desc') {
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_price';
+            $args['order'] = 'DESC';
+        } elseif ($sort == 'popularity') {
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = 'total_sales';
+            $args['order'] = 'DESC';
+        }
+
+        // Получаем товары по заданным параметрам
+        $query = new WP_Query($args);
+
+        if ($query->have_posts()) :
+            while ($query->have_posts()) : $query->the_post();
+                global $product;
+                // Выводим карточку товара
+?>
+                <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
+                    <div class="products-blocks-card-preview">
+                        <a href="<?php the_permalink(); ?>">
+                            <?php
+                            $thumbnail_id = $product->get_image_id();
+                            $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+                            $title_text = get_the_title($thumbnail_id);
+                            ?>
+                            <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                                alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
+                                title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
+                                class="products-blocks-card-preview-image">
+                        </a>
+                        <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
+                        <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
+                    </div>
+                    <div class="products-blocks-card-btn">
+                        <div class="products-blocks-card-btn-contact-full">
+                            <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                            </button>
+                            <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                            </button>
+                        </div>
+                        <div class="products-blocks-card-btn-count">
+                            <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
+                            <span class="count-number">0</span>
+                            <button class="count-btn plus" aria-label="Увеличить количество">+</button>
+                        </div>
+                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                        <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                        </button>
+                    </div>
+                </li>
+        <?php
+            endwhile;
+        else :
+            echo '<p>No products found</p>';
+        endif;
+
+        wp_reset_postdata();
+    }
+    die();
+}
+
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны
     $templates['templates/pages/payment.php'] = 'Payment and Delivery';

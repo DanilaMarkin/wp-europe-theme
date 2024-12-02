@@ -54,10 +54,6 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
         }
 
-        .filter-btn-mob {
-            display: none;
-        }
-
         /* --------------END category-blocks-cards-------------- */
 
         /* --------------START category-block-filter-------------- */
@@ -72,6 +68,10 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             cursor: pointer;
             font-size: 12px;
             color: #7D7D7D;
+        }
+
+        .category-block-filter-hide::before {
+            content: "Hide All";
         }
 
         .category-blocks-filter-head-lists {
@@ -100,6 +100,10 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             font-size: 20px;
         }
 
+        .category-block-filter-list-full-subfilter>p {
+            font-size: 20px;
+        }
+
         .category-block-filter-list-action {
             margin-right: 5px;
             width: 10px;
@@ -107,7 +111,9 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             transition: transform 0.3s ease;
         }
 
-        .category-block-filter-list-full {
+        .category-block-filter-list-full,
+        .category-block-filter-mob-close-action,
+        .filter-head-mob {
             display: none;
         }
 
@@ -207,17 +213,83 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
             /* --------------END category-blocks-cards-------------- */
 
+            /* --------------START filter-head-mob-------------- */
+            .filter-head-mob {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                width: 100%;
+                height: 31px;
+            }
+
+            .filter-head-mob-btn {
+                width: 50%;
+                border: 1px solid #7D7D7D;
+                outline: none;
+                border-radius: 5px;
+                text-align: center;
+                font-size: 12px;
+                padding: 0;
+            }
+
+            .filter-btn-mob {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .filter-sort-blocks {
+                position: relative;
+                width: 50%;
+
+            }
+
+            .filter-sort-btn-mob {
+                width: 100%;
+                height: 100%;
+            }
+
+            .filter-sort-lists {
+                display: none;
+            }
+
+            .filter-sort-lists.open {
+                position: absolute;
+                top: 28px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                border: 1px solid #7D7D7D;
+                border-radius: 0 0 5px 5px;
+                padding: 16px 27px 22px 28px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .filter-sort-list {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .filter-sort-list>span {
+                font-size: 12px;
+            }
+
+            /* --------------END filter-head-mob-------------- */
+
             /* --------------START category-block-filter-------------- */
             .category-block-filter {
                 max-width: 100%;
                 border-right: unset;
-
                 position: fixed;
                 top: 0;
                 left: 0;
                 height: 100%;
                 background-color: white;
-                transform: translateX(0);
+                transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 21;
                 overflow-y: scroll;
@@ -226,6 +298,10 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 flex-direction: column;
                 align-items: start;
                 padding: 20px 10px;
+            }
+
+            .category-block-filter.open {
+                transform: translateX(0);
             }
 
             .category-block-filter-list-title {
@@ -240,6 +316,44 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             .category-block-filter-list-head {
                 max-width: 80px;
                 width: 100%;
+            }
+
+            .category-block-filter-hide::before {
+                content: "Filters";
+            }
+
+            .category-block-filter-list-action {
+                width: 7.24px;
+                height: 7.24px;
+            }
+
+            .category-block-filter-list-full-subfilter>p {
+                font-size: 15px;
+            }
+
+            .category-block-filter-lists {
+                gap: 0;
+            }
+
+            .category-block-filter-list-full.open {
+                margin-top: 15px;
+                gap: 11px;
+            }
+
+            .category-block-filter-lists>.category-block-filter-list {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #7D7D7D;
+            }
+
+            .category-block-filter-mob-close-action {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 10px;
+                width: 14px;
+                height: 14px;
+                filter: brightness(0) saturate(100%);
             }
 
             /* --------------END category-block-filter-------------- */
@@ -260,9 +374,40 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             </div>
         </section>
         <section class="category-blocks">
-            <button class="filter-btn-mob">Filters</button>
+            <div class="filter-head-mob">
+                <div class="filter-sort-blocks">
+                    <button class="filter-head-mob-btn filter-sort-btn-mob">
+                        <p>Default sorting</p>
+                    </button>
+                    <ul class="filter-sort-lists">
+                        <li class="filter-sort-list" data-sort="price_asc">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-low.svg" alt="">
+                            <span>Sort by Price (Low to High)</span>
+                        </li>
+                        <li class="filter-sort-list" data-sort="price_desc">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <span>Sort by Price (High to Low)</span>
+                        </li>
+                        <li class="filter-sort-list" data-sort="popularity">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <span>Sort by Popularity</span>
+                        </li>
+                        <li class="filter-sort-list" data-sort="date">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <span>Sort by News</span>
+                        </li>
+                    </ul>
+                </div>
+                <button class="filter-head-mob-btn filter-btn-mob">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/filters-config.svg" alt="">
+                    Filters
+                </button>
+            </div>
             <aside class="category-block-filter">
-                <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters">Hide All</span>
+                <button class="category-block-filter-mob-close-action">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="category-block-filter-mob-close">
+                </button>
+                <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters"></span>
                 <div class="category-blocks-filter-head-lists">
                     <ul class="category-block-filter-lists">
                         <li class="category-block-filter-list">
@@ -362,7 +507,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                                             title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
                                             class="products-blocks-card-preview-image">
                                     </a>
-                                    <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
+                                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
                                     <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
                                 </div>
                                 <div class="products-blocks-card-btn">
@@ -395,6 +540,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
     </main>
 
     <script>
+        // fillter in pc open/close sub info
         const categoryToogle = document.querySelectorAll(".category-block-filter-list-head");
         const categorySub = document.querySelectorAll(".category-block-filter-list-full");
 
@@ -404,6 +550,66 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 categorySub[item].classList.toggle("open");
             });
         });
+
+        // open in mobile Filter popup
+        const filterBtnMob = document.querySelector(".filter-btn-mob");
+        const categoryModale = document.querySelector(".category-block-filter");
+        const categoryModaleClose = document.querySelector(".category-block-filter-mob-close-action");
+
+        filterBtnMob.addEventListener("click", () => {
+            categoryModale.classList.add("open");
+        });
+
+        categoryModaleClose.addEventListener("click", () => {
+            categoryModale.classList.remove("open");
+        });
+
+        // open/close sort in mobile
+        // open/close sort in mobile
+        const filterBtn = document.querySelector(".filter-sort-btn-mob");
+        const filterList = document.querySelector(".filter-sort-lists");
+        const filterBtnText = filterBtn.querySelector("p"); // Элемент текста кнопки сортировки
+
+        filterBtn.addEventListener("click", () => {
+            filterList.classList.toggle("open");
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!filterList.contains(event.target) && !filterBtn.contains(event.target)) {
+                filterList.classList.remove("open");
+            }
+        });
+
+        // Функция для обновления товаров с учетом выбранной сортировки
+        const filterSortItems = document.querySelectorAll('.filter-sort-list');
+        filterSortItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const sortType = e.target.closest('.filter-sort-list').getAttribute('data-sort');
+                const sortText = e.target.closest('.filter-sort-list').querySelector('span').textContent; // Получаем текст сортировки
+                applySort(sortType, sortText);
+            });
+        });
+
+        // Функция для применения сортировки через AJAX
+        function applySort(sortType, sortText) {
+            const data = {
+                action: 'filter_products_sort',
+                sort: sortType
+            };
+
+            // Отправка запроса на сервер через AJAX
+            jQuery.ajax({
+                url: '<?php echo admin_url("admin-ajax.php"); ?>',
+                method: 'GET',
+                data: data,
+                success: function(response) {
+                    // Обновление списка товаров
+                    document.querySelector('.category-blocks-cards').innerHTML = response;
+                    // Обновление текста кнопки сортировки
+                    filterBtnText.textContent = sortText;
+                }
+            });
+        }
     </script>
 <?php
     wp_reset_postdata();
