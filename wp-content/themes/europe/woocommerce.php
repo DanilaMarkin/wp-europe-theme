@@ -376,7 +376,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         <section class="category-blocks">
             <div class="filter-head-mob">
                 <div class="filter-sort-blocks">
-                    <button class="filter-head-mob-btn filter-sort-btn-mob">
+                    <button class="filter-head-mob-btn filter-sort-btn-mob" data-url="<?php echo admin_url("admin-ajax.php"); ?>">
                         <p>Default sorting</p>
                     </button>
                     <ul class="filter-sort-lists">
@@ -538,79 +538,6 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             </section>
         </section>
     </main>
-
-    <script>
-        // fillter in pc open/close sub info
-        const categoryToogle = document.querySelectorAll(".category-block-filter-list-head");
-        const categorySub = document.querySelectorAll(".category-block-filter-list-full");
-
-        categoryToogle.forEach((index, item) => {
-            index.addEventListener("click", () => {
-                categoryToogle[item].classList.toggle("open");
-                categorySub[item].classList.toggle("open");
-            });
-        });
-
-        // open in mobile Filter popup
-        const filterBtnMob = document.querySelector(".filter-btn-mob");
-        const categoryModale = document.querySelector(".category-block-filter");
-        const categoryModaleClose = document.querySelector(".category-block-filter-mob-close-action");
-
-        filterBtnMob.addEventListener("click", () => {
-            categoryModale.classList.add("open");
-        });
-
-        categoryModaleClose.addEventListener("click", () => {
-            categoryModale.classList.remove("open");
-        });
-
-        // open/close sort in mobile
-        // open/close sort in mobile
-        const filterBtn = document.querySelector(".filter-sort-btn-mob");
-        const filterList = document.querySelector(".filter-sort-lists");
-        const filterBtnText = filterBtn.querySelector("p"); // Элемент текста кнопки сортировки
-
-        filterBtn.addEventListener("click", () => {
-            filterList.classList.toggle("open");
-        });
-
-        document.addEventListener("click", (event) => {
-            if (!filterList.contains(event.target) && !filterBtn.contains(event.target)) {
-                filterList.classList.remove("open");
-            }
-        });
-
-        // Функция для обновления товаров с учетом выбранной сортировки
-        const filterSortItems = document.querySelectorAll('.filter-sort-list');
-        filterSortItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const sortType = e.target.closest('.filter-sort-list').getAttribute('data-sort');
-                const sortText = e.target.closest('.filter-sort-list').querySelector('span').textContent; // Получаем текст сортировки
-                applySort(sortType, sortText);
-            });
-        });
-
-        // Функция для применения сортировки через AJAX
-        function applySort(sortType, sortText) {
-            const data = {
-                action: 'filter_products_sort',
-                sort: sortType
-            };
-
-            // Отправка запроса на сервер через AJAX
-            jQuery.ajax({
-                url: '<?php echo admin_url("admin-ajax.php"); ?>',
-                method: 'GET',
-                data: data,
-                success: function(response) {
-                    // Обновление списка товаров
-                    document.querySelector('.category-blocks-cards').innerHTML = response;
-                    // Обновление текста кнопки сортировки
-                    filterBtnText.textContent = sortText;
-                }
-            });
-        }
-    </script>
 <?php
     wp_reset_postdata();
 }

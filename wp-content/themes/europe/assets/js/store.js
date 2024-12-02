@@ -133,5 +133,85 @@ productsBlocksCardBtnCount.forEach((countBlock, index) => {
     });
 });
 
+ // fillter in pc open/close sub info
+ const categoryToogle = document.querySelectorAll(".category-block-filter-list-head");
+ const categorySub = document.querySelectorAll(".category-block-filter-list-full");
+
+ categoryToogle.forEach((index, item) => {
+     index.addEventListener("click", () => {
+         categoryToogle[item].classList.toggle("open");
+         categorySub[item].classList.toggle("open");
+     });
+ });
+
+ // open in mobile Filter popup
+ const filterBtnMob = document.querySelector(".filter-btn-mob");
+ const categoryModale = document.querySelector(".category-block-filter");
+ const categoryModaleClose = document.querySelector(".category-block-filter-mob-close-action");
+
+ filterBtnMob.addEventListener("click", () => {
+     categoryModale.classList.add("open");
+ });
+
+ categoryModaleClose.addEventListener("click", () => {
+     categoryModale.classList.remove("open");
+ });
+
+// open/close sort in mobile
+const filterBtn = document.querySelector(".filter-sort-btn-mob");
+const filterList = document.querySelector(".filter-sort-lists");
+
+const ajaxUrl = document.querySelector(".filter-sort-btn-mob").getAttribute("data-url"); // Получаем URL из атрибута
+
+if (filterBtn && filterList) {
+    const filterBtnText = filterBtn.querySelector("p");
+
+    filterBtn.addEventListener("click", () => {
+        filterList.classList.toggle("open");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!filterList.contains(event.target) && !filterBtn.contains(event.target)) {
+            filterList.classList.remove("open");
+        }
+    });
+}
+
+const filterSortItems = document.querySelectorAll('.filter-sort-list');
+filterSortItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        const sortType = item.getAttribute('data-sort');
+        const sortText = item.querySelector('span').textContent;
+        applySort(sortType, sortText, ajaxUrl);  // Передаем ajaxUrl
+    });
+});
+
+function applySort(sortType, sortText, ajaxUrl) {
+    const url = new URL(ajaxUrl);  // Используем переданный URL
+
+    const params = {
+        action: 'filter_products_sort',
+        sort: sortType
+    };
+    url.search = new URLSearchParams(params).toString();
+
+    fetch(url)
+        .then(response => response.text())
+        .then(response => {
+            const categoryBlocksCards = document.querySelector('.category-blocks-cards');
+            if (categoryBlocksCards) {
+                categoryBlocksCards.innerHTML = response;
+            }
+
+            const filterBtnText = document.querySelector(".filter-sort-btn-mob p");
+            if (filterBtnText) {
+                filterBtnText.textContent = sortText;
+            } else {
+                console.warn('Элемент с классом .filter-sort-btn-mob не содержит p элемент для текста.');
+            }
+        })
+        .catch(error => console.error('Ошибка при загрузке:', error));
+}
+
 // Инициализация общего количества при загрузке страницы
 updateCartQuantity();

@@ -161,6 +161,7 @@ function get_global_settings($page_id)
 add_action('wp_ajax_filter_products_sort', 'filter_products_sort');
 add_action('wp_ajax_nopriv_filter_products_sort', 'filter_products_sort');
 
+// Добавление в файл functions.php
 function filter_products_sort()
 {
     if (isset($_GET['sort'])) {
