@@ -1,5 +1,4 @@
 <?php
-
 // WooCommerce шаблон
 europe_get_header();
 
