@@ -105,11 +105,6 @@ function custom_breadcrumbs()
                 echo '</li>';
             }
         }
-        echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
-        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-        echo '<span itemprop="name">' . get_the_title() . '</span>';
-        echo '<meta itemprop="position" content="' . $position++ . '" />';
-        echo '</li>';
     }
 
     if (is_single()) {
