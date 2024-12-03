@@ -12,8 +12,6 @@ function initializeProductEvents() {
   // toogle menu click in btn Contact Us
   const productsBlocksCardBtnContactFull = document.querySelectorAll(".products-blocks-card-btn-contact-full");
 
-  updateCartQuantity(); // Считываем текущее количество товаров в корзине
-
     // Переключение видимости блоков "Корзина" и "Количество"
     productsBlocksCardBtnCart.forEach((key, value) => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -85,20 +83,6 @@ function initializeProductEvents() {
         updateCartQuantity();
     });
     });
-
-    // Инициализация обработчиков кликов на элементы сортировки
-    const filterSortItems = document.querySelectorAll(".filter-sort-list");
-    if (filterSortItems.length > 0) {
-    filterSortItems.forEach((item) => {
-        item.addEventListener("click", (e) => {
-        const sortType = item.getAttribute("data-sort");
-        const sortText = item.querySelector("span") ? item.querySelector("span").textContent : "";
-        applySort(sortType, sortText);
-        });
-    });
-    } else {
-    console.error(".filter-sort-list элементы не найдены!");
-    }
 }
 
 // Функция для изменения общего кол-ва товаров в корзину
@@ -204,6 +188,20 @@ if (filterBtn && filterList) {
   });
 }
 
+// Инициализация обработчиков кликов на элементы сортировки
+const filterSortItems = document.querySelectorAll(".filter-sort-list");
+    if (filterSortItems.length > 0) {
+    filterSortItems.forEach((item) => {
+        item.addEventListener("click", (e) => {
+        const sortType = item.getAttribute("data-sort");
+        const sortText = item.querySelector("span") ? item.querySelector("span").textContent : "";
+        applySort(sortType, sortText);
+        });
+    });
+    } else {
+    console.error(".filter-sort-list элементы не найдены!");
+}
+
 // Функция для сортировки товаров через AJAX
 function applySort(sortType, sortText) {
     // Получаем URL для AJAX, проверяя существование элемента
@@ -248,4 +246,5 @@ function applySort(sortType, sortText) {
 // Инициализация при первой загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
   initializeProductEvents();
+  updateCartQuantity(); 
 });

@@ -20,6 +20,17 @@ function enqueue_custom_scripts()
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
+
+function enqueue_search_script() {
+    wp_enqueue_script('custom-search', get_template_directory_uri() . '/assets/js/search.js', ['jquery'], null, true);
+
+    wp_localize_script('custom-search', 'ajaxObject', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+    ]);
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_search_script');
+
 // Поддержка WooCommerce в теме
 function europe_woocommerce_setup()
 {
@@ -238,6 +249,37 @@ function filter_products_sort()
         wp_reset_postdata();
     }
     die();
+}
+
+add_action('wp_ajax_woocommerce_product_search', 'handle_product_search');
+add_action('wp_ajax_nopriv_woocommerce_product_search', 'handle_product_search');
+
+function handle_product_search() {
+    $query = sanitize_text_field($_GET['query']);  // Получение и очистка запроса
+    $args = [
+        'post_type' => 'product',
+        'posts_per_page' => 4,  // Вы можете изменить количество результатов, например, на 10
+        's' => $query,
+    ];
+
+    $products = new WP_Query($args);
+    $results = [];
+
+    if ($products->have_posts()) {
+        while ($products->have_posts()) {
+            $products->the_post();
+            global $product;
+            $results[] = [
+                'title' => get_the_title(),
+                'price' => $product->get_price_html(),
+                'image' => get_the_post_thumbnail_url(get_the_ID(), 'thumbnail'),
+                'url' => get_permalink(),
+            ];
+        }
+    }
+
+    wp_send_json($results);  // Возвращаем JSON-ответ
+    wp_die();
 }
 
 add_filter('theme_page_templates', function ($templates) {

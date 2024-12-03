@@ -193,20 +193,12 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="search-popup-block-close">
                 </div>
                 <div class="search-popup-block-results">
-                    <!-- <p class="search-popup-block-results-header">No results were found for your request</p> -->
-                    <p class="search-popup-block-results-header">
+                    <p class="search-popup-block-results-header-empty hidden">No results were found for your request</p>
+                    <p class="search-popup-block-results-header hidden">
                         Based on your request we found <span class="search-popup-block-results-header-count-offers">17 offers</span></p>
                     <ul class="search-popup-block-results-products products-blocks-cards ">
-                        <?php for ($i = 0; $i < 4; $i++) { ?>
-                            <li class="products-blocks-card">
-                                <div class="products-blocks-card-preview">
-                                    <img src="" alt="" class="products-blocks-card-preview-image">
-                                    <p class="products-blocks-card-preview-title">DELL EMC PowerEdge R630 (8xSFF/3xLP) Performance Rack test</p>
-                                    <span class="products-blocks-card-preview-price">from $428</span>
-                                </div>
-                            </li>
-                        <?php } ?>
                     </ul>
+                    <button class="search-popup-block-results-view-all hidden">View All</button>
                 </div>
             </div>
         </aside>

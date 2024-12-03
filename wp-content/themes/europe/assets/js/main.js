@@ -9,26 +9,16 @@ const searchCloseBtn = document.querySelector(".search-popup-block-close");
 // Variadble contact popup
 const contactPopupOpen = document.querySelector(".button-content-contact");
 const contactPopupForm = document.getElementById("contactPopup");
-const contactPopupСlose = document.querySelector(
-  ".contact-popup-blocks-header-btn"
-);
+const contactPopupСlose = document.querySelector(".contact-popup-blocks-header-btn");
 // Variadble price popup
 const pricePopupOpen = document.querySelector(".button-content-download");
 const pricePopupForm = document.getElementById("pricePopup");
-const pricePopupСlose = document.querySelector(
-  ".price-popup-blocks-header-btn"
-);
+const pricePopupСlose = document.querySelector(".price-popup-blocks-header-btn");
 // action bottom-tab-bar Catalog
-const bottomTabBarListActionCatalog = document.querySelector(
-  ".bottom-tab-bar-list-action-catalog"
-);
-const bottomTabBarListActionMore = document.querySelector(
-  ".bottom-tab-bar-list-action-more"
-);
+const bottomTabBarListActionCatalog = document.querySelector(".bottom-tab-bar-list-action-catalog");
+const bottomTabBarListActionMore = document.querySelector(".bottom-tab-bar-list-action-more");
 const menuBlocksContact = document.querySelector(".menu-blocks-contact");
-const menuBlocksPagesGeneral = document.querySelector(
-  ".menu-blocks-pages-general"
-);
+const menuBlocksPagesGeneral = document.querySelector(".menu-blocks-pages-general");
 const menuBlocksHeader = document.querySelector(".menu-blocks-header");
 // Variadble general
 const overlay = document.getElementById("overlay");
