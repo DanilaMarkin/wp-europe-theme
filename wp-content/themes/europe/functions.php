@@ -21,7 +21,8 @@ function enqueue_custom_scripts()
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
 
-function enqueue_search_script() {
+function enqueue_search_script()
+{
     wp_enqueue_script('custom-search', get_template_directory_uri() . '/assets/js/search.js', ['jquery'], null, true);
 
     wp_localize_script('custom-search', 'ajaxObject', [
@@ -91,9 +92,22 @@ function custom_breadcrumbs()
     $position = 2;
 
     // Хлебные крошки для категории продукта WooCommerce
+    // Хлебные крошки для категории продукта WooCommerce
     if (is_product_category()) {
         $category = get_queried_object();
         if ($category) {
+            // Выводим родительскую категорию (если есть)
+            if ($category->parent != 0) {
+                $parent_category = get_term($category->parent, 'product_cat');
+                echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+                echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+                echo '<a href="' . get_term_link($parent_category) . '" itemprop="item">';
+                echo '<span itemprop="name">' . esc_html($parent_category->name) . '</span></a>';
+                echo '<meta itemprop="position" content="' . $position++ . '" />';
+                echo '</li>';
+            }
+
+            // Выводим текущую категорию (например, Dell)
             echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
             echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
             echo '<a href="' . get_term_link($category) . '" itemprop="item">';
@@ -102,19 +116,32 @@ function custom_breadcrumbs()
             echo '</li>';
         }
     }
-
     // Хлебные крошки для товаров WooCommerce
     if (is_product()) {
         $categories = wc_get_product_terms(get_the_ID(), 'product_cat');
         if (!empty($categories)) {
             echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
-            foreach ($categories as $category) {
+
+            // Проходим по категориям продукта и находим родительскую категорию
+            $category = reset($categories); // Первая категория (первый элемент)
+            $parent_category = get_term($category->parent, 'product_cat');
+
+            // Выводим родительскую категорию, если она есть
+            if ($parent_category && $parent_category->parent == 0) {
                 echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-                echo '<a href="' . get_term_link($category) . '" itemprop="item">';
-                echo '<span itemprop="name">' . esc_html($category->name) . '</span></a>';
+                echo '<a href="' . get_term_link($parent_category) . '" itemprop="item">';
+                echo '<span itemprop="name">' . esc_html($parent_category->name) . '</span></a>';
                 echo '<meta itemprop="position" content="' . $position++ . '" />';
                 echo '</li>';
             }
+
+            // Выводим текущую категорию (например, Dell)
+            echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+            echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+            echo '<a href="' . get_term_link($category) . '" itemprop="item">';
+            echo '<span itemprop="name">' . esc_html($category->name) . '</span></a>';
+            echo '<meta itemprop="position" content="' . $position++ . '" />';
+            echo '</li>';
         }
     }
 
@@ -240,7 +267,7 @@ function filter_products_sort()
                         </button>
                     </div>
                 </li>
-        <?php
+<?php
             endwhile;
         else :
             echo '<p>No products found</p>';
@@ -254,7 +281,8 @@ function filter_products_sort()
 add_action('wp_ajax_woocommerce_product_search', 'handle_product_search');
 add_action('wp_ajax_nopriv_woocommerce_product_search', 'handle_product_search');
 
-function handle_product_search() {
+function handle_product_search()
+{
     $query = sanitize_text_field($_GET['query']);  // Получение и очистка запроса
     $args = [
         'post_type' => 'product',
