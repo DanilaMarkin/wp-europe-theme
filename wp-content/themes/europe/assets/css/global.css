@@ -668,17 +668,17 @@ body {
 }
 
 .product-single-description-title {
-  font-weight: 600;
+  font-weight: 900;
   font-size: 20px;
   margin-bottom: 20px;
 }
 
 .product-single-description-text {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .product-single-feature-title {
-  font-weight: 600;
+  font-weight: 900;
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -691,11 +691,11 @@ body {
 
 .product-specs dt {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .product-specs dd {
-  font-size: 14px;
+  font-size: 18px;
 }
 /* --------------END single-produt-custom.php-------------- */
 

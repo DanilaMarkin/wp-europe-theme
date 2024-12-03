@@ -168,7 +168,7 @@ europe_get_header();
                     </a>
                 <?php endif; ?>
             </div>
-            <ul class="products-blocks-cards">
+            <ul class="general-main-products-blocks-cards products-blocks-cards">
                 <?php
                 $args = array(
                     "post_type" => "product",

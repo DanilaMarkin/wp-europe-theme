@@ -490,7 +490,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             </aside>
             <section class="products-blocks">
                 <?php if ($products->have_posts()) : ?>
-                    <ul class="category-blocks-cards">
+                    <ul class="general-main-products-blocks-cards category-blocks-cards">
                         <?php while ($products->have_posts()) : $products->the_post();
                             global $product; ?>
                             <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
