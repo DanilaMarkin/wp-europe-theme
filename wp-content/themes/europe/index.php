@@ -153,86 +153,94 @@ europe_get_header();
         </div>
     </section>
     <section class="products">
-        <div class="products-blocks container">
-            <div class="products-blocks-header">
-                <?php
-                // Получаем данные категории
-                $category_slug = 'server-equipment';
-                $category = get_term_by('slug', $category_slug, 'product_cat'); 
+        <?php
+        // Получаем все категории продуктов
+        $categories = get_terms(array(
+            'taxonomy' => 'product_cat',
+            'hide_empty' => true,
+        ));
 
-                if ($category): ?>
-                    <h2 class="products-blocks-header-title"><?php echo esc_html($category->name); ?></h2>
-                    <a href="<?php echo esc_url(get_term_link($category)); ?>" class="products-blocks-header-all-link">
-                        <span class="products-blocks-header-all">View All Products</span>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="">
-                    </a>
-                <?php endif; ?>
-            </div>
-            <ul class="general-main-products-blocks-cards products-blocks-cards">
-                <?php
-                $args = array(
-                    "post_type" => "product",
-                    "posts_per_page" => 8,
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'product_cat',
-                            'field'    => 'slug',
-                            'terms'    => $category_slug,
-                            'operator' => 'IN',
-                        ),
-                    ),
-                );
+        if (!empty($categories) && !is_wp_error($categories)) {
+            foreach ($categories as $category) {
+        ?>
+                <div class="products-blocks container">
+                    <div class="products-blocks-header">
+                        <h2 class="products-blocks-header-title"><?php echo esc_html($category->name); ?></h2>
+                        <a href="<?php echo esc_url(get_term_link($category)); ?>" class="products-blocks-header-all-link">
+                            <span class="products-blocks-header-all">View All Products</span>
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="">
+                        </a>
+                    </div>
+                    <ul class="general-main-products-blocks-cards products-blocks-cards">
+                        <?php
+                        $args = array(
+                            'post_type' => 'product',
+                            'posts_per_page' => 4, // Выводим максимум 4 товара
+                            'tax_query' => array(
+                                array(
+                                    'taxonomy' => 'product_cat',
+                                    'field' => 'term_id',
+                                    'terms' => $category->term_id,
+                                ),
+                            ),
+                        );
 
-                $loop = new WP_Query($args);
-                if ($loop->have_posts()) {
-                    while ($loop->have_posts()) {
-                        $loop->the_post();
-                        global $product;
-                ?>
-                        <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                            <div class="products-blocks-card-preview">
-                                <a href="<?php echo get_permalink($product->get_id()); ?>">
-                                    <?php
-                                    $thumbnail_id = $product->get_image_id(); // Получаем ID главного изображения товара
-                                    $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true); // Получаем alt текст
-                                    $title_text = get_the_title($thumbnail_id); // Получаем title изображения
-                                    ?>
-                                    <img src="<?php echo wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
-                                        alt="<?php echo esc_attr($alt_text ?: $product->get_name()); ?>"
-                                        title="<?php echo esc_attr($title_text ?: $product->get_name()); ?>"
-                                        class="products-blocks-card-preview-image">
-                                </a>
-                                <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
-                                <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                            </div>
-                            <div class="products-blocks-card-btn">
-                                <div class="products-blocks-card-btn-contact-full">
-                                    <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
-                                    </button>
-                                    <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
-                                    </button>
-                                </div>
-                                <div class="products-blocks-card-btn-count">
-                                    <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                                    <span class="count-number">0</span>
-                                    <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                                </div>
-                                <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
-                                <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                                </button>
-                            </div>
-                        </li>
-                <?php }
-                } else {
-                    echo '<p>No products found</p>';
-                }
-                wp_reset_postdata();
-                ?>
-            </ul>
-        </div>
+                        $loop = new WP_Query($args);
+                        if ($loop->have_posts()) {
+                            while ($loop->have_posts()) {
+                                $loop->the_post();
+                                global $product;
+                        ?>
+                                <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
+                                    <div class="products-blocks-card-preview">
+                                        <a href="<?php echo get_permalink($product->get_id()); ?>">
+                                            <?php
+                                            $thumbnail_id = $product->get_image_id();
+                                            $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+                                            $title_text = get_the_title($thumbnail_id);
+                                            ?>
+                                            <img src="<?php echo wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                                                alt="<?php echo esc_attr($alt_text ?: $product->get_name()); ?>"
+                                                title="<?php echo esc_attr($title_text ?: $product->get_name()); ?>"
+                                                class="products-blocks-card-preview-image">
+                                        </a>
+                                        <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
+                                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                                    </div>
+                                    <div class="products-blocks-card-btn">
+                                        <div class="products-blocks-card-btn-contact-full">
+                                            <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                                            </button>
+                                            <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                                            </button>
+                                        </div>
+                                        <div class="products-blocks-card-btn-count">
+                                            <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
+                                            <span class="count-number">0</span>
+                                            <button class="count-btn plus" aria-label="Увеличить количество">+</button>
+                                        </div>
+                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                                        </button>
+                                    </div>
+                                </li>
+                        <?php }
+                        } else {
+                            echo '<p>No products found in this category</p>';
+                        }
+                        wp_reset_postdata();
+                        ?>
+                    </ul>
+                </div>
+        <?php
+            }
+        } else {
+            echo '<p>No product categories found</p>';
+        }
+        ?>
     </section>
     <section class="all-categories container">
         <a href="#" class="all-categories-blocks" title="View all categories">

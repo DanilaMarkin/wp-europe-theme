@@ -116,34 +116,36 @@ function custom_breadcrumbs()
             echo '</li>';
         }
     }
-    // Хлебные крошки для товаров WooCommerce
     if (is_product()) {
         $categories = wc_get_product_terms(get_the_ID(), 'product_cat');
         if (!empty($categories)) {
-            echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
-
-            // Проходим по категориям продукта и находим родительскую категорию
-            $category = reset($categories); // Первая категория (первый элемент)
+    
+            // Первая категория
+            $category = reset($categories);
             $parent_category = get_term($category->parent, 'product_cat');
-
-            // Выводим родительскую категорию, если она есть
-            if ($parent_category && $parent_category->parent == 0) {
+    
+            // Проверка на WP_Error для родительской категории
+            if (!is_wp_error($parent_category) && $parent_category->parent == 0) {
+                echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
                 echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-                echo '<a href="' . get_term_link($parent_category) . '" itemprop="item">';
+                echo '<a href="' . esc_url(get_term_link($parent_category)) . '" itemprop="item">';
                 echo '<span itemprop="name">' . esc_html($parent_category->name) . '</span></a>';
-                echo '<meta itemprop="position" content="' . $position++ . '" />';
+                echo '<meta itemprop="position" content="' . esc_attr($position++) . '" />';
                 echo '</li>';
             }
-
-            // Выводим текущую категорию (например, Dell)
-            echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
-            echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-            echo '<a href="' . get_term_link($category) . '" itemprop="item">';
-            echo '<span itemprop="name">' . esc_html($category->name) . '</span></a>';
-            echo '<meta itemprop="position" content="' . $position++ . '" />';
-            echo '</li>';
+    
+            // Проверка на WP_Error для текущей категории
+            if (!is_wp_error($category)) {
+                echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
+                echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+                echo '<a href="' . esc_url(get_term_link($category)) . '" itemprop="item">';
+                echo '<span itemprop="name">' . esc_html($category->name) . '</span></a>';
+                echo '<meta itemprop="position" content="' . esc_attr($position++) . '" />';
+                echo '</li>';
+            }
         }
     }
+    
 
     if (is_single()) {
         echo '<li class="bread-crumbs-separator">' . $separator . '</li>';

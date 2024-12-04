@@ -9,7 +9,7 @@ europe_get_header();
 
 <main class="product-single">
     <section class="product-single-header container">
-        <h1 class="product-single-header-title">DELL EMC PowerEdge R740xd (28xSFF) Performance Rack Server with 2x Xeon Gold 6154 18-Core 3.00 GHz, 32 GB DDR4 RAM</h1>
+        <h1 class="product-single-header-title"><?php the_title(); ?></h1>
 
         <div class="product-single-header-configuration">
             <h2 class="product-single-header-configuration-title">Configuration</h2>
@@ -31,26 +31,34 @@ europe_get_header();
 
         <div class="product-single-header-btn">
             <button class="product-single-header-btn-general product-single-header-btn-contact">Contact us</button>
-            <button class="product-single-header-btn-general product-single-header-btn-price">$428</button>
+            <button class="product-single-header-btn-general product-single-header-btn-price"><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></button>
         </div>
 
         <div class="product-gallery">
             <figure class="main-image">
-                <img src="large-image.jpg" alt="Основное изображение товара">
-                <figcaption>Основное изображение товара</figcaption>
+                <?php if (has_post_thumbnail()) : ?>
+                    <?php the_post_thumbnail('large'); ?>
+                <?php endif; ?>
             </figure>
-            <ul class="thumbnail-gallery">
-                <li>
-                    <figure>
-                        <img src="thumbnail1.jpg" alt="Миниатюра 1">
-                    </figure>
-                </li>
-                <li>
-                    <figure>
-                        <img src="thumbnail2.jpg" alt="Миниатюра 2">
-                    </figure>
-                </li>
-            </ul>
+            <?php
+            $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
+            $gallery_ids = explode(',', $gallery);
+
+            if (!empty($gallery_ids)) {
+                echo '<ul class="thumbnail-gallery">';
+                foreach ($gallery_ids as $attachment_id) {
+                    $image_url = wp_get_attachment_url($attachment_id);
+                    $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+
+                    echo '<li>
+                    <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '"></figure>
+                </li>';
+                }
+                echo '</ul>';
+            } else {
+                echo 'Галерея пуста.';
+            }
+            ?>
         </div>
 
     </section>
@@ -58,28 +66,30 @@ europe_get_header();
     <section class="product-single-description">
         <div class="container">
             <h2 class="product-single-description-title">Description</h2>
-            <p class="product-single-description-text">Sed ornare dolor mauris mollis mattis lorem est. Dictum. Et adipiscing in amet, molestie faucibus. Vitae eleifend justo imperdiet cursus non dolor imperdiet cursus orci, tortor, augue luctus molestie sit quis, hac mattis leo, aenean amet, et aenean molestie sed est. Orci, est. Elit. Dapibus dictum faucibus. Velit et. Sit ut. Sit integer urna in tempus ultricies. Dolor orci, aenean velit accumsan ipsum ornare mattis habitasse dictum. Sit libero, id sit vestibulum elit. Integer amet, tempus libero, in faucibus. Non dictumst. Habitasse faucibus. Morbi ornare sit amet, habitasse ex. Et sapien sapien accumsan risus aenean amet, pulvinar cras tortor, pulvina.</p>
+            <p class="product-single-description-text"><?php the_content(); ?></p>
         </div>
     </section>
 
     <section class="product-single-feature container">
         <h2 class="product-single-feature-title">Characteristics</h2>
-        <dl class="product-specs">
-            <dt>Процессор:</dt>
-            <dd>2x Intel Xeon Gold 6154 18-Core 3.00 GHz (36-Threads, 3.70 GHz Turbo, 24.75 MB Cache)</dd>
+        <?php
+        // Получаем характеристики из мета-данных
+        $characteristics = get_post_meta(get_the_ID(), 'product_characteristics', true);
 
-            <dt>Оперативная память:</dt>
-            <dd>64 GB DDR4</dd>
+        if (!empty($characteristics)) {
+            echo '<dl class="product-specs">';
 
-            <dt>Жесткий диск:</dt>
-            <dd>1 TB SSD</dd>
+            // Выводим каждую характеристику
+            foreach ($characteristics as $characteristic) {
+                echo '<dt>' . esc_html($characteristic['name']) . '</dt>';
+                echo '<dd>' . esc_html($characteristic['value']) . '</dd>';
+            }
 
-            <dt>Графика:</dt>
-            <dd>NVIDIA Tesla V100</dd>
-
-            <dt>Операционная система:</dt>
-            <dd>Linux Ubuntu 20.04</dd>
-        </dl>
+            echo '</dl>';
+        } else {
+            echo 'Характеристики недоступны.';
+        }
+        ?>
     </section>
 </main>
 
