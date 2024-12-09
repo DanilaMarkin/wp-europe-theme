@@ -99,24 +99,48 @@ europe_get_header();
         ?>
     </section>
 
-    <section class="related-products">
-        <div class="container">
-            <h2 class="related-products-title">Related Products</h2>
-            <ul class="related-products-items">
-                <li class="related-products-item">
-                    <a href="/">
-                        <div class="related-products-item-preview">
-                            <img src="https://c.dns-shop.ru/thumb/st1/fit/500/500/8f6baee7d0e6e26b0be2655f3ba62a15/ff08f890aa46d09aab8f054d2ef8cbfbe7e2e61642541a304093deea91790a22.jpg" alt="" class="related-products-item-preview-img">
-                        </div>
-                        <div class="related-products-item-info">
-                            <h3 class="related-products-item-info-title">DELL EMC PowerEdge R630 (8xSFF/3xLP) Performance Rack</h3>
-                            <p class="related-products-item-info-price">from $428</p>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <?php
+    $related_ids = wc_get_related_products(get_the_ID(), 6);
+
+    if (!empty($related_ids)) {
+        $related_query = new WP_Query(array(
+            'post_type' => 'product',
+            'post__in' => $related_ids,
+            'posts_per_page' => 6,
+        ));
+
+        if ($related_query->have_posts()) {
+    ?>
+            <section class="related-products">
+                <div class="container">
+                    <h2 class="related-products-title">Related Products</h2>
+                    <ul class="related-products-items">
+                        <?php while ($related_query->have_posts()) : $related_query->the_post(); ?>
+                            <li class="related-products-item">
+                                <a href="<?php the_permalink(); ?>" title="View details of <?php the_title(); ?>">
+                                    <div class="related-products-item-preview">
+                                        <img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'medium'); ?>" alt="<?php the_title_attribute(); ?>" class="related-products-item-preview-img">
+                                    </div>
+                                    <div class="related-products-item-info">
+                                        <h3 class="related-products-item-info-title"><?php the_title(); ?></h3>
+                                        <p class="related-products-item-info-price">from
+                                            <?php
+                                            $product = wc_get_product(get_the_ID());
+                                            echo wc_price($product->get_price());
+                                            ?>
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php endwhile; ?>
+                    </ul>
+                </div>
+            </section>
+    <?php
+            wp_reset_postdata(); // Сброс глобального поста WP
+        }
+    }
+    ?>
 </main>
 
 <?php europe_get_footer(); ?>

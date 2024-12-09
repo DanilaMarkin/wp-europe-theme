@@ -117,6 +117,7 @@ function custom_breadcrumbs()
             echo '</li>';
         }
     }
+
     if (is_product()) {
         $categories = wc_get_product_terms(get_the_ID(), 'product_cat');
         if (!empty($categories)) {
@@ -146,7 +147,6 @@ function custom_breadcrumbs()
             }
         }
     }
-    
 
     if (is_single()) {
         echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
