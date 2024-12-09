@@ -66,7 +66,14 @@ europe_get_header();
     <section class="product-single-description">
         <div class="container">
             <h2 class="product-single-description-title">Description</h2>
-            <p class="product-single-description-text"><?php the_content(); ?></p>
+            <?php
+            $descr = get_the_content();
+            if (!empty(trim($descr))) {
+            ?>
+                <p class="product-single-description-text"><?= $descr ?></p>
+            <?php } else { ?>
+                <p class="product-single-description-text">There's nothing here yet</p>
+            <?php } ?>
         </div>
     </section>
 
@@ -87,11 +94,32 @@ europe_get_header();
 
             echo '</dl>';
         } else {
-            echo 'Характеристики недоступны.';
+            echo "There's nothing here yet.";
         }
         ?>
     </section>
+
+    <section class="related-products">
+        <div class="container">
+            <h2 class="related-products-title">Related Products</h2>
+            <ul class="related-products-items">
+                <li class="related-products-item">
+                    <a href="/">
+                        <div class="related-products-item-preview">
+                            <img src="https://c.dns-shop.ru/thumb/st1/fit/500/500/8f6baee7d0e6e26b0be2655f3ba62a15/ff08f890aa46d09aab8f054d2ef8cbfbe7e2e61642541a304093deea91790a22.jpg" alt="" class="related-products-item-preview-img">
+                        </div>
+                        <div class="related-products-item-info">
+                            <h3 class="related-products-item-info-title">DELL EMC PowerEdge R630 (8xSFF/3xLP) Performance Rack</h3>
+                            <p class="related-products-item-info-price">from $428</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
 </main>
+
+<?php europe_get_footer(); ?>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -113,5 +141,3 @@ europe_get_header();
         });
     });
 </script>
-
-<?php europe_get_footer(); ?>

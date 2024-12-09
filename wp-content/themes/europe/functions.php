@@ -8,6 +8,7 @@ function europe_enqueue_styles()
     wp_enqueue_style('europe-header', get_template_directory_uri() . '/assets/css/header.css');
     wp_enqueue_style('europe-footer', get_template_directory_uri() . '/assets/css/footer.css');
     wp_enqueue_style('europe-pages', get_template_directory_uri() . '/assets/css/pages.css');
+    wp_enqueue_style('europe-order', get_template_directory_uri() . '/assets/css/order.css');
     wp_enqueue_style('europe-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css');
 }
 add_action('wp_enqueue_scripts', 'europe_enqueue_styles');
@@ -317,6 +318,8 @@ add_filter('theme_page_templates', function ($templates) {
     $templates['templates/pages/payment.php'] = 'Payment and Delivery';
     $templates['templates/pages/about.php'] = 'About Us';
     $templates['templates/pages/contacts.php'] = 'Contacts';
+    $templates['templates/orders/cart.php'] = 'Cart';
+    $templates['templates/orders/success.php'] = 'Cart Success';
     return $templates;
 });
 

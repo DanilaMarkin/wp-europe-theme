@@ -50,6 +50,9 @@
 
 body {
   overflow-x: clip;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .overlay {
@@ -615,8 +618,8 @@ body {
 }
 
 .product-single-header-configuration-item.active {
-  outline: 2px solid #F0AC15;
-  color: #F0AC15;
+  outline: 2px solid #f0ac15;
+  color: #f0ac15;
 }
 
 .product-single-header-btn {
@@ -636,11 +639,11 @@ body {
   border-radius: 20px;
   font-weight: 700;
   font-size: 20px;
-  background: linear-gradient(90deg, #FEDC32 0%, #F0AC15 100%);
+  background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
   color: #000;
 }
 
-.main-image  {
+.main-image {
   border-radius: 20px;
   height: 70%;
   width: 100%;
@@ -666,8 +669,8 @@ body {
 .product-single-description {
   padding: 60px 0;
   margin: 60px 0;
-  border-top: 2px solid #7D7D7D;
-  border-bottom: 2px solid #7D7D7D;
+  border-top: 2px solid #7d7d7d;
+  border-bottom: 2px solid #7d7d7d;
 }
 
 .product-single-description-title {
@@ -677,7 +680,8 @@ body {
 }
 
 .product-single-description-text {
-  font-size: 18px;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .product-single-feature-title {
@@ -694,11 +698,65 @@ body {
 
 .product-specs dt {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .product-specs dd {
-  font-size: 18px;
+  font-size: 14px;
+}
+
+.related-products {
+  border-top: 2px solid #7d7d7d;
+  margin-top: 40px;
+  padding-top: 40px;
+}
+
+.related-products-items {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.related-products-title {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+.related-products-item-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  margin-bottom: 20px;
+  border: 2px solid #7D7D7D;
+  border-radius: 20px;
+}
+
+.related-products-item-preview-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.related-products-item-info-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-height: 4.5em; 
+  word-wrap: break-word;
+  height: 45px;
+  font-weight: 900;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.related-products-item-info-price {
+  text-align: center;
+  font-size: 14px;
 }
 /* --------------END single-produt-custom.php-------------- */
 
@@ -810,7 +868,7 @@ body {
 
   .products-blocks-header-all {
     color: #7d7d7d;
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .products-blocks-header-all-link {
