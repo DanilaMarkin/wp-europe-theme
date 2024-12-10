@@ -403,7 +403,7 @@ header {
 .bread-crumbs > ol {
   margin-top: 20px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 6px;
 }
@@ -411,8 +411,15 @@ header {
 .bread-crumbs > ol > li,
 .bread-crumbs > ol > li > span,
 .bread-crumbs > ol > li > a > span {
+  white-space: nowrap;
   font-size: 12px;
   color: #7d7d7d;
+}
+
+.bread-crumbs > ol > li:last-child {
+  white-space: nowrap; 
+  overflow: hidden;  
+  text-overflow: ellipsis; 
 }
 
 .bread-crumbs-active {

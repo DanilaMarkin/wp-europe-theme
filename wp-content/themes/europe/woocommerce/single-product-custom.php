@@ -11,27 +11,31 @@ europe_get_header();
     <section class="product-single-header container">
         <h1 class="product-single-header-title"><?php the_title(); ?></h1>
 
-        <div class="product-single-header-configuration">
-            <h2 class="product-single-header-configuration-title">Configuration</h2>
-            <ul class="product-single-header-configuration-items">
-                <li class="product-single-header-configuration-item">
-                    Item 1
+        <div class="product-single-header-prices">
+            <ul class="product-single-header-prices-items">
+                <li>
+                    <p>B2B Price</p>
+                    <div class="product-single-header-prices-item">
+                        <span><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
+                        <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
+                    </div>
                 </li>
-                <li class="product-single-header-configuration-item">
-                    Item 2
-                </li>
-                <li class="product-single-header-configuration-item">
-                    Item 3
-                </li>
-                <li class="product-single-header-configuration-item">
-                    Item 4
+                <li>
+                    <p>Retail Price</p>
+                    <div class="product-single-header-prices-item">
+                        <span>$412</span>
+                        <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
+                    </div>
                 </li>
             </ul>
+            <button class="offer-btn">Offer your Price <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon"></button>
         </div>
 
         <div class="product-single-header-btn">
             <button class="product-single-header-btn-general product-single-header-btn-contact">Contact us</button>
-            <button class="product-single-header-btn-general product-single-header-btn-price"><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></button>
+            <button class="product-single-header-btn-general product-single-header-btn-price">
+                <img src="<?= get_template_directory_uri() ?>/assets/icons/cart.svg" alt="Cart icon" class="product-block-cart-img">
+            </button>
         </div>
 
         <div class="product-gallery">
@@ -61,6 +65,26 @@ europe_get_header();
             ?>
         </div>
 
+    </section>
+
+    <section class="configuration">
+        <div class="container">
+            <h2 class="configuration-title">Configuration</h2>
+            <ul class="config-items">
+                <li class="config-item">
+                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 165H 1TB SSD 32GB 16" (2560x1600) 165Hz WIN11 Pro NVIDIA® RTX 4070 8192MB BLACK Backlit Keyboard FP Reader - 21KV0018US-R
+                </li>
+                <li class="config-item">
+                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 165H vPro 2TB SSD 64GB 16" (3840 x 2400) WQUXGA TOUCHSCREEN WIN11 Pro NVIDIA® RTX 3000 8GB BLACK Backlit Keyboard FP Reader - 21KV001AUS
+                </li>
+                <li class="config-item">
+                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 9 185H 2TB SSD 64GB 16" (3840x2400) OLED TOUCHSCREEN WIN11 Pro NVIDIA® RTX 3000 8192MB BLACK Backlit Keyboard FP Reader - 21KV001DUS-R
+                </li>
+                <li class="config-item">
+                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 155H 1TB SSD 32GB 16" (1920x1200) WUXGA WIN11 Pro NVIDIA® RTX 2000 8GB BLACK Backlit Keyboard FP Reader 1-year Premier support - 21KV0013US
+                </li>
+            </ul>
+        </div>
     </section>
 
     <section class="product-single-description">
@@ -147,14 +171,14 @@ europe_get_header();
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const listsConfig = document.querySelector(".product-single-header-configuration-items");
+        const listsConfig = document.querySelector(".config-items");
 
         listsConfig.addEventListener("click", function(event) {
             const itemConfig = event.target;
 
             // Проверяем, что клик был по элементу списка
-            if (itemConfig && itemConfig.classList.contains("product-single-header-configuration-item")) {
-                const itemsConfig = listsConfig.querySelectorAll(".product-single-header-configuration-item");
+            if (itemConfig && itemConfig.classList.contains("config-item")) {
+                const itemsConfig = listsConfig.querySelectorAll(".config-item");
 
                 // Убираем класс active у всех элементов
                 itemsConfig.forEach(i => i.classList.remove('active'));
@@ -164,4 +188,28 @@ europe_get_header();
             }
         });
     });
+
+    const productHeader = document.querySelector(".product-single-header-btn");
+    const congigContainer = document.querySelector(".configuration .container");
+
+    function handleResizeButton() {
+        const screenWidth = window.innerWidth;
+
+        if (screenWidth < 768) {
+            if (productHeader && !congigContainer.contains(productHeader)) {
+                congigContainer.appendChild(productHeader); // Вставляем блок в контейнер
+            }
+        } else {
+            if (productHeader && congigContainer.contains(productHeader)) {
+                productHeader.parentElement.removeChild(productHeader); // Удаляем из контейнера
+                document.body.insertBefore(productHeader, document.body.firstChild); // Возвращаем в начало body или нужное место
+            }
+        }
+    }
+
+    // Запуск при загрузке страницы
+    handleResizeButton();
+
+    // Добавляем обработчик на изменение размера окна
+    window.addEventListener("resize", handleResizeButton);
 </script>
