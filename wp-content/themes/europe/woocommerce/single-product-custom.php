@@ -94,7 +94,7 @@ europe_get_header();
 
             echo '</dl>';
         } else {
-            echo "There's nothing here yet.";
+            echo "<p class='product-single-description-text'>There's nothing here yet.</p>";
         }
         ?>
     </section>

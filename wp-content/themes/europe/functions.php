@@ -313,6 +313,33 @@ function handle_product_search()
     wp_die();
 }
 
+add_action('wp_ajax_get_cart_details', 'get_cart_details');
+add_action('wp_ajax_nopriv_get_cart_details', 'get_cart_details');
+
+function get_cart_details() {
+    if (!isset($_POST['product_ids']) || empty($_POST['product_ids'])) {
+        wp_send_json_error(['message' => 'Нет ID товаров.']);
+    }
+
+    $product_ids = array_map('intval', $_POST['product_ids']);
+    $products = [];
+
+    foreach ($product_ids as $id) {
+        $product = wc_get_product($id); // Получение информации о товаре
+        if ($product) {
+            $products[] = [
+                'id' => $product->get_id(),
+                'name' => $product->get_name(),
+                'price' => $product->get_price(),
+                'image' => wp_get_attachment_image_url($product->get_image_id(), 'thumbnail'),
+                'link' => $product->get_permalink()
+            ];
+        }
+    }
+
+    wp_send_json_success($products);
+}
+
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны
     $templates['templates/pages/payment.php'] = 'Payment and Delivery';

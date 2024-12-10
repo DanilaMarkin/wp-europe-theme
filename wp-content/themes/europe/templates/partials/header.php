@@ -90,7 +90,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             <img id="searchToogle" src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search icon">
                         </div>
                         <div class="nav-block-cart">
-                            <a href="" title="Go to cart" class="nav-block-cart-link">
+                            <a href="<?= get_permalink(258); ?>" title="Go to cart" class="nav-block-cart-link">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="Cart icon" class="nav-block-cart-img">
                             </a>
                             <span class="nav-block-cart-count">0</span>

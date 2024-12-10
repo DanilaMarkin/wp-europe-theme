@@ -7,24 +7,12 @@ europe_get_header();
     <section class="cart-info-blocks container">
         <div class="cart-info-blocks-list-products">
             <h1 class="cart-title"><?= the_title(); ?></h1>
-            <ul class="cart-info-block-products-items">
-                <li class="cart-info-block-products-item">
-                    <a href="" class="cart-info-block-products-item-img">
-                        <img src="https://c.dns-shop.ru/thumb/st1/fit/500/500/cf3df55d0c474b3185c7a4952df8d536/459dea340d091d95f4995d58a54aafe2999b4e0997c531df6cd2a5ed73d12ab1.jpg" alt="">
-                    </a>
-                    <div class="cart-info-block-products-item-info">
-                        <h2 class="cart-info-block-products-item-info-title"><a href="">DELL EMC PowerEdge R740xd (28xSFF) Performance Rack Server with 2x Xeon Gold 6154 18-Core 3.00 GHz, 32 GB DDR4 RAM</a></h2>
-                        <div class="cart-info-block-products-total-info">
-                            <div class="cart-info-block-products-item-info-count">
-                                <button class="cart-minus" aria-label="Decrease quantity">-</button>
-                                <span class="cart-count-item">1 pcs</span>
-                                <button class="cart-plus" aria-label="Increase quantity">+</button>
-                            </div>
-                            <p class="cart-info-block-products-item-info-price">$850.00</p>
-                        </div>
-                    </div>
-                </li>
+            <ul id="cartDetails" class="cart-info-block-products-items">
+                <!-- products.data -->
             </ul>
+            <div class="loader-blocks">
+                <span class="loader"></span>
+            </div>
         </div>
         <form class="cart-info-blocks-form">
             <div class="cart-info-blocks-input">
@@ -41,7 +29,36 @@ europe_get_header();
             </div>
             <div class="cart-info-blocks-input">
                 <p>Payment Method</p>
-
+                <ul class="cart-info-blocks-input-payment-items">
+                    <li>
+                        <label class="cart-info-blocks-payment-item-value">
+                            <p>Cash on Delivery</p>
+                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="cart-info-blocks-payment-item-value">
+                            <p>Visa/MasterCard</p>
+                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="cart-info-blocks-payment-item-value">
+                            <p>PayPal</p>
+                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="cart-info-blocks-payment-item-value">
+                            <p>Bank Transfer</p>
+                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
+                        </label>
+                    </li>
+                </ul>
             </div>
         </form>
     </section>
@@ -83,6 +100,89 @@ europe_get_header();
     </section>
 </main>
 
+<script>
+    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function fetchCartDetails(cart) {
+        return new Promise((resolve, reject) => {
+            jQuery.ajax({
+                url: "/wp-admin/admin-ajax.php",
+                type: "POST",
+                data: {
+                    action: "get_cart_details",
+                    product_ids: cart.map(item => item.id)
+                },
+                success: function(response) {
+                    if (response.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    }
+
+    function displayCartDetails(products) {
+        const cartcontainer = document.querySelector("#cartDetails");
+        const loader = document.querySelector(".loader-blocks");
+
+        cartcontainer.innerHTML = "";
+
+        if (loader) {
+            loader.classList.add("hidden");
+        }
+
+        const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+
+        products.forEach(product => {
+            const cartItem = cartData.find(item => Number(item.id) === Number(product.id));
+            const productCount = cartItem ? cartItem.count : 1;
+
+            const cartItemHTML = `
+            <li class="cart-info-block-products-item">
+                <a href="${product.link}" title="View details for ${product.name}" class="cart-info-block-products-item-img">
+                    <img src="${product.image}" title="${product.name}" alt="${product.name} - Buy online">
+                </a>
+                <div class="cart-info-block-products-item-info">
+                    <h2 class="cart-info-block-products-item-info-title"><a href="${product.link}" title="More about ${product.name}">${product.name}</a></h2>
+                    <div class="cart-info-block-products-total-info">
+                        <div class="cart-info-block-products-item-info-count">
+                            <button class="cart-minus" aria-label="Decrease quantity">-</button>
+                            <span class="cart-count-item">${productCount} pcs</span>
+                            <button class="cart-plus" aria-label="Increase quantity">+</button>
+                        </div>
+                        <p class="cart-info-block-products-item-info-price">$${product.price}</p>
+                    </div>
+                </div>
+            </li>
+            `;
+            cartcontainer.innerHTML += cartItemHTML;
+        });
+    }
+
+    if (cartData.length > 0) {
+        fetchCartDetails(cartData)
+            .then(displayCartDetails)
+            .catch(error => console.error("Ошибка обработки данных:", error));
+    } else {
+        const formCart = document.querySelector(".cart-info-blocks-form");
+        const totalCart = document.querySelector(".total");
+        const headerCartEmpty = document.querySelector(".cart-info-blocks-list-products");
+
+        formCart.classList.add("hidden");
+        totalCart.classList.add("hidden");
+
+        headerCartEmpty.innerHTML = `
+            <h1 class="cart-title"><?= the_title(); ?></h1>
+            <p class="cart-descr">Your cart is empty. Browse our products to find something you’ll love!</p>
+            <a href="/" class="cart-back-to-shopping" title="Go back to the homepage">Back to shopping</a>
+        `;
+    }
+</script>
 <?php
 europe_get_footer();
 ?>
