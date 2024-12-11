@@ -140,9 +140,7 @@ menuListMain.forEach((key, value) => {
 });
 
 // in menu toogle categories
-const categoriesMenuBtn = document.querySelector(
-  ".menu-blocks-header-categories"
-);
+const categoriesMenuBtn = document.querySelector(".menu-blocks-header-categories");
 const categoriesMenu = document.getElementById("categoriesMenu");
 const brandsMenu = document.getElementById("brandsMenu");
 const brandsMenuBtn = document.querySelector(".menu-blocks-header-brands");

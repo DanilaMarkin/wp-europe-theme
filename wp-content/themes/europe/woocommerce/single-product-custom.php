@@ -40,8 +40,14 @@ europe_get_header();
 
         <div class="product-gallery">
             <figure class="main-image">
-                <?php if (has_post_thumbnail()) : ?>
-                    <?php the_post_thumbnail('large'); ?>
+                <?php if (has_post_thumbnail()) :
+                    // Получаем ID миниатюры
+                    $thumbnail_id = get_post_thumbnail_id(get_the_ID());
+                ?>
+                    <img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>"
+                        alt="<?php echo esc_attr(get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true)); ?>"
+                        title="<?php echo esc_attr(get_the_title($thumbnail_id)); ?>"
+                        loading="lazy">
                 <?php endif; ?>
             </figure>
             <?php
@@ -49,43 +55,56 @@ europe_get_header();
             $gallery_ids = explode(',', $gallery);
 
             if (!empty($gallery_ids)) {
-                echo '<ul class="thumbnail-gallery">';
+                echo '
+                <div class="thumbnail-gallery-wrapper">
+                    <button class="arrow-left hidden">
+                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="">
+                    </button>
+                        <ul class="thumbnail-gallery">
+                ';
                 foreach ($gallery_ids as $attachment_id) {
                     $image_url = wp_get_attachment_url($attachment_id);
                     $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
 
-                    echo '<li>
-                    <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '"></figure>
-                </li>';
+                    echo '<li class="thumbnail-gallery-item">
+                        <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '"></figure>
+                    </li>';
                 }
-                echo '</ul>';
+                echo '
+                        </ul>
+                    <button class="arrow-right hidden">
+                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="">
+                    </button>
+                </div>';
             } else {
                 echo 'Галерея пуста.';
             }
             ?>
         </div>
-
     </section>
 
-    <section class="configuration">
-        <div class="container">
-            <h2 class="configuration-title">Configuration</h2>
-            <ul class="config-items">
-                <li class="config-item">
-                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 165H 1TB SSD 32GB 16" (2560x1600) 165Hz WIN11 Pro NVIDIA® RTX 4070 8192MB BLACK Backlit Keyboard FP Reader - 21KV0018US-R
-                </li>
-                <li class="config-item">
-                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 165H vPro 2TB SSD 64GB 16" (3840 x 2400) WQUXGA TOUCHSCREEN WIN11 Pro NVIDIA® RTX 3000 8GB BLACK Backlit Keyboard FP Reader - 21KV001AUS
-                </li>
-                <li class="config-item">
-                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 9 185H 2TB SSD 64GB 16" (3840x2400) OLED TOUCHSCREEN WIN11 Pro NVIDIA® RTX 3000 8192MB BLACK Backlit Keyboard FP Reader - 21KV001DUS-R
-                </li>
-                <li class="config-item">
-                    Lenovo ThinkPad P1 Gen 7 MOBILE WORKSTATION Core™ Ultra 7 155H 1TB SSD 32GB 16" (1920x1200) WUXGA WIN11 Pro NVIDIA® RTX 2000 8GB BLACK Backlit Keyboard FP Reader 1-year Premier support - 21KV0013US
-                </li>
-            </ul>
-        </div>
-    </section>
+    <?php
+    global $post;
+    $product_configurations = get_post_meta($post->ID, '_product_configurations', true);
+    if (!empty($product_configurations)) {
+        foreach ($product_configurations as $section) {
+    ?>
+            <section class="configuration">
+                <div class="container">
+                    <h2 class="configuration-title"><?= $section["title"] ?: "Default"; ?></h2>
+                    <ul class="config-items">
+                        <?php foreach ($section['configs'] as $config) { ?>
+                            <li class="config-item">
+                                <?= $config; ?>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </section>
+    <?php
+        }
+    }
+    ?>
 
     <section class="product-single-description">
         <div class="container">
@@ -170,39 +189,43 @@ europe_get_header();
 <?php europe_get_footer(); ?>
 
 <script>
+    // click on list configuration
     document.addEventListener("DOMContentLoaded", function() {
         const listsConfig = document.querySelector(".config-items");
+        if (listsConfig) {
+            listsConfig.addEventListener("click", function(event) {
+                const itemConfig = event.target;
 
-        listsConfig.addEventListener("click", function(event) {
-            const itemConfig = event.target;
+                // Проверяем, что клик был по элементу списка
+                if (itemConfig && itemConfig.classList.contains("config-item")) {
+                    const itemsConfig = listsConfig.querySelectorAll(".config-item");
 
-            // Проверяем, что клик был по элементу списка
-            if (itemConfig && itemConfig.classList.contains("config-item")) {
-                const itemsConfig = listsConfig.querySelectorAll(".config-item");
+                    // Убираем класс active у всех элементов
+                    itemsConfig.forEach(i => i.classList.remove('active'));
 
-                // Убираем класс active у всех элементов
-                itemsConfig.forEach(i => i.classList.remove('active'));
-
-                // Добавляем класс active к выбранному элементу
-                itemConfig.classList.add('active');
-            }
-        });
+                    // Добавляем класс active к выбранному элементу
+                    itemConfig.classList.add('active');
+                }
+            });
+        }
     });
 
+    // changing button settings
     const productHeader = document.querySelector(".product-single-header-btn");
     const congigContainer = document.querySelector(".configuration .container");
 
     function handleResizeButton() {
         const screenWidth = window.innerWidth;
-
-        if (screenWidth < 768) {
-            if (productHeader && !congigContainer.contains(productHeader)) {
-                congigContainer.appendChild(productHeader); // Вставляем блок в контейнер
-            }
-        } else {
-            if (productHeader && congigContainer.contains(productHeader)) {
-                productHeader.parentElement.removeChild(productHeader); // Удаляем из контейнера
-                document.body.insertBefore(productHeader, document.body.firstChild); // Возвращаем в начало body или нужное место
+        if (congigContainer) {
+            if (screenWidth < 768) {
+                if (productHeader && !congigContainer.contains(productHeader)) {
+                    congigContainer.appendChild(productHeader); // Вставляем блок в контейнер
+                }
+            } else {
+                if (productHeader && congigContainer.contains(productHeader)) {
+                    productHeader.parentElement.removeChild(productHeader); // Удаляем из контейнера
+                    document.body.insertBefore(productHeader, document.body.firstChild); // Возвращаем в начало body или нужное место
+                }
             }
         }
     }
@@ -212,4 +235,53 @@ europe_get_header();
 
     // Добавляем обработчик на изменение размера окна
     window.addEventListener("resize", handleResizeButton);
+
+    // switch photos in gallery
+    const mainImage = document.querySelector(".main-image img");
+    const galleryItems = document.querySelectorAll(".thumbnail-gallery-item");
+
+    if (galleryItems) {
+        galleryItems.forEach((item) => {
+            item.addEventListener("click", () => {
+                const galleryItem = item.querySelector("figure img");
+                const originalSrcMain = mainImage.src;
+
+                mainImage.src = galleryItem.src;
+                galleryItem.src = originalSrcMain;
+            });
+        });
+    }
+
+    // slider image gallery
+    const arrowLeft = document.querySelector(".arrow-left");
+    const arrowRight = document.querySelector(".arrow-right");
+    const gallery = document.querySelector(".thumbnail-gallery");
+
+    const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+    const visibleWidth = gallery.offsetWidth;
+
+    // Показываем/скрываем стрелки
+    function updateArrows() {
+        arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
+        arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
+    }
+
+    // Перемещение галереи
+    arrowLeft.addEventListener("click", () => {
+        gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
+        updateArrows();
+    });
+
+    arrowRight.addEventListener("click", () => {
+        gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
+        updateArrows();
+    });
+
+    // Обновляем стрелки при загрузке
+    updateArrows();
+
+    // Обновляем стрелки при прокрутке вручную (например, через тачскрин)
+    gallery.addEventListener("scroll", updateArrows);
+
+    
 </script>
