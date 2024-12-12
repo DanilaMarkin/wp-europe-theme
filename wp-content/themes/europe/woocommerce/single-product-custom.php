@@ -33,7 +33,15 @@ europe_get_header();
 
         <div class="product-single-header-btn">
             <button class="product-single-header-btn-general product-single-header-btn-contact">Contact us</button>
-            <button class="product-single-header-btn-general product-single-header-btn-price">
+            <div class="product-single-header-btn-tootle-contact hidden">
+                <button id="productOpenWA">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                </button>
+                <button d="productOpenTg">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                </button>
+            </div>
+            <button class="product-single-header-btn-general product-single-header-btn-price" data-id="<?= $product_id = get_the_ID(); ?>">
                 <img src="<?= get_template_directory_uri() ?>/assets/icons/cart.svg" alt="Cart icon" class="product-block-cart-img">
             </button>
         </div>
@@ -80,6 +88,9 @@ europe_get_header();
                 echo 'Галерея пуста.';
             }
             ?>
+            <div id="product-notification" class="hidden">
+                <span>Item successfully added to cart</span>
+            </div>
         </div>
     </section>
 
@@ -113,7 +124,7 @@ europe_get_header();
             $descr = get_the_content();
             if (!empty(trim($descr))) {
             ?>
-                <p class="product-single-description-text"><?= $descr ?></p>
+                <div class="product-single-description-text"><?= $descr ?></div>
             <?php } else { ?>
                 <p class="product-single-description-text">There's nothing here yet</p>
             <?php } ?>
@@ -279,9 +290,118 @@ europe_get_header();
 
     // Обновляем стрелки при загрузке
     updateArrows();
-
     // Обновляем стрелки при прокрутке вручную (например, через тачскрин)
     gallery.addEventListener("scroll", updateArrows);
 
-    
+    // add product in cart
+    const notification = document.querySelector("#product-notification");
+    const addBtncart = document.querySelector(".product-single-header-btn-price");
+    const cartId = addBtncart.getAttribute("data-id");
+
+    const configs = document.querySelector(".config-items"); // Блок конфигураций
+    const config = document.querySelectorAll(".config-item"); // Конфигурация
+
+    // Функция для изменения общего кол-ва товаров в корзину
+    function updateCartQuantity() {
+        // Получаем элемент, который отображает количество товаров в корзине
+        const totalProductsCount = document.querySelector(".nav-block-cart-count");
+
+        // Получаем данные корзины из localStorage
+        let cart = JSON.parse(localStorage.getItem("cart"));
+
+        if (cart && Array.isArray(cart)) {
+            const totalCount = cart.reduce((sum, item) => sum + (item.count || 0), 0);
+            if (totalProductsCount) {
+                totalProductsCount.textContent = totalCount; // Обновляем количество товаров в корзине
+            }
+        } else {
+            // Если корзина пуста
+            if (totalProductsCount) {
+                totalProductsCount.textContent = 0;
+            }
+        }
+    }
+
+    function saveCartLocalStorage(productId, count, config = null) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const existingCart = cart.find((item) => item.id === productId);
+
+        if (existingCart) {
+            existingCart.count += count;
+            if (config) {
+                existingCart.config = config;
+            }
+        } else {
+            cart.push({
+                id: productId,
+                count: count,
+                config: config,
+            });
+        }
+
+        // Сохраняем обновленную корзину обратно в localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    addBtncart.addEventListener("click", () => {
+        const count = 1; // Устанавливаем количество товаров, например 1, при добавлении в корзину
+
+        // Если на странице есть выбор конфигураций
+        if (configs) {
+            // Проверяем, есть ли хотя бы один элемент с классом "active"
+            const hasActive = Array.from(config).some(item => item.classList.contains("active"));
+
+            // Если нет активных элементов, добавляем "error" ко всем
+            if (!hasActive) {
+                config.forEach((item) => {
+                    if (!item.classList.contains("active")) {
+                        item.classList.add("error");
+                    }
+                });
+            }
+
+            config.forEach((item) => {
+                // Если нажали на конфигурацию убирать error у всех эл-ов
+                item.addEventListener("click", () => {
+                    config.forEach((el) => {
+                        el.classList.remove("error");
+                    });
+                });
+
+                // У эл-та у которого есть класс active взять зн-ие и добавить в корзину
+                if (item.classList.contains("active")) {
+                    let configValue = item.textContent;
+                    notification.classList.remove("hidden");
+                    saveCartLocalStorage(cartId, count, configValue); // Сохраняем товар в корзине, передав ID и количество
+                    item.classList.remove("active");
+                }
+            });
+        } else { // Если нет конфигураций на сайте то показыать увед-ие и добавлять товар в корзину
+            notification.classList.remove("hidden");
+            saveCartLocalStorage(cartId, count); // Сохраняем товар в корзине, передав ID и количество
+        }
+
+        updateCartQuantity(); // Обновление кол-ва корзины при нажатие на кнопку addBtncart
+
+        setTimeout(() => {
+            notification.classList.add("hidden");
+        }, 5000); // скрывать уведомление спустя 5 сек на сайте
+    });
+
+    // switch bt cart and contacts social
+    const contactBtn = document.querySelector(".product-single-header-btn-contact");
+    const contactToogleBlock = document.querySelector(".product-single-header-btn-tootle-contact");
+
+    contactBtn.addEventListener("click", () => {
+        contactBtn.classList.add("hidden");
+        contactToogleBlock.classList.remove("hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!contactBtn.contains(event.target) && !contactToogleBlock.contains(event.target)) {
+            contactBtn.classList.remove("hidden");
+            contactToogleBlock.classList.add("hidden");
+        }
+    });
 </script>

@@ -10,3 +10,80 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: custom-theme, wooCommerce
 Text Domain: europe
 */
+/* --------------START custom product description-------------- */
+.product-info__section {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.product-info__text {
+  width: 80%;
+  padding-right: 20px;
+}
+
+.product-info__image {
+  width: 40%;
+  text-align: center;
+}
+
+.product-info__cta {
+  background-color: #333333;
+  padding: 20px;
+}
+
+.product-info__cta > h4,
+.product-info__cta > p {
+  color: #ffffff;
+  text-align: center;
+}
+
+.product-info__cta h4 {
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.product-single-description-text h2,
+.product-single-description-text h3 {
+  font-size: 20px;
+  font-weight: 900;
+  padding-bottom: 20px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .product-info__section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-info__text {
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .product-info__image {
+    max-width: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .product-info__section--reverse {
+    flex-direction: column-reverse;
+  }
+
+  .product-single-description-text h2,
+  .product-single-description-text h3 {
+    font-size: 15px;
+    padding-bottom: 10px;
+  }
+
+  .product-info__cta h4 {
+    font-size: 15px;
+  }
+}
+/* --------------END custom product description-------------- */
