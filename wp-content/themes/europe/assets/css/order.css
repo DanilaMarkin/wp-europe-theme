@@ -197,6 +197,17 @@
   align-items: center;
 }
 
+.total-checkbox-label.error > .total-check-icon {
+  border: 2px solid #a32a2a;
+}
+
+.total-checkbox-label.error > .total-checkbox-label-text-agree,
+.total-checkbox-label.error
+  > .total-checkbox-label-text-agree
+  > .total-check-policy {
+  color: #a32a2a;
+}
+
 .total-checkbox-label input {
   display: none;
 }
@@ -270,6 +281,14 @@
   padding: 0 15px;
 }
 
+.cart-info-blocks-input-general.error {
+  border: 2px solid #a32a2a;
+}
+
+.cart-info-blocks-input-general.error::placeholder {
+  color: #a32a2a;
+}
+
 .cart-info-blocks-input-general::placeholder {
   color: #7d7d7d;
   font-size: 14px;
@@ -282,6 +301,10 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.cart-info-blocks-input-payment-items.error {
+  border: 2px solid #a32a2a;
 }
 
 .cart-info-blocks-payment-item-value {
@@ -339,8 +362,8 @@
   height: 100px;
   margin: 0 auto;
   border: 5px solid #7d7d7d;
-  border-bottom-color: #F0AD16;
-  border-right-color: #F0AD16;
+  border-bottom-color: #f0ad16;
+  border-right-color: #f0ad16;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -445,6 +468,14 @@
     border: 1px solid #7d7d7d;
   }
 
+  .cart-info-blocks-input-general.error {
+    border: 1px solid #a32a2a;
+  }
+
+  .total-checkbox-label.error > .total-check-icon {
+    border: 1px solid #a32a2a;
+  }
+
   .cart-info-block-input-fio {
     gap: 10px;
   }
@@ -509,6 +540,10 @@
     border: 1px solid #7d7d7d;
   }
 
+  .cart-info-blocks-input-payment-items.error {
+    border: 1px solid #a32a2a;
+  }
+
   .cart-info-blocks-payment-item-value > p {
     font-size: 12px;
   }
@@ -528,8 +563,8 @@
     width: 50px;
     height: 50px;
     border: 3px solid #7d7d7d;
-    border-bottom-color: #F0AD16;
-    border-right-color: #F0AD16;
+    border-bottom-color: #f0ad16;
+    border-right-color: #f0ad16;
   }
   /* --------------END cart.php-------------- */
 }

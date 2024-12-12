@@ -11,12 +11,20 @@ Tags: custom-theme, wooCommerce
 Text Domain: europe
 */
 /* --------------START custom product description-------------- */
+.product-info strong{
+  font-weight: 900;
+}
+
 .product-info__section {
   display: flex;
   align-items: center;
   background-color: #f5f5f5;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.product-info__section--reverse {
+  background-color: #fff;
 }
 
 .product-info__text {
@@ -64,6 +72,10 @@ Text Domain: europe
     width: 100%;
     padding-right: 0;
     margin-bottom: 20px;
+  }
+
+  .product-info__text p, .product-info__cta p {
+    text-align: justify;
   }
 
   .product-info__image {

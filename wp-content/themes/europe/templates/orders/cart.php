@@ -14,17 +14,17 @@ europe_get_header();
                 <span class="loader"></span>
             </div>
         </div>
-        <form class="cart-info-blocks-form">
+        <form id="orderForm" class="cart-info-blocks-form">
             <div class="cart-info-blocks-input">
                 <p>Country of delivery</p>
-                <input type="text" placeholder="Country of Delivery" class="cart-info-blocks-input-general">
+                <input id="country" type="text" placeholder="Country of Delivery" class="cart-info-blocks-input-general">
             </div>
             <div class="cart-info-blocks-input">
                 <p>Contact Information</p>
                 <div class="cart-info-block-input-fio">
-                    <input type="text" placeholder="Name" class="cart-info-blocks-input-general">
-                    <input type="tel" placeholder="Phone" class="cart-info-blocks-input-general">
-                    <input type="email" placeholder="E-mail" class="cart-info-blocks-input-general">
+                    <input id="name" type="text" placeholder="Name" class="cart-info-blocks-input-general">
+                    <input id="phone" type="tel" placeholder="Phone" class="cart-info-blocks-input-general">
+                    <input id="email" type="email" placeholder="E-mail" class="cart-info-blocks-input-general">
                 </div>
             </div>
             <div class="cart-info-blocks-input">
@@ -33,28 +33,28 @@ europe_get_header();
                     <li>
                         <label class="cart-info-blocks-payment-item-value">
                             <p>Cash on Delivery</p>
-                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <input type="radio" name="paymentMethod" value="Cash on Delivery" class="cart-info-blocks-payment-item-value-empty">
                             <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
                         </label>
                     </li>
                     <li>
                         <label class="cart-info-blocks-payment-item-value">
                             <p>Visa/MasterCard</p>
-                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <input type="radio" name="paymentMethod" value="Visa/MasterCard" class="cart-info-blocks-payment-item-value-empty">
                             <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
                         </label>
                     </li>
                     <li>
                         <label class="cart-info-blocks-payment-item-value">
                             <p>PayPal</p>
-                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <input type="radio" name="paymentMethod" value="PayPal" class="cart-info-blocks-payment-item-value-empty">
                             <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
                         </label>
                     </li>
                     <li>
                         <label class="cart-info-blocks-payment-item-value">
                             <p>Bank Transfer</p>
-                            <input type="checkbox" class="cart-info-blocks-payment-item-value-empty">
+                            <input type="radio" name="paymentMethod" value="Bank Transfer" class="cart-info-blocks-payment-item-value-empty">
                             <span class="cart-info-blocks-payment-item-custom-checkbox"></span>
                         </label>
                     </li>
@@ -67,7 +67,7 @@ europe_get_header();
             <div class="total-blocks-checkout">
                 <div class="total-checkbox-wrapper">
                     <label class="total-checkbox-label">
-                        <input type="checkbox" class="custom-checkbox">
+                        <input id="agreeCheckbox" type="checkbox" class="custom-checkbox">
                         <span class="total-check-icon"></span>
                         <div class="total-checkbox-label-text-agree">
                             I have read and agree to the <a href="#" class="total-check-policy"> privacy policy</a>
@@ -75,7 +75,7 @@ europe_get_header();
                     </label>
                 </div>
                 <div class="total-blocks-btn">
-                    <button>Checkout</button>
+                    <button id="checkout">Checkout</button>
                     <button>Get an offer</button>
                 </div>
             </div>
@@ -83,13 +83,14 @@ europe_get_header();
                 <p class="total-blocks-finish-title">Total</p>
                 <ul class="total-blocks-finist-items">
                     <li class="total-blocks-finist-item">
-                        <p class="total-blocks-finist-item-value">Value of items</p>
+                        <p class="total-blocks-finist-item-value">Number of products
+                        </p>
                         <span class="total-blocks-finist-item-price">$0.00</span>
                     </li>
-                    <li class="total-blocks-finist-item">
+                    <!-- <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Shipping</p>
                         <span class="total-blocks-finist-item-price">$0.00</span>
-                    </li>
+                    </li> -->
                     <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Total</p>
                         <span class="total-blocks-finist-item-price">$0.00</span>
@@ -182,6 +183,88 @@ europe_get_header();
             <a href="/" class="cart-back-to-shopping" title="Go back to the homepage">Back to shopping</a>
         `;
     }
+
+    // Валидация полей формы    
+    document.getElementById("checkout").addEventListener("click", (event) => {
+        event.preventDefault(); // Предотвращаем стандартное поведение 
+
+        const form = document.getElementById("orderForm");
+
+        // Country of delivery
+        const country = document.getElementById("country");
+        // Contact Information
+        const name = document.getElementById("name");
+        const phone = document.getElementById("phone");
+        const email = document.getElementById("email");
+
+        // Payment Method
+        const radioPayments = document.querySelectorAll(".cart-info-blocks-payment-item-value-empty");
+        let valuePayment = null;
+
+        // Privacy Policy
+        const paymentBlock = document.querySelector(".cart-info-blocks-input-payment-items");
+        const labelCheckBox = document.querySelector(".total-checkbox-label");
+        const agreeCheckbox = document.getElementById("agreeCheckbox");
+
+        let isValid = true; // Флаг для проверки всех полей
+
+        // Валидация поле "Country"
+        if (country.value.trim() === "") {
+            country.classList.add("error");
+            isValid = false; // Если есть ошибка, флаг становится false
+        } else {
+            country.classList.remove("error");
+        }
+
+        // Валидация поле "Name"
+        if (name.value.trim() === "") {
+            name.classList.add("error");
+            isValid = false; // Если есть ошибка, флаг становится false
+        } else {
+            name.classList.remove("error");
+        }
+
+        // Валидация поле "Phone"
+        if (phone.value.trim() === "") {
+            phone.classList.add("error");
+            isValid = false; // Если есть ошибка, флаг становится false
+        } else {
+            phone.classList.remove("error");
+        }
+
+        // Валидация поле "Почта"
+        if (email.value.trim() === "") {
+            email.classList.add("error");
+            isValid = false; // Если есть ошибка, флаг становится false
+        } else {
+            email.classList.remove("error");
+        }
+
+         // Валидация Payment Method Radio
+        radioPayments.forEach(radio => {
+            if (!radio.checked) {
+                paymentBlock.classList.add("error");
+                isValid = false; // Если есть ошибка, флаг становится false
+            } else {
+                paymentBlock.classList.remove("error");
+                valuePayment = radio.value;
+            }
+        });
+
+        // Валидация Privacy Policy CheckBox
+        if (!agreeCheckbox.checked) {
+            agreeCheckbox.classList.add("error");
+            labelCheckBox.classList.add("error");
+            isValid = false; // Если есть ошибка, флаг становится false
+        } else {
+            agreeCheckbox.classList.remove("error");
+            labelCheckBox.classList.remove("error");
+        }
+
+        if (isValid) {
+            form.submit();
+        }
+    });
 </script>
 <?php
 europe_get_footer();

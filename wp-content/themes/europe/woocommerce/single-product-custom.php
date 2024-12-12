@@ -75,7 +75,7 @@ europe_get_header();
                     $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
 
                     echo '<li class="thumbnail-gallery-item">
-                        <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '"></figure>
+                        <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
                     </li>';
                 }
                 echo '
