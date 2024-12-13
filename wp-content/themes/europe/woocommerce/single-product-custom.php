@@ -265,33 +265,61 @@ europe_get_header();
 
     // slider image gallery
     const arrowLeft = document.querySelector(".arrow-left");
-    const arrowRight = document.querySelector(".arrow-right");
-    const gallery = document.querySelector(".thumbnail-gallery");
+const arrowRight = document.querySelector(".arrow-right");
+const gallery = document.querySelector(".thumbnail-gallery");
 
-    const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
-    const visibleWidth = gallery.offsetWidth;
+// Функция определения ориентации
+function isVerticalMode() {
+    return window.innerWidth > 768;
+}
 
-    // Показываем/скрываем стрелки
-    function updateArrows() {
+// Обновляем состояние стрелок
+function updateArrows() {
+    if (isVerticalMode()) {
+        // Вертикальная ориентация
+        const visibleHeight = gallery.offsetHeight;
+        arrowLeft.classList.toggle("hidden", gallery.scrollTop <= 0);
+        arrowRight.classList.toggle("hidden", gallery.scrollTop + visibleHeight >= gallery.scrollHeight);
+    } else {
+        // Горизонтальная ориентация
+        const visibleWidth = gallery.offsetWidth;
         arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
         arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
     }
+}
 
-    // Перемещение галереи
-    arrowLeft.addEventListener("click", () => {
+// Перемещение галереи
+arrowLeft.addEventListener("click", () => {
+    if (isVerticalMode()) {
+        const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+        gallery.scrollTop -= itemHeight * 3; // Сдвиг на 3 элемента вверх
+    } else {
+        const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
         gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
-        updateArrows();
-    });
-
-    arrowRight.addEventListener("click", () => {
-        gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
-        updateArrows();
-    });
-
-    // Обновляем стрелки при загрузке
+    }
     updateArrows();
-    // Обновляем стрелки при прокрутке вручную (например, через тачскрин)
-    gallery.addEventListener("scroll", updateArrows);
+});
+
+arrowRight.addEventListener("click", () => {
+    if (isVerticalMode()) {
+        const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+        gallery.scrollTop += itemHeight * 3; // Сдвиг на 3 элемента вниз
+    } else {
+        const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+        gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
+    }
+    updateArrows();
+});
+
+// Обновляем стрелки при загрузке
+updateArrows();
+
+// Обновляем стрелки при прокрутке вручную (например, через тачскрин)
+gallery.addEventListener("scroll", updateArrows);
+
+// Слушаем изменения размера экрана
+window.addEventListener("resize", updateArrows);
+
 
     // add product in cart
     const notification = document.querySelector("#product-notification");
