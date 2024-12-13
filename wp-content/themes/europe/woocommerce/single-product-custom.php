@@ -19,13 +19,23 @@ europe_get_header();
                         <span><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
+                    <!-- popup notification -->
+                    <aside id="notificationPopup" class="notification">
+                        <p>Sed ornare dolor mauris mollis mattis lorem est. Dictum. Et adipiscing in amet, molestie faucibus.</p>
+                    </aside>
+                    <!-- popup notification -->
                 </li>
                 <li>
                     <p>Retail Price</p>
-                    <div class="product-single-header-prices-item">
+                    <div class="product-single-header-prices-item ">
                         <span>$412</span>
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
+                    <!-- popup notification -->
+                    <aside id="notificationPopup" class="notification">
+                        <p>Sed ornare dolor mauris mollis mattis lorem est. Dictum. Et adipiscing in amet, molestie faucibus.</p>
+                    </aside>
+                    <!-- popup notification -->
                 </li>
             </ul>
             <button class="offer-btn">Offer your Price <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon"></button>
@@ -61,7 +71,7 @@ europe_get_header();
             <?php
             $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
             $gallery_ids = explode(',', $gallery);
-
+                
             if (!empty($gallery_ids)) {
                 echo '
                 <div class="thumbnail-gallery-wrapper">
@@ -265,60 +275,60 @@ europe_get_header();
 
     // slider image gallery
     const arrowLeft = document.querySelector(".arrow-left");
-const arrowRight = document.querySelector(".arrow-right");
-const gallery = document.querySelector(".thumbnail-gallery");
+    const arrowRight = document.querySelector(".arrow-right");
+    const gallery = document.querySelector(".thumbnail-gallery");
 
-// Функция определения ориентации
-function isVerticalMode() {
-    return window.innerWidth > 768;
-}
-
-// Обновляем состояние стрелок
-function updateArrows() {
-    if (isVerticalMode()) {
-        // Вертикальная ориентация
-        const visibleHeight = gallery.offsetHeight;
-        arrowLeft.classList.toggle("hidden", gallery.scrollTop <= 0);
-        arrowRight.classList.toggle("hidden", gallery.scrollTop + visibleHeight >= gallery.scrollHeight);
-    } else {
-        // Горизонтальная ориентация
-        const visibleWidth = gallery.offsetWidth;
-        arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
-        arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
+    // Функция определения ориентации
+    function isVerticalMode() {
+        return window.innerWidth > 768;
     }
-}
 
-// Перемещение галереи
-arrowLeft.addEventListener("click", () => {
-    if (isVerticalMode()) {
-        const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
-        gallery.scrollTop -= itemHeight * 3; // Сдвиг на 3 элемента вверх
-    } else {
-        const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
-        gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
+    // Обновляем состояние стрелок
+    function updateArrows() {
+        if (isVerticalMode()) {
+            // Вертикальная ориентация
+            const visibleHeight = gallery.offsetHeight;
+            arrowLeft.classList.toggle("hidden", gallery.scrollTop <= 0);
+            arrowRight.classList.toggle("hidden", gallery.scrollTop + visibleHeight >= gallery.scrollHeight);
+        } else {
+            // Горизонтальная ориентация
+            const visibleWidth = gallery.offsetWidth;
+            arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
+            arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
+        }
     }
+
+    // Перемещение галереи
+    arrowLeft.addEventListener("click", () => {
+        if (isVerticalMode()) {
+            const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+            gallery.scrollTop -= itemHeight * 3; // Сдвиг на 3 элемента вверх
+        } else {
+            const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+            gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
+        }
+        updateArrows();
+    });
+
+    arrowRight.addEventListener("click", () => {
+        if (isVerticalMode()) {
+            const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+            gallery.scrollTop += itemHeight * 3; // Сдвиг на 3 элемента вниз
+        } else {
+            const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+            gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
+        }
+        updateArrows();
+    });
+
+    // Обновляем стрелки при загрузке
     updateArrows();
-});
 
-arrowRight.addEventListener("click", () => {
-    if (isVerticalMode()) {
-        const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
-        gallery.scrollTop += itemHeight * 3; // Сдвиг на 3 элемента вниз
-    } else {
-        const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
-        gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
-    }
-    updateArrows();
-});
+    // Обновляем стрелки при прокрутке вручную (например, через тачскрин)
+    gallery.addEventListener("scroll", updateArrows);
 
-// Обновляем стрелки при загрузке
-updateArrows();
-
-// Обновляем стрелки при прокрутке вручную (например, через тачскрин)
-gallery.addEventListener("scroll", updateArrows);
-
-// Слушаем изменения размера экрана
-window.addEventListener("resize", updateArrows);
+    // Слушаем изменения размера экрана
+    window.addEventListener("resize", updateArrows);
 
 
     // add product in cart
@@ -431,5 +441,19 @@ window.addEventListener("resize", updateArrows);
             contactBtn.classList.remove("hidden");
             contactToogleBlock.classList.add("hidden");
         }
+    });
+
+    // hover open notificationPopup
+    const iconInfo = document.querySelectorAll(".product-single-header-prices-item img");
+    const notificationPopup = document.querySelectorAll(".notification");
+
+    iconInfo.forEach((item, index) => {
+        item.addEventListener("mouseover", () => {
+            notificationPopup[index].classList.add("open");
+        });
+
+        item.addEventListener("mouseout", () => {
+            notificationPopup[index].classList.remove("open");
+        });
     });
 </script>

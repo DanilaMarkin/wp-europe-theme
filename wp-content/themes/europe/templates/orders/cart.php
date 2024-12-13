@@ -85,7 +85,7 @@ europe_get_header();
                     <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Number of products
                         </p>
-                        <span class="total-blocks-finist-item-price">$0.00</span>
+                        <span id="totalCount" class="total-blocks-finist-item-price">$0.00</span>
                     </li>
                     <!-- <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Shipping</p>
@@ -93,7 +93,7 @@ europe_get_header();
                     </li> -->
                     <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Total</p>
-                        <span class="total-blocks-finist-item-price">$0.00</span>
+                        <span id="totalPrice" class="total-blocks-finist-item-price">$0.00</span>
                     </li>
                 </ul>
             </div>
@@ -127,9 +127,54 @@ europe_get_header();
         });
     }
 
+    // Функция для изменения общего кол-ва товаров в корзину
+    function updateCartQuantity() {
+        // Получаем элемент, который отображает количество товаров в корзине
+        const totalProductsCount = document.querySelector(".nav-block-cart-count");
+
+        // Получаем данные корзины из localStorage
+        let cart = JSON.parse(localStorage.getItem("cart"));
+
+        if (cart && Array.isArray(cart)) {
+            const totalCount = cart.reduce((sum, item) => sum + (item.count || 0), 0);
+            if (totalProductsCount) {
+                totalProductsCount.textContent = totalCount; // Обновляем количество товаров в корзине
+            }
+        } else {
+            // Если корзина пуста
+            if (totalProductsCount) {
+                totalProductsCount.textContent = 0;
+            }
+        }
+    }
+
+    function saveCartLocalStorage(cartId, count) {
+        const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Найти товар по cartId
+        const productIndex = cartData.findIndex(item => item.id === cartId);
+
+        if (productIndex !== -1) {
+            // Обновить только количество
+            cartData[productIndex].count = count;
+        } else {
+            // Добавить новый товар с указанным количеством
+            cartData.push({
+                id: cartId,
+                count
+            });
+        }
+
+        // Сохранить обновленные данные в localStorage
+        localStorage.setItem("cart", JSON.stringify(cartData));
+    }
+
     function displayCartDetails(products) {
         const cartcontainer = document.querySelector("#cartDetails");
         const loader = document.querySelector(".loader-blocks");
+
+        const totalProductsElem = document.querySelector("#totalCount");
+        const totalAmountElem = document.querySelector("#totalPrice");
 
         cartcontainer.innerHTML = "";
 
@@ -139,31 +184,81 @@ europe_get_header();
 
         const cartData = JSON.parse(localStorage.getItem("cart")) || [];
 
+        let totalPrice = 0; // Initialize total price
+        let totalCount = 0; // Initialize total product count
+
         products.forEach(product => {
             const cartItem = cartData.find(item => Number(item.id) === Number(product.id));
             const productCount = cartItem ? cartItem.count : 1;
 
+            totalCount += productCount;
+            totalPrice += product.price * productCount;
+
             const cartItemHTML = `
-            <li class="cart-info-block-products-item">
-                <a href="${product.link}" title="View details for ${product.name}" class="cart-info-block-products-item-img">
-                    <img src="${product.image}" title="${product.name}" alt="${product.name} - Buy online">
-                </a>
-                <div class="cart-info-block-products-item-info">
-                    <h2 class="cart-info-block-products-item-info-title"><a href="${product.link}" title="More about ${product.name}">${product.name}</a></h2>
-                    <div class="cart-info-block-products-total-info">
-                        <div class="cart-info-block-products-item-info-count">
-                            <button class="cart-minus" aria-label="Decrease quantity">-</button>
-                            <span class="cart-count-item">${productCount} pcs</span>
-                            <button class="cart-plus" aria-label="Increase quantity">+</button>
+                <li class="cart-info-block-products-item" data-id="${product.id}">
+                    <a href="${product.link}" title="View details for ${product.name}" class="cart-info-block-products-item-img">
+                        <img src="${product.image}" title="${product.name}" alt="${product.name} - Buy online">
+                    </a>
+                    <div class="cart-info-block-products-item-info">
+                        <h2 class="cart-info-block-products-item-info-title"><a href="${product.link}" title="More about ${product.name}">${product.name}</a></h2>
+                        <div class="cart-info-block-products-total-info">
+                            <div class="cart-info-block-products-item-info-count">
+                                <button class="cart-minus" aria-label="Decrease quantity">-</button>
+                                <span class="cart-count-item">${productCount} pcs</span>
+                                <button class="cart-plus" aria-label="Increase quantity">+</button>
+                            </div>
+                            <p class="cart-info-block-products-item-info-price">$${product.price}</p>
                         </div>
-                        <p class="cart-info-block-products-item-info-price">$${product.price}</p>
                     </div>
-                </div>
-            </li>
+                </li>
             `;
             cartcontainer.innerHTML += cartItemHTML;
         });
+
+        // Update total price and product count in the total section
+        if (totalProductsElem) {
+            totalProductsElem.textContent = `${totalCount} pcs`; // Update number of products
+        }
+        if (totalAmountElem) {
+            totalAmountElem.textContent = `$${totalPrice.toFixed(2)}`; // Update total price, with 2 decimals
+        }
+
+        // update cunt for cart in order
+        const plus = document.querySelectorAll(".cart-plus");
+        const minus = document.querySelectorAll(".cart-minus");
+        const cartCount = document.querySelectorAll(".cart-count-item");
+        const cartProduct = document.querySelectorAll(".cart-info-block-products-item");
+
+        plus.forEach((item, index) => {
+            item.addEventListener("click", () => {
+                const cartId = cartProduct[index].getAttribute("data-id");
+                if (cartCount[index]) {
+                    let currentCount = parseInt(cartCount[index].textContent, 10) || 0;
+                    currentCount += 1
+                    cartCount[index].textContent = `${currentCount} pcs`;
+                    saveCartLocalStorage(cartId, currentCount); // Передаем обновленный count
+                    updateCartQuantity();
+                }
+            });
+        });
+
+        minus.forEach((item, index) => {
+            item.addEventListener("click", () => {
+                const cartId = cartProduct[index].getAttribute("data-id");
+                if (cartCount[index]) {
+                    let currentCount = parseInt(cartCount[index].textContent, 10) || 0;
+                    currentCount -= 1
+                    if (currentCount > 0) {
+                        cartCount[index].textContent = `${currentCount} pcs`;
+                        saveCartLocalStorage(cartId, currentCount); // Передаем обновленный count
+                        updateCartQuantity();
+                    }
+                }
+            });
+        })
     }
+
+    updateCartQuantity();
 
     if (cartData.length > 0) {
         fetchCartDetails(cartData)
@@ -240,7 +335,7 @@ europe_get_header();
             email.classList.remove("error");
         }
 
-         // Валидация Payment Method Radio
+        // Валидация Payment Method Radio
         radioPayments.forEach(radio => {
             if (!radio.checked) {
                 paymentBlock.classList.add("error");
