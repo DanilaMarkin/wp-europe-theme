@@ -18,6 +18,13 @@ function enqueue_custom_scripts()
 {
     wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
     wp_enqueue_script('store-script', get_template_directory_uri() . '/assets/js/store.js', array('jquery'), null, true);
+    wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
+
+    // Добавляем ajaxurl для использования в JavaScript
+    wp_localize_script('cart-script', 'ajaxObject', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'pageTitle' => get_the_title(), // Передаем заголовок страницы
+    ]);
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
@@ -121,11 +128,11 @@ function custom_breadcrumbs()
     if (is_product()) {
         $categories = wc_get_product_terms(get_the_ID(), 'product_cat');
         if (!empty($categories)) {
-    
+
             // Первая категория
             $category = reset($categories);
             $parent_category = get_term($category->parent, 'product_cat');
-    
+
             // Проверка на WP_Error для родительской категории
             if (!is_wp_error($parent_category) && $parent_category->parent == 0) {
                 echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
@@ -135,7 +142,7 @@ function custom_breadcrumbs()
                 echo '<meta itemprop="position" content="' . esc_attr($position++) . '" />';
                 echo '</li>';
             }
-    
+
             // Проверка на WP_Error для текущей категории
             if (!is_wp_error($category)) {
                 echo '<li class="bread-crumbs-separator">' . $separator . '</li>';
@@ -281,6 +288,180 @@ function filter_products_sort()
     die();
 }
 
+add_action('wp_ajax_send_cart_to_woocommerce', 'send_cart_to_woocommerce');
+add_action('wp_ajax_nopriv_send_cart_to_woocommerce', 'send_cart_to_woocommerce');
+
+function send_cart_to_woocommerce()
+{
+    if (!isset($_POST['cart']) || !isset($_POST['contactInfo'])) {
+        wp_send_json_error(['message' => 'Данные не переданы']);
+        return;
+    }
+
+    $cart = $_POST['cart'];
+    $contactInfo = $_POST['contactInfo'];
+
+    // Проверка и вывод ошибок
+    if (empty($cart)) {
+        wp_send_json_error(['message' => 'Корзина пуста']);
+        return;
+    }
+
+    if (empty($contactInfo)) {
+        wp_send_json_error(['message' => 'Контактные данные не переданы']);
+        return;
+    }
+
+    // Ваши действия с данными (например, создание заказа в WooCommerce)
+    try {
+        // Создаем заказ
+        $order = wc_create_order();
+
+        // Добавляем товары в заказ
+        foreach ($cart as $item) {
+            $order->add_product(wc_get_product($item['id']), $item['quantity']); // Добавление товара
+        }
+
+        // Устанавливаем адрес и контактные данные
+        $order->set_address([
+            'first_name' => $contactInfo['name'],  // Устанавливаем имя
+            'last_name'  => '',  // Установите фамилию, если есть
+            'email'      => $contactInfo['email'],
+            'phone'      => $contactInfo['phone'],
+            'country'    => $contactInfo['country'],
+        ], 'billing');
+
+        // Устанавливаем способ оплаты
+        $order->set_payment_method($contactInfo['paymentMethod']);
+        $order->calculate_totals();
+
+        // Сохраняем заказ
+        $order->save();
+
+        // E-mail
+        // Отправка email на несколько почтовых адресов
+        $to = ['gtsv.market@gmail.com', 'thedenbit2004@gmail.com']; // Укажите здесь почтовые адреса
+        $subject = 'Европейский сайт - Корзина';
+
+        // Подсчитываем итоговое количество товаров и общую сумму
+        $total_quantity = 0;
+        $total_price = 0;
+
+        foreach ($cart as $item) {
+            $total_quantity += $item['quantity'];
+            $total_price += $item['quantity'] * $item['price'];
+        }
+
+        // Формирование HTML-сообщения
+        $message = "
+        <html>
+        <head>
+        <title>Новый заказ на сайте</title>
+        <style>
+            body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            }
+            .order-details {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            }
+            .order-details th, .order-details td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddd;
+            }
+            .order-details th {
+            text-align: left;
+            background-color: #f1f1f1;
+            }
+            .order-details tr:last-child td {
+            border-bottom: none;
+            }
+            .order-contact th {
+            text-align: left;
+            }
+        </style>
+        </head>
+        <body>
+        <h2>Заказ:</h2>
+        <p><strong>Данные заказчика:</strong></p>
+        <table class='order-contact'>
+            <tr>
+            <th>Имя:</th>
+            <td>{$contactInfo['name']}</td>
+            </tr>
+            <tr>
+            <th>Телефон:</th>
+            <td>{$contactInfo['phone']}</td>
+            </tr>
+            <tr>
+            <th>Электронная почта:</th>
+            <td>{$contactInfo['email']}</td>
+            </tr>
+            <tr>
+            <th>Страна:</th>
+            <td>{$contactInfo['country']}</td>
+            </tr>
+            <tr>    
+            <th>Способ оплаты:</th>
+            <td>{$contactInfo['paymentMethod']}</td>
+            </tr>
+        </table>
+
+        <p><strong>Товары в заказе:</strong></p>
+        <table class='order-details'>
+            <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Цена</th>
+            </tr>
+            </thead>
+            <tbody>";
+
+        foreach ($cart as $item) {
+            $message .= "
+            <tr>
+            <td>{$item['name']}</td>
+            <td>{$item['quantity']}</td>
+            <td>{$item['price']} $.</td>
+            </tr>";
+        }
+
+        $message .= "
+            </tbody>
+        </table>
+
+        <p><strong>Итого:</strong></p>
+        <p>Общее количество товаров: {$total_quantity}</p>
+        <p>Общая сумма: {$total_price} $.</p>
+        </body>
+        </html>";
+
+        // Указываем, что сообщение будет в формате HTML
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+        ];
+
+        // Отправка email
+        wp_mail($to, $subject, $message, $headers);
+        // E-mail
+
+        // Ответ с успешным статусом и URL для редиректа
+        $redirect_url = home_url('/shopping-cart-successful'); // Путь к странице успешного оформления заказа
+        wp_send_json_success([
+            'message' => 'Заказ успешно создан!',
+            'redirect_url' => $redirect_url,
+        ]);
+    } catch (Exception $e) {
+        wp_send_json_error(['message' => 'Ошибка при создании заказа: ' . $e->getMessage()]);
+    }
+}
+
 add_action('wp_ajax_woocommerce_product_search', 'handle_product_search');
 add_action('wp_ajax_nopriv_woocommerce_product_search', 'handle_product_search');
 
@@ -316,7 +497,8 @@ function handle_product_search()
 add_action('wp_ajax_get_cart_details', 'get_cart_details');
 add_action('wp_ajax_nopriv_get_cart_details', 'get_cart_details');
 
-function get_cart_details() {
+function get_cart_details()
+{
     if (!isset($_POST['product_ids']) || empty($_POST['product_ids'])) {
         wp_send_json_error(['message' => 'Нет ID товаров.']);
     }
@@ -369,10 +551,11 @@ add_filter('template_include', function ($template) {
     return $template;
 });
 
-add_filter( 'use_block_editor_for_post_type', 'art_enable_rest_for_product', 10, 2 );
-add_filter( 'woocommerce_taxonomy_args_product_cat', 'art_show_in_rest_for_product', 10, 1 );
-add_filter( 'woocommerce_taxonomy_args_product_tag', 'art_show_in_rest_for_product', 10, 1 );
-add_filter( 'woocommerce_register_post_type_product', 'art_show_in_rest_for_product', 10, 1 );
+// Включение редактора Gutenberg для товаров
+add_filter('use_block_editor_for_post_type', 'art_enable_rest_for_product', 10, 2);
+add_filter('woocommerce_taxonomy_args_product_cat', 'art_show_in_rest_for_product', 10, 1);
+add_filter('woocommerce_taxonomy_args_product_tag', 'art_show_in_rest_for_product', 10, 1);
+add_filter('woocommerce_register_post_type_product', 'art_show_in_rest_for_product', 10, 1);
 
 /**
  * Включение редактора Gutenberg для товаров
@@ -387,13 +570,14 @@ add_filter( 'woocommerce_register_post_type_product', 'art_show_in_rest_for_prod
  * @author        Artem Abramovich
  * @testedwith    WC 3.9
  */
-function art_enable_rest_for_product( $can_edit, $post_type ) {
+function art_enable_rest_for_product($can_edit, $post_type)
+{
 
-	if ( 'product' === $post_type ) {
-		$can_edit = true;
-	}
+    if ('product' === $post_type) {
+        $can_edit = true;
+    }
 
-	return $can_edit;
+    return $can_edit;
 }
 
 /**
@@ -408,9 +592,10 @@ function art_enable_rest_for_product( $can_edit, $post_type ) {
  * @author        Artem Abramovich
  * @testedwith    WC 3.9
  */
-function art_show_in_rest_for_product( $args ) {
+function art_show_in_rest_for_product($args)
+{
 
-	$args['show_in_rest'] = true;
+    $args['show_in_rest'] = true;
 
-	return $args;
+    return $args;
 }
