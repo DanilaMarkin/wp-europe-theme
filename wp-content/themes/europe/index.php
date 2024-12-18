@@ -17,12 +17,20 @@ europe_get_header();
         <?php
         $img_banner = get_field("img_banner");
         if ($img_banner) {
-            $img_banner_url = $img_banner["url"];
+            $img_banner_id = $img_banner["ID"];
             $img_banner_alt = $img_banner["alt"] ?: "banner";
             $img_banner_title = $img_banner["title"];
+
+            // Получаем URLы для разных размеров
+            $img_banner_medium = wp_get_attachment_image_url($img_banner_id, 'medium'); // Мобильная версия
+            $img_banner_large = wp_get_attachment_image_url($img_banner_id, 'large'); // Десктопная версия
         }
         ?>
-        <img src="<?= $img_banner_url; ?>" title="<?= $img_banner_title; ?>" alt="<?= $img_banner_alt; ?>">
+        <img src="<?= esc_url($img_banner_medium); ?>"
+            srcset="<?= esc_url($img_banner_medium); ?> 768w, <?= esc_url($img_banner_large); ?> 1024w"
+            sizes="(max-width: 768px) 100vw, 1024px"
+            title="<?= $img_banner_title; ?>"
+            alt="<?= $img_banner_alt; ?>">
     </div>
     <aside id="contactPopup" aria-label="Contact us">
         <div class="contact-popup-blocks">
@@ -202,7 +210,8 @@ europe_get_header();
                                             $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
                                             $title_text = get_the_title($thumbnail_id);
                                             ?>
-                                            <img src="<?php echo wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                                            <img src="<?php echo wp_get_attachment_image_url($thumbnail_id, 'thumbnail'); ?>"
+                                                srcset="<?php echo wp_get_attachment_image_srcset($thumbnail_id); ?>"
                                                 alt="<?php echo esc_attr($alt_text ?: $product->get_name()); ?>"
                                                 title="<?php echo esc_attr($title_text ?: $product->get_name()); ?>"
                                                 class="products-blocks-card-preview-image">

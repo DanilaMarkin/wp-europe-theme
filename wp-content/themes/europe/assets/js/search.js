@@ -72,6 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
                   </div>
               </li>`;
             });
+
+            // Добавляем обработчик для кнопки "View All"
+            viewAll.addEventListener("click", function () {
+              if (query.length > 1) {
+                  window.location.href = `/search-results/?query=${encodeURIComponent(query)}`;
+              }
+          });
+
           } else {
             resultSearch.classList.add("hidden"); // Скрываем список результатов
             viewAll.classList.add("hidden"); // Скрываем список результатов

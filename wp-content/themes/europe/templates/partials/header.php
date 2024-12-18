@@ -21,9 +21,9 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 <div class="header-blocks container">
                     <div class="header-block-main">
                         <nav class="header-block-main-menu">
-                            <button id="menuToogle" title="Open menu">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu icon">
-                                Menu
+                            <button id="menuToogle" class="menu-toggle-button" title="Open Menu" aria-label="Open Menu">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu Icon">
+                                <span class="menu-toggle-text">Menu</span>
                             </button>
                         </nav>
                         <nav class="header-block-main-general">
@@ -44,23 +44,41 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     <div class="header-block-social">
                         <ul class="header-block-social-list">
                             <li>
-                                <a href="" title="Telegram">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram.svg" alt="Telegram icon">
+                                <a href="https://t.me/<?php echo esc_attr($phone_number); ?>"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
+                                    aria-label="Contact us on Telegram">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram.svg"
+                                        alt="Telegram icon to contact us">
                                 </a>
                             </li>
                             <li>
-                                <a href="" title="WhatsApp">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="WhatsApp icon">
+                                <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
+                                    aria-label="Message us on WhatsApp">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
+                                        alt="WhatsApp icon to message us">
                                 </a>
                             </li>
                             <li>
-                                <a href="" title="Call us">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg" alt="Phone icon">
+                                <a href="tel:<?php echo esc_attr($phone_number); ?>"
+                                    title="Call us at <?php echo esc_attr($phone_number); ?>"
+                                    aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg"
+                                        alt="Phone icon to call us">
                                 </a>
                             </li>
                             <li>
-                                <a href="" title="Send an email">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="Mail icon">
+                                <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
+                                    aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
+                                        alt="Email icon to contact us">
                                 </a>
                             </li>
                         </ul>
@@ -87,11 +105,11 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     <div class="nav-blocks-detail">
                         <div class="nav-blocks-cart-search">
                             <input type="search" name="" id="" placeholder="Search on the Site" class="nav-blocks-detail-search-input">
-                            <img id="searchToogle" src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search icon">
+                            <img id="searchToogle" src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search Icon" title="Search" aria-label="Search">
                         </div>
                         <div class="nav-block-cart">
                             <a href="<?= get_permalink(258); ?>" title="Go to cart" class="nav-block-cart-link">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="Cart icon" class="nav-block-cart-img">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" class="nav-block-cart-img" alt="Shopping Cart Icon" title="View Cart" aria-label="Shopping Cart">
                             </a>
                             <span class="nav-block-cart-count">0</span>
                         </div>
@@ -100,12 +118,12 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             </nav>
         </div>
         <aside id="sideMenu" aria-label="Site navigation">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="menu-close">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close Menu" class="menu-close">
             <div class="menu-blocks">
                 <div class="menu-blocks-header">
-                    <button class="menu-blocks-header-btn-general active menu-blocks-header-categories">Categories</button>
+                    <button class="menu-blocks-header-btn-general active menu-blocks-header-categories" aria-label="Categories section">Categories</button>
                     <span>|</span>
-                    <button class="menu-blocks-header-btn-general menu-blocks-header-brands">Brands</button>
+                    <button class="menu-blocks-header-btn-general menu-blocks-header-brands" aria-label="Brands section">Brands</button>
                 </div>
                 <?php
                 wp_nav_menu(array(
@@ -161,23 +179,37 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 </ul>
                 <ul class="menu-blocks-social-blocks">
                     <li>
-                        <a href="#">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                        <a href="tel:<?php echo esc_attr($phone_number); ?>"
+                            title="Call us at <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Phone icon to call us">
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="">
+                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Message us on WhatsApp">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="WhatsApp icon to message us">
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Contact us on Telegram">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Telegram icon to contact us">
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                        <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
+                            aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Email icon to contact us">
                         </a>
                     </li>
                 </ul>
@@ -187,10 +219,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <div class="search-popup-blocks container">
                 <div class="search-popup-block">
                     <div class="search-popup-block-action">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="" class="search-popup-block-icon">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" title="Search" aria-label="Search" alt="Search icon Popup" class="search-popup-block-icon">
                         <input type="search" placeholder="Search on the Site" class="search-popup-block-inlet">
                     </div>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="search-popup-block-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" title="Close Popup" aria-label="Close Popup" alt="Close Search Popup" class="search-popup-block-close">
                 </div>
                 <div class="search-popup-block-results">
                     <p class="search-popup-block-results-header-empty hidden">No results were found for your request</p>

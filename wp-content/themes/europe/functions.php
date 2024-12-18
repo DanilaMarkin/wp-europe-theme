@@ -18,22 +18,26 @@ function enqueue_custom_scripts()
 {
     wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
     wp_enqueue_script('store-script', get_template_directory_uri() . '/assets/js/store.js', array('jquery'), null, true);
-    wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
+
+    if (is_page([258, 262])) {
+        wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
+
+        // Добавляем ajaxurl для использования в JavaScript
+        wp_localize_script('cart-script', 'ajaxObject', [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'pageTitle' => get_the_title(), // Передаем заголовок страницы
+        ]);
+    }
 
     // Подключаем скрипт только на страницах записи
     if (is_front_page() || is_home()) {
         wp_enqueue_script('main-page-script', get_template_directory_uri() . '/assets/js/mainPageForms.js', ['jquery'], null, true);
+
         // Добавляем ajaxurl и дополнительные данные для main-page-script
         wp_localize_script('main-page-script', 'ajaxObject', [
             'ajaxurl' => admin_url('admin-ajax.php'),
         ]);
     }
-
-    // Добавляем ajaxurl для использования в JavaScript
-    wp_localize_script('cart-script', 'ajaxObject', [
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'pageTitle' => get_the_title(), // Передаем заголовок страницы
-    ]);
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
@@ -629,6 +633,7 @@ add_filter('theme_page_templates', function ($templates) {
     $templates['templates/pages/payment.php'] = 'Payment and Delivery';
     $templates['templates/pages/about.php'] = 'About Us';
     $templates['templates/pages/contacts.php'] = 'Contacts';
+    $templates['templates/pages/search-results.php'] = 'Search Results';
     $templates['templates/orders/cart.php'] = 'Cart';
     $templates['templates/orders/success.php'] = 'Cart Success';
     return $templates;

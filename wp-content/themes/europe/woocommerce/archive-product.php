@@ -39,6 +39,10 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 ?>
     <style>
         /* --------------START category-blocks-cards-------------- */
+        .archive-product {
+            flex-grow: 1;
+        }
+
         .category-blocks-cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -361,7 +365,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         /* --------------END responsive style-------------- */
     </style>
 
-    <main class="container">
+    <main class="archive-product container">
         <section class="category-banner">
             <?php if ($category->name) { ?>
                 <h1 class="category-banner-title"><?= $category->name; ?></h1>
@@ -501,7 +505,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                                         $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
                                         $title_text = get_the_title($thumbnail_id);
                                         ?>
-                                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'thumbnail'); ?>"
+                                            srcset="<?php echo wp_get_attachment_image_srcset($thumbnail_id); ?>"
                                             alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
                                             title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
                                             class="products-blocks-card-preview-image">

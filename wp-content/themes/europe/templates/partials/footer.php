@@ -10,23 +10,41 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <div class="footer-blocks-social">
             <ul class="footer-social-block-list">
                 <li>
-                    <a href="" title="Telegram">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg" alt="Telegram icon">
+                    <a href="https://t.me/<?php echo esc_attr($phone_number); ?>"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
+                        aria-label="Contact us on Telegram">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg"
+                            alt="Telegram icon to contact us">
                     </a>
                 </li>
                 <li>
-                    <a href="" title="WhatsApp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="WhatsApp icon">
+                    <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
+                        aria-label="Message us on WhatsApp">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
+                            alt="WhatsApp icon to message us">
                     </a>
                 </li>
                 <li>
-                    <a href="" title="Call us">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone_footer.svg" alt="Phone icon">
+                    <a href="tel:<?php echo esc_attr($phone_number); ?>"
+                        title="Call us at <?php echo esc_attr($phone_number); ?>"
+                        aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone_footer.svg"
+                            alt="Phone icon to call us">
                     </a>
                 </li>
                 <li>
-                    <a href="" title="Send an email">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="Mail icon">
+                    <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
+                        aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
+                            alt="Email icon to contact us">
                     </a>
                 </li>
             </ul>
@@ -34,22 +52,22 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <div class="footer-blocks-contacts">
             <ul class="footer-blocks-contacts-list">
                 <li>
-                    <a href="tel:<?php echo esc_attr($phone_number); ?>" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Phone number">
+                    <a href="tel:<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Call us at <?php echo esc_attr($global_settings['phone']); ?>">
                         <?php echo esc_html($global_settings['phone']); ?>
                     </a>
-                    <span><?php echo esc_html($global_settings['phone_desc']); ?></span>
+                    <span aria-label="Phone description"><?php echo esc_html($global_settings['phone_desc']); ?></span>
                 </li>
                 <li>
-                    <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email address">
+                    <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" target="_blank" rel="noopener noreferrer" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
                         <?php echo esc_html($global_settings['email']); ?>
                     </a>
-                    <span><?php echo esc_html($global_settings['email_desc']); ?></span>
+                    <span aria-label="Email description"><?php echo esc_html($global_settings['email_desc']); ?></span>
                 </li>
                 <li>
                     <p aria-label="Company Address">
                         <?php echo esc_html($global_settings['address']); ?>
                     </p>
-                    <span><?php echo esc_html($global_settings['address_desc']); ?></span>
+                    <span aria-label="Address description"><?php echo esc_html($global_settings['address_desc']); ?></span>
                 </li>
             </ul>
         </div>
@@ -57,54 +75,72 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
     <div class="bottom-tab-bar">
         <ul class="bottom-tab-bar-lists">
             <li class="bottom-tab-bar-list">
-                <a href="/" class="bottom-tab-bar-list-action">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/home.svg" alt="" class="bottom-tab-bar-list-action-img">
+                <a href="/" class="bottom-tab-bar-list-action" title="Go to Home Page" aria-label="Home Page">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/home.svg" alt="Home Icon" class="bottom-tab-bar-list-action-img">
                     <span class="bottom-tab-bar-list-action-title">Home</span>
                 </a>
             </li>
             <li class="bottom-tab-bar-list">
-                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-catalog">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/catalog.svg" alt="" class="bottom-tab-bar-list-action-img">
+                <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-catalog" title="View Catalog" aria-label="Catalog">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/catalog.svg" alt="Catalog Icon" class="bottom-tab-bar-list-action-img">
                     <span class="bottom-tab-bar-list-action-title">Catalog</span>
                 </button>
             </li>
             <li class="bottom-tab-bar-list">
-                <button href="/" class="bottom-tab-bar-list-action">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/assistant.svg" alt="" class="bottom-tab-bar-list-action-img">
+                <button class="bottom-tab-bar-list-action" title="Open Assistant" aria-label="Assistant">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/assistant.svg" alt="Assistant Icon" class="bottom-tab-bar-list-action-img">
                     <span class="bottom-tab-bar-list-action-title">Assistant</span>
                 </button>
             </li>
             <li class="bottom-tab-bar-list">
-                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-contacts">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/contacts-people.svg" alt="" class="bottom-tab-bar-list-action-img">
+                <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-contacts" title="Open Contacts" aria-label="Contacts">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/contacts-people.svg" alt="Contacts Icon" class="bottom-tab-bar-list-action-img">
                     <span class="bottom-tab-bar-list-action-title">Contacts</span>
                 </button>
                 <ul class="bottom-tab-bar-list-contacts">
                     <li>
-                        <a href="">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg" alt="">
+                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Contact us on Telegram">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg"
+                                alt="Telegram icon to contact us">
                         </a>
                     </li>
                     <li>
-                        <a href="">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Message us on WhatsApp">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
+                                alt="WhatsApp icon to message us">
                         </a>
                     </li>
                     <li>
-                        <a href="">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg" alt="">
+                        <a href="tel:<?php echo esc_attr($phone_number); ?>"
+                            title="Call us at <?php echo esc_attr($phone_number); ?>"
+                            aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone_footer.svg"
+                                alt="Phone icon to call us">
                         </a>
                     </li>
                     <li>
-                        <a href="">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg" alt="">
+                        <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
+                            aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
+                                alt="Email icon to contact us">
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="bottom-tab-bar-list">
-                <button href="/" class="bottom-tab-bar-list-action bottom-tab-bar-list-action-more">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/more.svg" alt="" class="bottom-tab-bar-list-action-img">
+                <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-more" title="View More Options" aria-label="More">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/more.svg" alt="More Options Icon" class="bottom-tab-bar-list-action-img">
                     <span class="bottom-tab-bar-list-action-title">More</span>
                 </button>
             </li>
