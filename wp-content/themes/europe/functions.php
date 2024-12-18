@@ -20,6 +20,15 @@ function enqueue_custom_scripts()
     wp_enqueue_script('store-script', get_template_directory_uri() . '/assets/js/store.js', array('jquery'), null, true);
     wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
 
+    // Подключаем скрипт только на страницах записи
+    if (is_front_page() || is_home()) {
+        wp_enqueue_script('main-page-script', get_template_directory_uri() . '/assets/js/mainPageForms.js', ['jquery'], null, true);
+        // Добавляем ajaxurl и дополнительные данные для main-page-script
+        wp_localize_script('main-page-script', 'ajaxObject', [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+        ]);
+    }
+
     // Добавляем ajaxurl для использования в JavaScript
     wp_localize_script('cart-script', 'ajaxObject', [
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -27,7 +36,6 @@ function enqueue_custom_scripts()
     ]);
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
-
 
 function enqueue_search_script()
 {
@@ -59,7 +67,7 @@ function europe_get_footer()
     get_template_part('templates/partials/footer');
 }
 
-// Автозагрузка классов (если используете автозагрузку)
+// Автозагрузка классов
 function include_custom_walkers()
 {
     require_once get_template_directory() . '/includes/walkers/custom-walker-side-menu.php';
@@ -99,7 +107,6 @@ function custom_breadcrumbs()
 
     $position = 2;
 
-    // Хлебные крошки для категории продукта WooCommerce
     // Хлебные крошки для категории продукта WooCommerce
     if (is_product_category()) {
         $category = get_queried_object();
@@ -521,6 +528,101 @@ function get_cart_details()
 
     wp_send_json_success($products);
 }
+
+// Отправка с модального окна контакты на почты
+function send_form_contact_to_mail()
+{
+    $site = $_SERVER['HTTP_HOST'];
+
+    // Получаем данные из формы и очищаем их
+    $phone = sanitize_text_field($_POST["form"]["phone"]);
+    $name = sanitize_text_field($_POST["form"]["name"]);
+
+    // Почтовые адреса для отправки
+    $to = ['gtsv.market@gmasil.com', 'thedenbit2004@gmail.com'];
+    $subject = 'Европейский сайт - Заявка с контактной формы';
+
+    // Шаблон HTML письма
+    $message = "
+        <html>
+        <head>
+            <title>Европейский сайт - Заявка с контактной формы</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #f9f9f9;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #ffffff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 20px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    text-align: center;
+                    background-color:rgb(0, 0, 0);
+                    color: #ffffff;
+                    padding: 15px 0;
+                    border-radius: 8px 8px 0 0;
+                }
+                .header h1 {
+                    margin: 0;
+                    font-size: 24px;
+                }
+                .content {
+                    padding: 15px;
+                }
+                .content p {
+                    margin: 10px 0;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: #777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <h1>{$site}</h1>
+                </div>
+                <div class='content'>
+                    <p><strong>Имя:</strong> {$name}</p>
+                    <p><strong>Телефон:</strong> {$phone}</p>
+                </div>
+                <div class='footer'>
+                    Это сообщение было отправлено с контактной формы на сайте {$site}.
+                </div>
+            </div>
+        </body>
+        </html>
+    ";
+
+    // Заголовки для отправки email в формате HTML
+    $headers = [
+        'Content-Type: text/html; charset=UTF-8',
+    ];
+
+    // Отправка email
+    wp_mail($to, $subject, $message, $headers);
+
+    wp_send_json_success([
+        'message' => 'Заказ успешно создан!',
+    ]);
+    // Завершение обработки для AJAX
+    wp_die();
+}
+
+add_action('wp_ajax_send_form_contact_to_mail', 'send_form_contact_to_mail');
+add_action('wp_ajax_nopriv_send_form_contact_to_mail', 'send_form_contact_to_mail');
+// Отправка с модального окна контакты на почты
 
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны

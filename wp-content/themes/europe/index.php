@@ -33,16 +33,16 @@ europe_get_header();
                 </button>
             </div>
             <div class="contact-popup-blocks-form">
-                <form action="">
+                <form id="contactForm">
                     <p class="contact-popup-blocks-form-head">Provide your phone number for contact or contact us yourself</p>
                     <div class="contact-popup-blocks-form-action">
-                        <input type="tel" placeholder="+7 (999) 999 99 99" name="" id="">
-                        <input type="text" placeholder="Name" name="" id="">
+                        <input type="tel" placeholder="+7 (999) 999 99 99" name="phone" id="phoneContact">
+                        <input type="text" placeholder="Name" name="name" id="nameContact">
                         <button class="contact-popup-blocks-form-action-btn" aria-label="Press to Contact me button">Contact me</button>
                     </div>
                     <div class="custom-checkbox-wrapper">
-                        <label class="custom-checkbox-label">
-                            <input type="checkbox" class="custom-checkbox">
+                        <label id="contactLabelCheckbox" class="custom-checkbox-label">
+                            <input id="contactCheckbox" type="checkbox" class="custom-checkbox">
                             <span class="custom-check-icon"></span>
                             <div class="custom-checkbox-label-text-agree">
                                 I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
@@ -72,6 +72,9 @@ europe_get_header();
                         </li>
                     </ul>
                 </form>
+                <div id="loaderContact" class="loader-blocks-contact hidden">
+                    <span class="loader"></span>
+                </div>
             </div>
         </div>
     </aside>

@@ -102,7 +102,7 @@ function emptyCart() {
     formCart.classList.add("hidden");
     totalCart.classList.add("hidden");
     headerCartEmpty.innerHTML = `
-            <h1 class="cart-title"><?= the_title(); ?></h1>
+            <h1 class="cart-title">Shopping Cart</h1>
             <p class="cart-descr">Your cart is empty. Browse our products to find something you’ll love!</p>
             <a href="/" class="cart-back-to-shopping" title="Go back to the homepage">Back to shopping</a>
         `;
@@ -361,8 +361,7 @@ document.getElementById("checkout").addEventListener("click", (event) => {
         },
       },
       success: function (response) {
-        console.log(response); // Логируем весь ответ, чтобы увидеть, что приходит от сервера
-
+        
         if (response.success) {
           // Очистка корзины в локальном хранилище или сессии
           localStorage.removeItem("cart"); // Если корзина хранится в localStorage
