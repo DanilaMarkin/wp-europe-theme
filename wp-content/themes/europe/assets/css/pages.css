@@ -5,6 +5,10 @@
   margin: 47px 0 40px 0;
 }
 
+.page-content-main {
+  flex-grow: 1;
+}
+
 .page-content
   p:not(
     .contacts-content-social-list-head,
