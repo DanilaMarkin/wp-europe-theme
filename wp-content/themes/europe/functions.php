@@ -220,14 +220,20 @@ function filter_products_sort()
 {
     if (isset($_GET['sort'])) {
         $sort = sanitize_text_field($_GET['sort']);
+        $category = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 
-        // WP_Query параметры для сортировки
-        $args = array(
+        // Логика фильтрации
+        $args = [
             'post_type' => 'product',
             'posts_per_page' => -1,
-            'orderby' => 'date', // Сортировка по дате по умолчанию
-            'order' => 'DESC'
-        );
+            'tax_query' => [
+                [
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'term_id',
+                    'terms'    => $category,
+                ],
+            ],
+        ];
 
         // Изменение параметров сортировки в зависимости от выбранного варианта
         if ($sort == 'price_asc') {

@@ -237,7 +237,13 @@ function applySort(sortType, sortText) {
 
   const ajaxUrl = filterSortBtn.getAttribute("data-url");
   const url = new URL(ajaxUrl);
-  const params = { action: "filter_products_sort", sort: sortType };
+  const categoryId = url.searchParams.get("category_id") || 0;
+
+  const params = { 
+    action: "filter_products_sort", 
+    sort: sortType, 
+    category_id: categoryId 
+  };
   url.search = new URLSearchParams(params).toString();
 
   fetch(url)

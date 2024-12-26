@@ -250,6 +250,7 @@ body {
 }
 
 .products-blocks-card-preview {
+  display: block;
   text-align: center;
   outline: 1px solid #7d7d7d;
   border-radius: 20px;

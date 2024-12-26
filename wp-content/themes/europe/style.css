@@ -96,6 +96,7 @@ Text Domain: europe
 
   .product-info__cta h4 {
     font-size: 15px;
+    margin-bottom: 10px;
   }
 }
 /* --------------END custom product description-------------- */

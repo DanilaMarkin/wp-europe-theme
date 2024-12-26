@@ -379,9 +379,16 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         <section class="category-blocks">
             <div class="filter-head-mob">
                 <div class="filter-sort-blocks">
-                    <button class="filter-head-mob-btn filter-sort-btn-mob" data-url="<?php echo admin_url("admin-ajax.php"); ?>">
+                    <?php
+                    // Проверяем, находимся ли мы на странице категории
+                    $current_category_id = is_product_category() ? get_queried_object_id() : 0;
+                    ?>
+                    <button
+                        class="filter-head-mob-btn filter-sort-btn-mob"
+                        data-url="<?php echo admin_url("admin-ajax.php?action=filter_products_sort&category_id=" . $current_category_id); ?>">
                         <p>Default sorting</p>
                     </button>
+
                     <ul class="filter-sort-lists">
                         <li class="filter-sort-list" data-sort="price_asc">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-low.svg" alt="">

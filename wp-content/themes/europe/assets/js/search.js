@@ -63,13 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
             data.slice(0, 4).forEach((product) => {
               resultSearch.innerHTML += `
               <li class="products-blocks-card">
-                  <div class="products-blocks-card-preview">
+                  <a href="${product.url}" class="products-blocks-card-preview">
                       <img src="${product.image}" alt="${product.title}" class="products-blocks-card-preview-image">
                       <div class="search-popup-block-results-info">
                           <p class="products-blocks-card-preview-title">${product.title}</p>
                           <span class="products-blocks-card-preview-price">от ${product.price}</span>
                       </div>
-                  </div>
+                  </a>
               </li>`;
             });
 
