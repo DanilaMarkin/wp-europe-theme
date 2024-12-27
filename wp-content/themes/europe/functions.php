@@ -294,7 +294,7 @@ function filter_products_sort()
                         </button>
                     </div>
                 </li>
-<?php
+            <?php
             endwhile;
         else :
             echo '<p>No products found</p>';
@@ -304,6 +304,95 @@ function filter_products_sort()
     }
     die();
 }
+
+// start function filter_products_by_attributes
+function load_filtered_products()
+{
+    $tax_queries = array();
+
+    // Считываем параметры фильтров из AJAX-запроса
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'filter_') === 0) {
+            $attribute_name = substr($key, 7);
+            $terms = explode(',', $value);
+
+            $tax_queries[] = array(
+                'taxonomy' => 'pa_' . $attribute_name,
+                'field'    => 'slug',
+                'terms'    => $terms,
+                'operator' => 'IN',
+            );
+        }
+    }
+
+    $query_args = array(
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+    );
+
+    if (!empty($tax_queries)) {
+        $query_args['tax_query'] = $tax_queries;
+    }
+
+    $query = new WP_Query($query_args);
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            global $product;
+
+            // Генерация вашей вёрстки для товара
+            ?>
+            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
+                <div class="products-blocks-card-preview">
+                    <a href="<?php the_permalink(); ?>">
+                        <?php
+                        $thumbnail_id = $product->get_image_id();
+                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+                        $title_text = get_the_title($thumbnail_id);
+                        ?>
+                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
+                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
+                            class="products-blocks-card-preview-image">
+                    </a>
+                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
+                    <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
+                </div>
+                <div class="products-blocks-card-btn">
+                    <div class="products-blocks-card-btn-contact-full">
+                        <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
+                        </button>
+                        <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                        </button>
+                    </div>
+                    <div class="products-blocks-card-btn-count">
+                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
+                        <span class="count-number">0</span>
+                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
+                    </div>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                    </button>
+                </div>
+            </li>
+<?php
+        }
+    } else {
+        echo '<p class="category-blocks-cards-empty">No products</p>';
+    }
+
+    wp_reset_postdata();
+    wp_die(); // Завершаем выполнение для AJAX
+}
+add_action('wp_ajax_load_filtered_products', 'load_filtered_products');
+add_action('wp_ajax_nopriv_load_filtered_products', 'load_filtered_products');
+
+// end function filter_products_by_attributes
 
 add_action('wp_ajax_send_cart_to_woocommerce', 'send_cart_to_woocommerce');
 add_action('wp_ajax_nopriv_send_cart_to_woocommerce', 'send_cart_to_woocommerce');

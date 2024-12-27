@@ -57,6 +57,21 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
         }
 
+        .products-blocks {
+            width: 100%;
+        }
+
+        .loader-blocks-category {
+            display: none;
+        }
+
+        .loader-blocks-category.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
         /* --------------END category-blocks-cards-------------- */
 
         /* --------------START category-block-filter-------------- */
@@ -209,9 +224,17 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 gap: 10px;
             }
 
+            .category-blocks-cards-empty {
+                font-size: 12px;
+            }
+
             .category-blocks {
                 flex-direction: column;
                 padding-top: 30px;
+            }
+
+            .loader-blocks-category.active {
+                margin: 30px 0 0 0;
             }
 
             /* --------------END category-blocks-cards-------------- */
@@ -420,86 +443,52 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters"></span>
                 <div class="category-blocks-filter-head-lists">
                     <ul class="category-block-filter-lists">
-                        <li class="category-block-filter-list">
-                            <div class="category-block-filter-list-head">
-                                <p class="category-block-filter-list-title">Brand</p>
-                                <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
-                                    <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
-                                </button>
-                            </div>
-                            <ul class="category-block-filter-list-full">
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Dell</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
+                        <?php
+                        // Получаем все атрибуты для товаров
+                        $attribute_taxonomies = wc_get_attribute_taxonomies();
+                        foreach ($attribute_taxonomies as $attribute) {
+                            // Получаем термины для каждого атрибута
+                            $terms = get_terms(array(
+                                'taxonomy' => 'pa_' . $attribute->attribute_name, // Используем таксономию атрибута
+                                'hide_empty' => true, // Показываем только те термины, которые имеют товары
+                            ));
+
+                            // Если термины существуют, генерируем фильтр
+                            if (!empty($terms) && !is_wp_error($terms)) {
+                        ?>
+                                <li class="category-block-filter-list">
+                                    <div class="category-block-filter-list-head">
+                                        <p class="category-block-filter-list-title"><?php echo esc_html($attribute->attribute_label); ?></p>
+                                        <button class="category-block-filter-list-action" aria-controls="<?php echo esc_attr($attribute->attribute_name); ?>-filter">
+                                            <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle <?php echo esc_html($attribute->attribute_label); ?> Filter">
+                                        </button>
+                                    </div>
+                                    <ul class="category-block-filter-list-full">
+                                        <?php foreach ($terms as $term) { ?>
+                                            <li>
+                                                <label class="category-block-filter-list-full-subfilter">
+                                                    <p><?php echo esc_html($term->name); ?></p>
+                                                    <input type="checkbox"
+                                                        class="category-block-filter-list-full-subfilter-checkbox"
+                                                        value="<?php echo esc_attr($term->slug); ?>"
+                                                        data-filter="<?php echo esc_attr($attribute->attribute_name); ?>">
+                                                    <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
+                                                </label>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Asus</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Intel</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>AMD</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="category-block-filter-list">
-                            <div class="category-block-filter-list-head">
-                                <p class="category-block-filter-list-title">Brand</p>
-                                <button class="category-block-filter-list-action" aria-expanded="false" aria-controls="brand-filter">
-                                    <img src="<?= get_template_directory_uri() ?>/assets/icons/arrow-list.svg" alt="Toggle Brand Filter">
-                                </button>
-                            </div>
-                            <ul class="category-block-filter-list-full">
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Dell</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Asus</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>Intel</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="category-block-filter-list-full-subfilter">
-                                        <p>AMD</p>
-                                        <input type="checkbox" class="category-block-filter-list-full-subfilter-checkbox">
-                                        <span class="category-block-filter-list-full-subfilter-checkbox-icon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
+                        <?php
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>
             </aside>
             <section class="products-blocks">
+                <div class="loader-blocks-category">
+                    <span class="loader"></span>
+                </div>
                 <?php if ($products->have_posts()) : ?>
                     <ul class="general-main-products-blocks-cards category-blocks-cards">
                         <?php while ($products->have_posts()) : $products->the_post();

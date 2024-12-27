@@ -239,10 +239,10 @@ function applySort(sortType, sortText) {
   const url = new URL(ajaxUrl);
   const categoryId = url.searchParams.get("category_id") || 0;
 
-  const params = { 
-    action: "filter_products_sort", 
-    sort: sortType, 
-    category_id: categoryId 
+  const params = {
+    action: "filter_products_sort",
+    sort: sortType,
+    category_id: categoryId,
   };
   url.search = new URLSearchParams(params).toString();
 
@@ -274,6 +274,63 @@ function applySort(sortType, sortText) {
     })
     .catch((error) => console.error("Ошибка при загрузке:", error));
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const checkboxes = document.querySelectorAll(
+    ".category-block-filter-list-full-subfilter-checkbox"
+  );
+  const productsContainer = document.querySelector(
+    ".general-main-products-blocks-cards"
+  ); // Убедитесь, что у контейнера с продуктами есть этот класс.
+  const loaderCategory = document.querySelector(".loader-blocks-category");
+
+  checkboxes.forEach(function (checkbox) {
+    checkbox.addEventListener("change", function () {
+      const selectedFilters = {};
+
+      checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+          const attribute = checkbox.getAttribute("data-filter");
+          const value = checkbox.value;
+
+          if (!selectedFilters[attribute]) {
+            selectedFilters[attribute] = [];
+          }
+
+          selectedFilters[attribute].push(value);
+        }
+      });
+
+      // Формируем строку запроса для фильтров
+      const queryData = new URLSearchParams();
+
+      for (const [key, values] of Object.entries(selectedFilters)) {
+        queryData.append("filter_" + key, values.join(","));
+      }
+
+      loaderCategory.classList.add("active");
+      productsContainer.classList.add("hidden");
+
+      // Отправляем AJAX-запрос
+      fetch("/wp-admin/admin-ajax.php?action=load_filtered_products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: queryData.toString(),
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          loaderCategory.classList.remove("active");
+          productsContainer.classList.remove("hidden");
+          // Обновляем контейнер с продуктами
+          productsContainer.innerHTML = html;
+          initializeProductEvents();
+        })
+        .catch((error) => console.error("Ошибка при фильтрации:", error));
+    });
+  });
+});
 
 // Инициализация при первой загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
