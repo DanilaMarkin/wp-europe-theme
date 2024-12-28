@@ -16,7 +16,11 @@ europe_get_header();
                 <li>
                     <p>B2B Price</p>
                     <div class="product-single-header-prices-item">
-                        <span><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
+                        <?php if (get_post_meta(get_the_ID(), '_price', true)) { ?>
+                            <span><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
+                        <?php } else { ?>
+                            <span>-</span>
+                        <?php } ?>
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
                     <!-- popup notification -->
@@ -71,7 +75,7 @@ europe_get_header();
             <?php
             $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
             $gallery_ids = explode(',', $gallery);
-                
+
             if (!empty($gallery_ids)) {
                 echo '
                 <div class="thumbnail-gallery-wrapper">
@@ -79,14 +83,21 @@ europe_get_header();
                         <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="">
                     </button>
                         <ul class="thumbnail-gallery">
+                            <li class="thumbnail-gallery-item">
+                                <figure>
+                                    <img src="' . get_the_post_thumbnail_url(get_the_ID(), "large") . '"
+                                    alt="' . esc_attr(get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true)) . '"
+                                    title="' . esc_attr(get_the_title($thumbnail_id)) . '"
+                                    loading="lazy">
+                                </figure>
+                            </li>
                 ';
                 foreach ($gallery_ids as $attachment_id) {
                     $image_url = wp_get_attachment_url($attachment_id);
                     $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
-
                     echo '<li class="thumbnail-gallery-item">
-                        <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
-                    </li>';
+                            <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
+                        </li>';
                 }
                 echo '
                         </ul>
@@ -113,13 +124,15 @@ europe_get_header();
             <section class="configuration">
                 <div class="container">
                     <h2 class="configuration-title"><?= $section["title"] ?: "Default"; ?></h2>
-                    <ul class="config-items">
+                    <div class="config-items">
                         <?php foreach ($section['configs'] as $config) { ?>
-                            <li class="config-item">
+                            <button class="config-item"
+                                aria-label="Select configuration <?= $config; ?>"
+                                title="Select configuration <?= $config; ?>">
                                 <?= $config; ?>
-                            </li>
+                            </button>
                         <?php } ?>
-                    </ul>
+                    </div>
                 </div>
             </section>
     <?php
@@ -265,10 +278,7 @@ europe_get_header();
         galleryItems.forEach((item) => {
             item.addEventListener("click", () => {
                 const galleryItem = item.querySelector("figure img");
-                const originalSrcMain = mainImage.src;
-
                 mainImage.src = galleryItem.src;
-                galleryItem.src = originalSrcMain;
             });
         });
     }
@@ -277,6 +287,12 @@ europe_get_header();
     const arrowLeft = document.querySelector(".arrow-left");
     const arrowRight = document.querySelector(".arrow-right");
     const gallery = document.querySelector(".thumbnail-gallery");
+
+    let isDragging = false; // Флаг для отслеживания удержания мыши
+    let startX = 0,
+        startY = 0,
+        scrollStartX = 0,
+        scrollStartY = 0;
 
     // Функция определения ориентации
     function isVerticalMode() {
@@ -321,6 +337,59 @@ europe_get_header();
         updateArrows();
     });
 
+    // Свайп для горизонтальной ориентации
+    gallery.addEventListener("touchstart", (e) => {
+        if (isVerticalMode()) {
+            // Вертикальная ориентация
+            startY = e.touches[0].clientY;
+            scrollStartY = gallery.scrollTop;
+        } else {
+            // Горизонтальная ориентация
+            startX = e.touches[0].clientX;
+            scrollStartX = gallery.scrollLeft;
+        }
+    });
+
+    gallery.addEventListener("touchmove", (e) => {
+        if (isVerticalMode()) {
+            // Вертикальная ориентация
+            const deltaY = e.touches[0].clientY - startY;
+            gallery.scrollTop = scrollStartY - deltaY;
+        } else {
+            // Горизонтальная ориентация
+            const deltaX = e.touches[0].clientX - startX;
+            gallery.scrollLeft = scrollStartX - deltaX;
+        }
+    });
+
+    gallery.addEventListener("touchend", () => {
+        updateArrows(); // Обновляем состояние стрелок
+    });
+
+    // События для мыши на ПК
+    gallery.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        scrollStartY = gallery.scrollTop;
+        gallery.style.cursor = "grabbing"; // Меняем курсор на "захват"
+    });
+
+    gallery.addEventListener("mousemove", (e) => {
+        if (isDragging && isVerticalMode()) {
+            const deltaY = e.clientY - startY;
+            gallery.scrollTop = scrollStartY - deltaY;
+        }
+    });
+
+    gallery.addEventListener("mouseup", () => {
+        isDragging = false;
+        gallery.style.cursor = "default"; // Возвращаем стандартный курсор
+    });
+
+    gallery.addEventListener("mouseleave", () => {
+        isDragging = false; // Сбрасываем флаг, если мышь уходит за пределы галереи
+    });
+
     // Обновляем стрелки при загрузке
     updateArrows();
 
@@ -329,7 +398,6 @@ europe_get_header();
 
     // Слушаем изменения размера экрана
     window.addEventListener("resize", updateArrows);
-
 
     // add product in cart
     const notification = document.querySelector("#product-notification");

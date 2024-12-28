@@ -217,7 +217,11 @@ europe_get_header();
                                                 class="products-blocks-card-preview-image">
                                         </a>
                                         <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
-                                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                                        <?php if ($product->get_price_html()) { ?>
+                                            <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                                        <?php } else { ?>
+                                            <span class="products-blocks-card-preview-price">Price On Request</span>
+                                        <?php } ?> 
                                     </div>
                                     <div class="products-blocks-card-btn">
                                         <div class="products-blocks-card-btn-contact-full">

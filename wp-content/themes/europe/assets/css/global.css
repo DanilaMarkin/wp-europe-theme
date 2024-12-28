@@ -763,6 +763,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: start;
+  text-align: left;
   padding: 10px 40px;
   outline: 2px solid #7d7d7d;
   border-radius: 20px;
@@ -770,6 +771,10 @@ body {
   font-weight: 700;
   font-size: 14px;
   color: #7d7d7d;
+}
+
+.config-item:focus {
+  outline: 2px solid #7d7d7d;
 }
 
 .config-item.active {
@@ -872,26 +877,31 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   border: 2px solid #7d7d7d;
   border-radius: 20px;
   max-width: 184px;
   width: 100%;
   flex: 0 0 calc(33.333% - 14px);
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .thumbnail-gallery > li > figure > img {
   padding: 15px 0;
-  width: 120px;
-  height: 120px;
   object-fit: contain;
+  aspect-ratio: 1;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .arrow-left,
 .arrow-right {
   position: absolute;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .arrow-left > img,
@@ -1436,7 +1446,7 @@ body {
   }
 
   .main-image > img {
-    height: 200px;
+    aspect-ratio: 1;
   }
 
   .thumbnail-gallery {
@@ -1450,8 +1460,6 @@ body {
 
   .thumbnail-gallery > li > figure > img {
     padding: 8px 0;
-    width: 100px;
-    height: 100px;
   }
 
   .arrow-left,

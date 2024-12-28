@@ -446,6 +446,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                         <?php
                         // Получаем все атрибуты для товаров
                         $attribute_taxonomies = wc_get_attribute_taxonomies();
+
                         foreach ($attribute_taxonomies as $attribute) {
                             // Получаем термины для каждого атрибута
                             $terms = get_terms(array(
@@ -508,7 +509,11 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                                             class="products-blocks-card-preview-image">
                                     </a>
                                     <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                                    <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
+                                    <?php if ($product->get_price_html()) { ?>
+                                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                                    <?php } else { ?>
+                                        <span class="products-blocks-card-preview-price">Price On Request</span>
+                                    <?php } ?>
                                 </div>
                                 <div class="products-blocks-card-btn">
                                     <div class="products-blocks-card-btn-contact-full">
