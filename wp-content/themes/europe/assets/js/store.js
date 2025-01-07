@@ -28,25 +28,40 @@ function initializeProductEvents() {
 
   // Переключение видимости блоков "Корзина" и "Количество"
   productsBlocksCardBtnCart.forEach((key, value) => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productId = productsBlocksCard[value].getAttribute("data-id"); // Получаем текущий элемент товара
+    const spanCountExisting = document.querySelectorAll(".count-number"); // Для вставки акутального кол-ва товаров
+    let countNumber = 1; // Начальное значение количества
 
-    // Получаем текущий элемент товара
-    const productId = productsBlocksCard[value].getAttribute("data-id");
-    const existingCartinPage = cart.find((item) => item.id === productId);
-    // Для вставки акутального кол-ва товаров
-    const spanCountExisting = document.querySelectorAll(".count-number");
+    // Функция для обновления отображения товара
+    const updateProductDisplay = () => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingCartinPage = cart.find((item) => item.id === productId);
 
-    if (existingCartinPage) {
-      // Если товар уже в корзине, показываем блок "Количество" и скрываем "Корзина"
-      productsBlocksCardBtnContact[value].classList.add("hidden");
-      productsBlocksCardBtnCount[value].classList.add("open");
-      spanCountExisting[value].textContent = existingCartinPage.count;
-    }
-
+      if (existingCartinPage) {
+        // Если товар уже в корзине, показываем блок "Количество" и скрываем "Корзина"
+        productsBlocksCardBtnContact[value].classList.add("hidden");
+        productsBlocksCardBtnCount[value].classList.add("open");
+        spanCountExisting[value].textContent = existingCartinPage.count;
+      } else {
+        spanCountExisting[value].textContent = countNumber;
+      }
+    }  
+    
     key.addEventListener("click", () => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingCartinPage = cart.find((item) => item.id === productId);
+      const currentCount = parseInt(spanCountExisting[value].textContent) || 0;
+
       // Переключение видимости при клике
       productsBlocksCardBtnContact[value].classList.toggle("hidden");
       productsBlocksCardBtnCount[value].classList.toggle("open");
+
+      if (!existingCartinPage && currentCount >= 1) {
+         // Добавляем в корзину и обновляем её
+        addProductToCart(productId, countNumber);
+        updateCartQuantity();
+      }
+
       if (
         productsBlocksCardBtnContactFull[value].classList.contains("open") &&
         !productsBlocksCardBtnContact[value].classList.contains("hidden")
@@ -55,6 +70,8 @@ function initializeProductEvents() {
         productsBlocksCardBtnContact[value].classList.add("hidden");
       }
     });
+
+    updateProductDisplay(); // Первичная установка отображения
   });
 
   // Открытие блока "Контакты"
@@ -75,14 +92,6 @@ function initializeProductEvents() {
 
     // Получаем информацию о товаре
     const productId = productsBlocksCard[index].getAttribute("data-id");
-    const image = productsBlocksCardPreviewImage[index].src; // Получаем URL изображения
-    const title = productsBlocksCardPreviewTitle[index].textContent; // Получаем название товара
-    const price = parseFloat(
-      productsBlocksCardPreviewPrice[index].textContent.replace(
-        /[^0-9.-]+/g,
-        ""
-      )
-    ); // Получаем цену товара
 
     // Уменьшение количества
     productMinus.addEventListener("click", () => {
