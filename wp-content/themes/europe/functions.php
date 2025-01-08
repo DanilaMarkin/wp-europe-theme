@@ -801,3 +801,72 @@ function art_show_in_rest_for_product($args)
 
     return $args;
 }
+
+// START additional price in page product
+// Добавляем дополнительные поля на страницу редактирования продукта
+add_action('woocommerce_product_options_pricing', function () {
+    echo '<div class="options_group">';
+
+    // Поле "Name Price"
+    woocommerce_wp_text_input([
+        'id'          => '_name_price',
+        'label'       => __('Name Price', 'woocommerce'),
+        'desc_tip'    => true,
+        'description' => __('Введите название цены.', 'woocommerce'),
+    ]);
+
+    // Поле "Code Excel"
+    woocommerce_wp_text_input([
+        'id'          => '_code_excel',
+        'label'       => __('Code Excel', 'woocommerce'),
+        'desc_tip'    => true,
+        'description' => __('Введите код Excel.', 'woocommerce'),
+    ]);
+
+    // Поле "Price Message"
+    woocommerce_wp_text_input([
+        'id'          => '_price_message',
+        'label'       => __('Price Message', 'woocommerce'),
+        'desc_tip'    => true,
+        'description' => __('Введите сообщение для цены.', 'woocommerce'),
+    ]);
+
+    echo '</div>';
+});
+
+// Сохраняем данные дополнительных полей
+add_action('woocommerce_process_product_meta', function ($post_id) {
+    if (isset($_POST['_name_price'])) {
+        update_post_meta($post_id, '_name_price', sanitize_text_field($_POST['_name_price']));
+    }
+
+    if (isset($_POST['_code_excel'])) {
+        update_post_meta($post_id, '_code_excel', sanitize_text_field($_POST['_code_excel']));
+    }
+
+    if (isset($_POST['_price_message'])) {
+        update_post_meta($post_id, '_price_message', sanitize_text_field($_POST['_price_message']));
+    }
+});
+
+// Отображение дополнительных полей на странице продукта
+add_action('woocommerce_before_add_to_cart_form', function () {
+    global $product;
+
+    $name_price    = get_post_meta($product->get_id(), '_name_price', true);
+    $code_excel    = get_post_meta($product->get_id(), '_code_excel', true);
+    $price_message = get_post_meta($product->get_id(), '_price_message', true);
+
+    if ($name_price) {
+        echo '<p><strong>' . __('Name Price:', 'woocommerce') . '</strong> ' . esc_html($name_price) . '</p>';
+    }
+
+    if ($code_excel) {
+        echo '<p><strong>' . __('Code Excel:', 'woocommerce') . '</strong> ' . esc_html($code_excel) . '</p>';
+    }
+
+    if ($price_message) {
+        echo '<p><strong>' . __('Price Message:', 'woocommerce') . '</strong> ' . esc_html($price_message) . '</p>';
+    }
+});
+// END additional price in page product

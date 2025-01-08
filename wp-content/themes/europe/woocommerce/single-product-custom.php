@@ -13,20 +13,43 @@ europe_get_header();
 
         <div class="product-single-header-prices">
             <ul class="product-single-header-prices-items">
+                <?php
+                $custom_fields = get_post_meta($post->ID, '_custom_fields_group', true);
+
+                if ($custom_fields) {
+                    foreach ($custom_fields as $custom_field) {
+                ?>
+                        <li>
+                            <p><?= $custom_field["name_price"]; ?></p>
+                            <div class="product-single-header-prices-item">
+                                <span><?= $custom_field["price"]; ?> <?= get_woocommerce_currency_symbol(); ?></span>
+                                <?php
+                                if (isset($custom_field["price_message"])) {
+                                ?>
+                                    <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
+                                <?php } ?>
+                            </div>
+                            <!-- popup notification -->
+                            <?php
+                            if (isset($custom_field["price_message"])) {
+                            ?>
+                                <aside id="notificationPopup" class="notification">
+                                    <p><?= $custom_field["price_message"]; ?></p>
+                                </aside>
+                            <?php } ?>
+                            <!-- popup notification -->
+                        </li>
+                <?php
+                    }
+                }
+                ?>
                 <li>
-                    <p>B2B Price</p>
-                    <div class="product-single-header-prices-item">
-                        <span>$412</span>
-                        <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
-                    </div>
-                    <!-- popup notification -->
-                    <aside id="notificationPopup" class="notification">
-                        <p>Sed ornare dolor mauris mollis mattis lorem est. Dictum. Et adipiscing in amet, molestie faucibus.</p>
-                    </aside>
-                    <!-- popup notification -->
-                </li>
-                <li>
-                    <p>Retail Price</p>
+                    <?php
+                    // Получаем данные метаполей
+                    $name_price    = get_post_meta(get_the_ID(), '_name_price', true);
+                    $price_message = get_post_meta(get_the_ID(), '_price_message', true);
+                    ?>
+                    <p><?= $name_price ?></p>
                     <div class="product-single-header-prices-item ">
                         <?php if (get_post_meta(get_the_ID(), '_price', true)) { ?>
                             <span id="mainPrice"><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
@@ -36,9 +59,13 @@ europe_get_header();
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
                     <!-- popup notification -->
-                    <aside id="notificationPopup" class="notification">
-                        <p>Sed ornare dolor mauris mollis mattis lorem est. Dictum. Et adipiscing in amet, molestie faucibus.</p>
-                    </aside>
+                    <?php
+                    if (isset($price_message)) {
+                    ?>
+                        <aside id="notificationPopup" class="notification">
+                            <p><?= $price_message; ?></p>
+                        </aside>
+                    <?php } ?>
                     <!-- popup notification -->
                 </li>
             </ul>
