@@ -16,11 +16,7 @@ europe_get_header();
                 <li>
                     <p>B2B Price</p>
                     <div class="product-single-header-prices-item">
-                        <?php if (get_post_meta(get_the_ID(), '_price', true)) { ?>
-                            <span><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
-                        <?php } else { ?>
-                            <span>-</span>
-                        <?php } ?>
+                        <span>$412</span>
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
                     <!-- popup notification -->
@@ -32,7 +28,11 @@ europe_get_header();
                 <li>
                     <p>Retail Price</p>
                     <div class="product-single-header-prices-item ">
-                        <span>$412</span>
+                        <?php if (get_post_meta(get_the_ID(), '_price', true)) { ?>
+                            <span id="mainPrice"><?php echo wc_price(get_post_meta(get_the_ID(), '_price', true)); ?></span>
+                        <?php } else { ?>
+                            <span id="mainPrice">-</span>
+                        <?php } ?>
                         <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
                     </div>
                     <!-- popup notification -->
@@ -112,6 +112,9 @@ europe_get_header();
             <div id="product-notification" class="hidden">
                 <span>Item successfully added to cart</span>
             </div>
+            <!-- notification add cart -->
+            <?php get_template_part('templates/notifications/notification-empty'); ?>
+            <!-- notification add cart -->
         </div>
     </section>
 
@@ -407,6 +410,12 @@ europe_get_header();
     const configs = document.querySelector(".config-items"); // Блок конфигураций
     const config = document.querySelectorAll(".config-item"); // Конфигурация
 
+    const notificationEmpty = document.querySelector(".notification-empty"); // Модальное окно об отсутсвие цены у товара
+    const notificationClose = document.querySelector(".notification-empty-close"); // Закрытие модального окна
+
+    const priceText = document.querySelector("#mainPrice").textContent.trim(); // Получаем текст
+    const price = parseFloat(priceText.replace(/[^0-9.]/g, "")); // Убираем все символы, кроме цифр и точки
+
     // Функция для изменения общего кол-ва товаров в корзину
     function updateCartQuantity() {
         // Получаем элемент, который отображает количество товаров в корзине
@@ -451,48 +460,63 @@ europe_get_header();
     }
 
     addBtncart.addEventListener("click", () => {
-        const count = 1; // Устанавливаем количество товаров, например 1, при добавлении в корзину
+        if (!isNaN(price)) {
+            const count = 1; // Устанавливаем количество товаров, например 1, при добавлении в корзину
 
-        // Если на странице есть выбор конфигураций
-        if (configs) {
-            // Проверяем, есть ли хотя бы один элемент с классом "active"
-            const hasActive = Array.from(config).some(item => item.classList.contains("active"));
+            // Если на странице есть выбор конфигураций
+            if (configs) {
+                // Проверяем, есть ли хотя бы один элемент с классом "active"
+                const hasActive = Array.from(config).some(item => item.classList.contains("active"));
 
-            // Если нет активных элементов, добавляем "error" ко всем
-            if (!hasActive) {
+                // Если нет активных элементов, добавляем "error" ко всем
+                if (!hasActive) {
+                    config.forEach((item) => {
+                        if (!item.classList.contains("active")) {
+                            item.classList.add("error");
+                        }
+                    });
+                }
+
                 config.forEach((item) => {
-                    if (!item.classList.contains("active")) {
-                        item.classList.add("error");
+                    // Если нажали на конфигурацию убирать error у всех эл-ов
+                    item.addEventListener("click", () => {
+                        config.forEach((el) => {
+                            el.classList.remove("error");
+                        });
+                    });
+
+                    // У эл-та у которого есть класс active взять зн-ие и добавить в корзину
+                    if (item.classList.contains("active")) {
+                        let configValue = item.textContent;
+                        notification.classList.remove("hidden");
+                        saveCartLocalStorage(cartId, count, configValue); // Сохраняем товар в корзине, передав ID и количество
+                        item.classList.remove("active");
                     }
                 });
+            } else { // Если нет конфигураций на сайте то показыать увед-ие и добавлять товар в корзину
+                notification.classList.remove("hidden");
+                saveCartLocalStorage(cartId, count); // Сохраняем товар в корзине, передав ID и количество
             }
 
-            config.forEach((item) => {
-                // Если нажали на конфигурацию убирать error у всех эл-ов
-                item.addEventListener("click", () => {
-                    config.forEach((el) => {
-                        el.classList.remove("error");
-                    });
+            updateCartQuantity(); // Обновление кол-ва корзины при нажатие на кнопку addBtncart
+
+            setTimeout(() => {
+                notification.classList.add("hidden");
+            }, 5000); // скрывать уведомление спустя 5 сек на сайте
+        } else {
+            // Проверка наличие на модальное окно
+            if (notificationEmpty) {
+                notificationEmpty.classList.add("open");
+                setTimeout(() => {
+                    notificationEmpty.classList.remove("open");
+                }, 5000);
+
+                // Обработчик на закрытие модального окна
+                notificationClose.addEventListener("click", () => {
+                    notificationEmpty.classList.remove("open");
                 });
-
-                // У эл-та у которого есть класс active взять зн-ие и добавить в корзину
-                if (item.classList.contains("active")) {
-                    let configValue = item.textContent;
-                    notification.classList.remove("hidden");
-                    saveCartLocalStorage(cartId, count, configValue); // Сохраняем товар в корзине, передав ID и количество
-                    item.classList.remove("active");
-                }
-            });
-        } else { // Если нет конфигураций на сайте то показыать увед-ие и добавлять товар в корзину
-            notification.classList.remove("hidden");
-            saveCartLocalStorage(cartId, count); // Сохраняем товар в корзине, передав ID и количество
+            }
         }
-
-        updateCartQuantity(); // Обновление кол-ва корзины при нажатие на кнопку addBtncart
-
-        setTimeout(() => {
-            notification.classList.add("hidden");
-        }, 5000); // скрывать уведомление спустя 5 сек на сайте
     });
 
     // switch bt cart and contacts social

@@ -12,12 +12,6 @@ function initializeProductEvents() {
   );
   // Получаем дополнительные данные о товаре
   const productsBlocksCard = document.querySelectorAll(".products-blocks-id");
-  const productsBlocksCardPreviewImage = document.querySelectorAll(
-    ".products-blocks-card-preview-image"
-  );
-  const productsBlocksCardPreviewTitle = document.querySelectorAll(
-    ".products-blocks-card-preview-title"
-  );
   const productsBlocksCardPreviewPrice = document.querySelectorAll(
     ".products-blocks-card-preview-price"
   );
@@ -45,29 +39,53 @@ function initializeProductEvents() {
       } else {
         spanCountExisting[value].textContent = countNumber;
       }
-    }  
-    
+    };
+
+    // Переменные для поиска цены и управление модальным окном
+    const notificationEmpty = document.querySelector(".notification-empty"); // Модальное окно об отсутсвие цены у товара
+    const notificationClose = document.querySelector(".notification-empty-close"); // Закрытие модального окна
+
+    const priceText = productsBlocksCardPreviewPrice[value].textContent.trim(); // Получаем текст
+    const price = parseFloat(priceText.replace(/[^0-9.]/g, "")); // Убираем все символы, кроме цифр и точки
+
     key.addEventListener("click", () => {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const existingCartinPage = cart.find((item) => item.id === productId);
-      const currentCount = parseInt(spanCountExisting[value].textContent) || 0;
+      // Если цена есть, выполнять код ниже
+      if (!isNaN(price)) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingCartinPage = cart.find((item) => item.id === productId);
+        const currentCount =
+          parseInt(spanCountExisting[value].textContent) || 0;
+        // Переключение видимости при клике
+        productsBlocksCardBtnContact[value].classList.toggle("hidden");
+        productsBlocksCardBtnCount[value].classList.toggle("open");
 
-      // Переключение видимости при клике
-      productsBlocksCardBtnContact[value].classList.toggle("hidden");
-      productsBlocksCardBtnCount[value].classList.toggle("open");
+        if (!existingCartinPage && currentCount >= 1) {
+          // Добавляем в корзину и обновляем её
+          addProductToCart(productId, countNumber);
+          updateCartQuantity();
+        }
 
-      if (!existingCartinPage && currentCount >= 1) {
-         // Добавляем в корзину и обновляем её
-        addProductToCart(productId, countNumber);
-        updateCartQuantity();
-      }
+        if (
+          productsBlocksCardBtnContactFull[value].classList.contains("open") &&
+          !productsBlocksCardBtnContact[value].classList.contains("hidden")
+        ) {
+          productsBlocksCardBtnContactFull[value].classList.remove("open");
+          productsBlocksCardBtnContact[value].classList.add("hidden");
+        }
+        // Если нет цены, то выводить модальное окно и удалять через 5 сикунд
+      } else {
+        // Проверка наличие на модальное окно
+        if (notificationEmpty) {
+          notificationEmpty.classList.add("open");
+          setTimeout(() => {
+            notificationEmpty.classList.remove("open");
+          }, 5000);
 
-      if (
-        productsBlocksCardBtnContactFull[value].classList.contains("open") &&
-        !productsBlocksCardBtnContact[value].classList.contains("hidden")
-      ) {
-        productsBlocksCardBtnContactFull[value].classList.remove("open");
-        productsBlocksCardBtnContact[value].classList.add("hidden");
+          // Обработчик на закрытие модального окна
+          notificationClose.addEventListener("click", () => {
+            notificationEmpty.classList.remove("open");
+          });
+        }
       }
     });
 

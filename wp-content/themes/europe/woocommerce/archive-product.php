@@ -540,6 +540,9 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 <?php else : ?>
                     <p>No products found</p>
                 <?php endif; ?>
+                <!-- notification add cart -->
+                <?php get_template_part('templates/notifications/notification-empty'); ?>
+                <!-- notification add cart -->
             </section>
         </section>
     </main>

@@ -221,7 +221,7 @@ europe_get_header();
                                             <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
                                         <?php } else { ?>
                                             <span class="products-blocks-card-preview-price">Price On Request</span>
-                                        <?php } ?> 
+                                        <?php } ?>
                                     </div>
                                     <div class="products-blocks-card-btn">
                                         <div class="products-blocks-card-btn-contact-full">
@@ -257,6 +257,9 @@ europe_get_header();
             echo '<p>No product categories found</p>';
         }
         ?>
+        <!-- notification add cart -->
+        <?php get_template_part('templates/notifications/notification-empty'); ?>
+        <!-- notification add cart -->
     </section>
     <section class="all-categories container">
         <a href="#" class="all-categories-blocks" title="View all categories">

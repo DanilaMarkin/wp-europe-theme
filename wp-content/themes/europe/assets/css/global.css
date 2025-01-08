@@ -319,9 +319,9 @@ body {
 .products-blocks-card-btn-count.open {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
-  padding: 19px 40px 20px 40px;
+  padding: 19px 0 20px 0;
   outline: 1px solid #7d7d7d;
   border-radius: 20px;
 }
@@ -1053,6 +1053,46 @@ body {
 }
 /* --------------END single-produt-custom.php-------------- */
 
+/* --------------START notification add cart-------------- */
+.notification-empty {
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+  z-index: 1000;
+  max-width: 300px;
+  width: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.notification-empty.open {
+  opacity: 1;
+  transform: translateX(-20px);
+}
+
+.notification-empty-text {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.notification-empty-close {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.notification-empty-close-img {
+  filter: brightness(0) saturate(100%);
+  width: 20px;
+}
+/* --------------END notification add cart-------------- */
+
 /* --------------START responsive style-------------- */
 @media (max-width: 768px) {
   /* --------------START banner-------------- */
@@ -1224,7 +1264,7 @@ body {
   }
 
   .products-blocks-card-btn-count.open {
-    padding: 8px 40px 8px 40px;
+    padding: 8px 0 8px 0;
     border-radius: 10px;
   }
 
@@ -1612,5 +1652,29 @@ body {
     font-size: 12px;
   }
   /* --------------END single-produt-custom.php-------------- */
+
+  /* --------------START notification add cart-------------- */
+  .notification-empty {
+    width: auto;
+    bottom: 80px;
+    padding: 10px 15px;
+  }
+
+  .notification-empty.open {
+    transform: translateX(-10px);
+  }
+
+  .notification-empty-text {
+    font-size: 12px;
+  }
+
+  .notification-empty-close {
+    margin-left: 15px;
+  }
+
+  .notification-empty-close-img {
+    width: 18px;
+  }
+  /* --------------ENd notification add cart-------------- */
 }
 /* --------------END responsive style-------------- */
