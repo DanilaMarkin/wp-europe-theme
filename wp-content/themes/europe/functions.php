@@ -823,6 +823,14 @@ add_action('woocommerce_product_options_pricing', function () {
         'description' => __('Введите код Excel.', 'woocommerce'),
     ]);
 
+     // Поле "Column Excel"
+     woocommerce_wp_text_input([
+        'id'          => '_column_excel',
+        'label'       => __('Column Excel', 'woocommerce'),
+        'desc_tip'    => true,
+        'description' => __('Введите колонка Excel.', 'woocommerce'),
+    ]);
+
     // Поле "Price Message"
     woocommerce_wp_text_input([
         'id'          => '_price_message',
@@ -844,6 +852,10 @@ add_action('woocommerce_process_product_meta', function ($post_id) {
         update_post_meta($post_id, '_code_excel', sanitize_text_field($_POST['_code_excel']));
     }
 
+    if (isset($_POST['_column_excel'])) {
+        update_post_meta($post_id, '_column_excel', sanitize_text_field($_POST['_column_excel']));
+    }
+
     if (isset($_POST['_price_message'])) {
         update_post_meta($post_id, '_price_message', sanitize_text_field($_POST['_price_message']));
     }
@@ -855,6 +867,7 @@ add_action('woocommerce_before_add_to_cart_form', function () {
 
     $name_price    = get_post_meta($product->get_id(), '_name_price', true);
     $code_excel    = get_post_meta($product->get_id(), '_code_excel', true);
+    $column_excel    = get_post_meta($product->get_id(), '_column_excel', true);
     $price_message = get_post_meta($product->get_id(), '_price_message', true);
 
     if ($name_price) {
@@ -863,6 +876,10 @@ add_action('woocommerce_before_add_to_cart_form', function () {
 
     if ($code_excel) {
         echo '<p><strong>' . __('Code Excel:', 'woocommerce') . '</strong> ' . esc_html($code_excel) . '</p>';
+    }
+
+    if ($column_excel) {
+        echo '<p><strong>' . __('Column Excel:', 'woocommerce') . '</strong> ' . esc_html($column_excel) . '</p>';
     }
 
     if ($price_message) {

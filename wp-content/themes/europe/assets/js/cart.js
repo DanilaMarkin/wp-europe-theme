@@ -154,7 +154,7 @@ function displayCartDetails(products) {
       (item) => Number(item.id) === Number(product.id)
     );
     const productCount = cartItem ? cartItem.count : 1;
-
+    
     const cartItemHTML = `
                 <li class="cart-info-block-products-item" data-id="${product.id}">
                     <a href="${product.link}" title="View details for ${product.name}" class="cart-info-block-products-item-img">
@@ -168,7 +168,7 @@ function displayCartDetails(products) {
                                 <span class="cart-count-item">${productCount} pcs</span>
                                 <button class="cart-plus" aria-label="Increase quantity">+</button>
                             </div>
-                            <p class="cart-info-block-products-item-info-price">$${product.price}</p>
+                            <p class="cart-info-block-products-item-info-price">€${product.price}</p>
                         </div>
                     </div>
                 </li>

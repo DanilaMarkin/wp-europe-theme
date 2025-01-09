@@ -48,6 +48,7 @@
      private function render_field_group($index, $field_group = []) {
          $name_price = $field_group['name_price'] ?? '';
          $code_excel = $field_group['code_excel'] ?? '';
+         $column_excel = $field_group['column_excel'] ?? '';
          $price = $field_group['price'] ?? '';
          $price_message = $field_group['price_message'] ?? '';
  
@@ -62,6 +63,11 @@
              'id' => "extra_fields[$index][code_excel]",
              'label' => __('Code Excel', 'woocommerce-extra-fields'),
              'value' => $code_excel,
+         ]);
+         woocommerce_wp_text_input([
+             'id' => "extra_fields[$index][column_excel]",
+             'label' => __('Column Excel', 'woocommerce-extra-fields'),
+             'value' => $column_excel,
          ]);
          woocommerce_wp_text_input([
              'id' => "extra_fields[$index][price]",
@@ -86,6 +92,7 @@
                  $sanitized_fields[] = [
                      'name_price' => sanitize_text_field($field_group['name_price']),
                      'code_excel' => sanitize_text_field($field_group['code_excel']),
+                     'column_excel' => sanitize_text_field($field_group['column_excel']),
                      'price' => sanitize_text_field($field_group['price']),
                      'price_message' => sanitize_text_field($field_group['price_message']),
                  ];
@@ -113,6 +120,10 @@
                      <p class="form-field">
                          <label for="extra_fields[${fieldIndex}][code_excel]"><?php echo __('Code Excel', 'woocommerce-extra-fields'); ?></label>
                          <input type="text" id="extra_fields[${fieldIndex}][code_excel]" name="extra_fields[${fieldIndex}][code_excel]" value="" />
+                     </p>
+                     <p class="form-field">
+                         <label for="extra_fields[${fieldIndex}][column_excel]"><?php echo __('Column Excel', 'woocommerce-extra-fields'); ?></label>
+                         <input type="text" id="extra_fields[${fieldIndex}][column_excel]" name="extra_fields[${fieldIndex}][column_excel]" value="" />
                      </p>
                      <p class="form-field">
                          <label for="extra_fields[${fieldIndex}][price]"><?php echo __('Price', 'woocommerce-extra-fields'); ?></label>

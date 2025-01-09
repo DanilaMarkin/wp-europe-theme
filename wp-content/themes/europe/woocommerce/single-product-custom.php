@@ -22,7 +22,9 @@ europe_get_header();
                         <li>
                             <p><?= $custom_field["name_price"]; ?></p>
                             <div class="product-single-header-prices-item">
-                                <span><?= $custom_field["price"]; ?> <?= get_woocommerce_currency_symbol(); ?></span>
+                                <span>
+                                    <?= number_format($custom_field["price"], 0, '.', '.'); ?> <?= get_woocommerce_currency_symbol(); ?>
+                                </span>
                                 <?php
                                 if (isset($custom_field["price_message"])) {
                                 ?>
