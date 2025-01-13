@@ -1051,6 +1051,96 @@ body {
   text-align: center;
   font-size: 14px;
 }
+
+.galleryfull {
+  display: none;
+}
+
+.galleryfull.open {
+  display: block;;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 1200px;
+  width: 100%;
+  height: 90vh;
+  background-color: #fff;
+  border-radius: 20px;
+  border: 2px solid #7d7d7d;
+  z-index: 1000;
+  padding: 0 45px 0 0;
+}
+
+.galleryfull-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  filter: brightness(0) saturate(100%);
+}
+
+.galleryfull-blocks {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  height: 100%;
+}
+
+.gallery-block-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-block-main > img {
+  aspect-ratio: 1;
+  height: 70%;
+}
+
+.gallery-block-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.gallery-block-info > p{
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.gallery-block-info-lists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-block-info-list > figure,
+.gallery-block-info-list > figure > img {
+  border-radius: 10px;
+}
+
+.gallery-block-info-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #7d7d7d;
+  border-radius: 10px;
+  cursor: pointer;
+  aspect-ratio: 1;
+}
+
+.gallery-block-info-list.active {
+  border: 2px solid #F0AC15;
+}
+
+.gallery-block-info-lists::-webkit-scrollbar {
+  display: none;
+}
 /* --------------END single-produt-custom.php-------------- */
 
 /* --------------START notification add cart-------------- */
@@ -1650,6 +1740,47 @@ body {
   #notificationPopup > p {
     padding: 10px;
     font-size: 12px;
+  }
+
+  .galleryfull.open {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    padding: 0 10px 20px 10px;
+  }
+
+  .galleryfull-blocks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .gallery-block-main {
+    height: 100%;
+  }
+
+  .gallery-block-main > img {
+    aspect-ratio: 1;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gallery-block-info > p {
+    display: none;
+  }
+
+  .gallery-block-info-lists {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+  }
+
+  .gallery-block-info-list > figure > img {
+    height: 100%;
+  }
+  
+  .gallery-block-info {
+    justify-content: flex-end;
   }
   /* --------------END single-produt-custom.php-------------- */
 

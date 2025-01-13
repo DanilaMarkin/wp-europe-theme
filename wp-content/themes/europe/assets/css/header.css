@@ -7,6 +7,10 @@ header {
   z-index: 21;
 }
 
+header.no-zindex {
+  z-index: auto !important;
+}
+
 .header-block {
   position: relative;
   z-index: 11;

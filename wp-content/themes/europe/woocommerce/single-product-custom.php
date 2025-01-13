@@ -145,6 +145,45 @@ europe_get_header();
             <?php get_template_part('templates/notifications/notification-empty'); ?>
             <!-- notification add cart -->
         </div>
+        <!-- popup gallery full screen -->
+        <aside id="galleryFull" class="galleryfull">
+            <button class="galleryfull-close">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="galleryfull-close-img">
+            </button>
+            <div class="galleryfull-blocks">
+                <div class="gallery-block-main">
+                    <img src="" alt="" loading="lazy">
+                </div>
+                <div class="gallery-block-info">
+                    <p><?php the_title(); ?></p>
+                    <ul class="gallery-block-info-lists">
+                        <!-- main image in gallery -->
+                        <li class="gallery-block-info-list">
+                            <figure>
+                                <img src="<?= get_the_post_thumbnail_url(get_the_ID(), "large"); ?>" title="<?= get_the_title($thumbnail_id); ?>" alt="<?= get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true); ?>" loading="lazy">
+                            </figure>
+                        </li>
+                        <!-- main image in gallery -->
+                        <?php
+                        if (!empty($gallery_ids)) {
+                            foreach ($gallery_ids as $attachment_id) {
+                                $image_url = wp_get_attachment_url($attachment_id);
+                                $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+                        ?>
+                                <li class="gallery-block-info-list">
+                                    <figure>
+                                        <img src="<?= $image_url; ?>" alt="<?= $image_alt; ?>" loading="lazy">
+                                    </figure>
+                                </li>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- popup gallery full screen -->
     </section>
 
     <?php
@@ -577,4 +616,51 @@ europe_get_header();
             notificationPopup[index].classList.remove("open");
         });
     });
+
+    // full size gallery and open/close modal window
+    const header = document.querySelector("header"); 
+    const overlayFull = document.querySelector("#overlay");
+    const galleryPopup = document.querySelector("#galleryFull");
+    const galleryPopupClose = document.querySelector(".galleryfull-close");
+    const galleryFullMain = document.querySelector(".gallery-block-main > img");
+    const galleryFullItems = document.querySelectorAll(".gallery-block-info-list");
+
+    galleryFullItems.forEach((item) => {
+        item.addEventListener("click", () => {
+            // Удалить все классы active
+            galleryFullItems.forEach((el) => el.classList.remove("active"));
+
+            // Смена миниатюры на главную фотографию
+            const imgFull = item.querySelector("figure > img");
+            galleryFullMain.src = imgFull.src;
+            item.classList.add("active");
+        });
+    });
+
+    // Открываем модальное окно
+    mainImage.addEventListener("click", () => {
+        galleryFullMain.src = mainImage.src;
+        // Перебор открытой фотографий чтобы добавлся класс active
+        galleryFullItems.forEach((item) => {
+            const imgFull = item.querySelector("figure > img");
+            if (mainImage.src === imgFull.src) {
+                galleryFullItems.forEach((el) => el.classList.remove("active"));
+                item.classList.add("active");
+            }
+        })
+        // Перебор открытой фотографий чтобы добавлся класс active
+        galleryPopup.classList.add("open");
+        overlayFull.classList.add("active");
+        header.classList.add("no-zindex");
+        document.body.style.overflow = "hidden"; // Блокируем скролл страницы
+    });
+
+    // Закрываем модальное окно
+    galleryPopupClose.addEventListener("click", () => {
+        galleryPopup.classList.remove("open");
+        overlayFull.classList.remove("active");
+        header.classList.remove("no-zindex");
+        document.body.style.overflow = ""; // Возвращаем скролл
+    });
+    // full size gallery and open/close modal window
 </script>

@@ -272,7 +272,11 @@ function filter_products_sort()
                                 class="products-blocks-card-preview-image">
                         </a>
                         <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                        <span class="products-blocks-card-preview-price">from <?= $product->get_price_html(); ?></span>
+                        <?php if ($product->get_price_html()) { ?>
+                            <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                        <?php } else { ?>
+                            <span class="products-blocks-card-preview-price">Price On Request</span>
+                        <?php } ?>
                     </div>
                     <div class="products-blocks-card-btn">
                         <div class="products-blocks-card-btn-contact-full">
@@ -823,8 +827,8 @@ add_action('woocommerce_product_options_pricing', function () {
         'description' => __('Введите код Excel.', 'woocommerce'),
     ]);
 
-     // Поле "Column Excel"
-     woocommerce_wp_text_input([
+    // Поле "Column Excel"
+    woocommerce_wp_text_input([
         'id'          => '_column_excel',
         'label'       => __('Column Excel', 'woocommerce'),
         'desc_tip'    => true,

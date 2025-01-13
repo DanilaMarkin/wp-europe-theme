@@ -10,6 +10,16 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo wp_get_document_title(); ?></title>
+    <?php
+    // Получаем мета-заголовок и ключевые слова через Rank Math
+    $meta_keywords = get_post_meta($post->ID, 'rank_math_focus_keyword', true);
+
+    // Выводим <meta name="keywords">
+    if (!empty($meta_keywords)) {
+        echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
+    }
+    ?>
     <?php wp_head(); ?>
 </head>
 

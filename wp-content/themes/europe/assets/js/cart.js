@@ -44,7 +44,7 @@ function updateTotalCart() {
         countElem.textContent.replace("pcs", "").trim(),
         10
       );
-      const price = parseFloat(priceElem.textContent.replace("$", "").trim());
+      const price = parseFloat(priceElem.textContent.replace("€", "").trim());
 
       if (!isNaN(count) && !isNaN(price)) {
         totalCount += count; // Суммируем количество
@@ -62,7 +62,7 @@ function updateTotalCart() {
     totalProductsElem.textContent = `${totalCount} pcs`;
   }
   if (totalAmountElem) {
-    totalAmountElem.textContent = `$${totalSum.toFixed(0)}`;
+    totalAmountElem.textContent = `€${totalSum.toFixed(0)}`;
   }
 }
 

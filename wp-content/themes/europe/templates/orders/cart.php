@@ -85,11 +85,11 @@ europe_get_header();
                     <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Number of products
                         </p>
-                        <span id="totalCount" class="total-blocks-finist-item-price">$0</span>
+                        <span id="totalCount" class="total-blocks-finist-item-price">0</span>
                     </li>
                     <li class="total-blocks-finist-item">
                         <p class="total-blocks-finist-item-value">Total</p>
-                        <span id="totalPrice" class="total-blocks-finist-item-price">$0</span>
+                        <span id="totalPrice" class="total-blocks-finist-item-price">€0</span>
                     </li>
                 </ul>
             </div>

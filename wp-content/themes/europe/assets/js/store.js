@@ -43,7 +43,9 @@ function initializeProductEvents() {
 
     // Переменные для поиска цены и управление модальным окном
     const notificationEmpty = document.querySelector(".notification-empty"); // Модальное окно об отсутсвие цены у товара
-    const notificationClose = document.querySelector(".notification-empty-close"); // Закрытие модального окна
+    const notificationClose = document.querySelector(
+      ".notification-empty-close"
+    ); // Закрытие модального окна
 
     const priceText = productsBlocksCardPreviewPrice[value].textContent.trim(); // Получаем текст
     const price = parseFloat(priceText.replace(/[^0-9.]/g, "")); // Убираем все символы, кроме цифр и точки
@@ -185,13 +187,31 @@ function addProductToCart(productId, count) {
   }
 }
 
-// fillter in pc open/close sub info
+// fillter in pc open/close sub info and functional "Hide all" button
 const categoryToogle = document.querySelectorAll(
   ".category-block-filter-list-head"
 );
 const categorySub = document.querySelectorAll(
   ".category-block-filter-list-full"
 );
+
+const screenWidth = window.innerWidth;
+
+if (screenWidth > 768) {
+  const hideAll = document.querySelector(".category-block-filter-hide");
+  if (hideAll) {
+
+    hideAll.addEventListener("click", () => {
+      categoryToogle.forEach((item) => {
+        item.classList.remove("open");
+      });
+
+      categorySub.forEach((item) => {
+        item.classList.remove("open");
+      });
+    });
+  }
+}
 
 categoryToogle.forEach((index, item) => {
   index.addEventListener("click", () => {
@@ -280,6 +300,11 @@ function applySort(sortType, sortText) {
       const categoryBlocksCards = document.querySelector(
         ".category-blocks-cards"
       );
+
+      if (filterList.classList.contains("open")) {
+        filterList.classList.remove("open");
+      }
+
       if (categoryBlocksCards) {
         categoryBlocksCards.innerHTML = response;
       } else {
