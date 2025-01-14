@@ -5,6 +5,11 @@
  * Template Post Type: product
  */
 europe_get_header();
+
+// Global data all site
+$global_settings = get_global_settings(190);
+
+$phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 ?>
 
 <main class="product-single">
@@ -71,21 +76,23 @@ europe_get_header();
                     <!-- popup notification -->
                 </li>
             </ul>
-            <button class="offer-btn">Offer your Price <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon"></button>
+            <button class="offer-btn" aria-label="Suggest your price for the product">
+                Offer your Price <img src="<?= get_template_directory_uri() ?>/assets/icons/information.svg" title="More information" alt="Information icon">
+            </button>
         </div>
 
         <div class="product-single-header-btn">
             <button class="product-single-header-btn-general product-single-header-btn-contact">Contact us</button>
             <div class="product-single-header-btn-tootle-contact hidden">
-                <button id="productOpenWA">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
-                </button>
-                <button d="productOpenTg">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
-                </button>
+                <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" id="productOpenWA" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
+                </a>
+                <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" id="productOpenTg" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
+                </a>
             </div>
-            <button class="product-single-header-btn-general product-single-header-btn-price" data-id="<?= $product_id = get_the_ID(); ?>">
-                <img src="<?= get_template_directory_uri() ?>/assets/icons/cart.svg" alt="Cart icon" class="product-block-cart-img">
+            <button class="product-single-header-btn-general product-single-header-btn-price" aria-label="Add product to cart" data-id="<?= $product_id = get_the_ID(); ?>">
+                <img src="<?= get_template_directory_uri() ?>/assets/icons/cart.svg" alt="Add to cart" class="product-block-cart-img">
             </button>
         </div>
 
@@ -124,8 +131,9 @@ europe_get_header();
                 foreach ($gallery_ids as $attachment_id) {
                     $image_url = wp_get_attachment_url($attachment_id);
                     $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+                    $image_title = get_post($attachment_id)->post_title;
                     echo '<li class="thumbnail-gallery-item">
-                            <figure><img src="' . esc_url($image_url) . '" alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
+                            <figure><img src="' . esc_url($image_url) . '" title="' . esc_attr($image_title) . '"  alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
                         </li>';
                 }
                 echo '
@@ -147,8 +155,8 @@ europe_get_header();
         </div>
         <!-- popup gallery full screen -->
         <aside id="galleryFull" class="galleryfull">
-            <button class="galleryfull-close">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="galleryfull-close-img">
+            <button class="galleryfull-close" aria-label="Close gallery">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" class="galleryfull-close-img">
             </button>
             <div class="galleryfull-blocks">
                 <div class="gallery-block-main">
@@ -169,10 +177,11 @@ europe_get_header();
                             foreach ($gallery_ids as $attachment_id) {
                                 $image_url = wp_get_attachment_url($attachment_id);
                                 $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+                                $image_title = get_post($attachment_id)->post_title;
                         ?>
                                 <li class="gallery-block-info-list">
                                     <figure>
-                                        <img src="<?= $image_url; ?>" alt="<?= $image_alt; ?>" loading="lazy">
+                                        <img src="<?= $image_url; ?>" title=" <?= $image_title ?>" alt="<?= $image_alt; ?>" loading="lazy">
                                     </figure>
                                 </li>
                         <?php
@@ -271,12 +280,22 @@ europe_get_header();
                                     </div>
                                     <div class="related-products-item-info">
                                         <h3 class="related-products-item-info-title"><?php the_title(); ?></h3>
-                                        <p class="related-products-item-info-price">from
-                                            <?php
-                                            $product = wc_get_product(get_the_ID());
-                                            echo wc_price($product->get_price());
-                                            ?>
-                                        </p>
+                                        <?php
+                                        $product = wc_get_product(get_the_ID());
+                                        $price = $product->get_price();
+
+                                        if ($price) {
+                                        ?>
+                                            <p class="related-products-item-info-price">from
+                                                <?php
+                                                echo wc_price($price);
+                                                ?>
+                                            </p>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <p class="related-products-item-info-price">Price On Request</p>
+                                        <?php } ?>
                                     </div>
                                 </a>
                             </li>
@@ -618,7 +637,7 @@ europe_get_header();
     });
 
     // full size gallery and open/close modal window
-    const header = document.querySelector("header"); 
+    const header = document.querySelector("header");
     const overlayFull = document.querySelector("#overlay");
     const galleryPopup = document.querySelector("#galleryFull");
     const galleryPopupClose = document.querySelector(".galleryfull-close");
@@ -657,6 +676,14 @@ europe_get_header();
 
     // Закрываем модальное окно
     galleryPopupClose.addEventListener("click", () => {
+        galleryPopup.classList.remove("open");
+        overlayFull.classList.remove("active");
+        header.classList.remove("no-zindex");
+        document.body.style.overflow = ""; // Возвращаем скролл
+    });
+
+    // Закрываем при клике на оверлей(за пределеы)
+    overlayFull.addEventListener("click", (event) => {
         galleryPopup.classList.remove("open");
         overlayFull.classList.remove("active");
         header.classList.remove("no-zindex");

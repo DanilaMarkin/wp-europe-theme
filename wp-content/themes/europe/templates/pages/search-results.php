@@ -2,6 +2,11 @@
 /* Template Name: Search Results */
 europe_get_header();
 
+// Global data all site
+$global_settings = get_global_settings(190);
+
+$phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
+
 $query = isset($_GET['query']) ? sanitize_text_field($_GET['query']) : '';
 $args = [
     'post_type' => 'product',
@@ -33,16 +38,20 @@ $products = new WP_Query($args);
                                     class="products-blocks-card-preview-image">
                             </a>
                             <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                            <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                            <?php if ($product->get_price_html()) { ?>
+                                <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                            <?php } else { ?>
+                                <span class="products-blocks-card-preview-price">Price On Request</span>
+                            <?php } ?>
                         </div>
                         <div class="products-blocks-card-btn">
                             <div class="products-blocks-card-btn-contact-full">
-                                <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="">
-                                </button>
-                                <button class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
-                                </button>
+                                <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                                    <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
+                                </a>
+                                <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                                    <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
+                                </a>
                             </div>
                             <div class="products-blocks-card-btn-count">
                                 <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
@@ -57,6 +66,9 @@ $products = new WP_Query($args);
                     </li>
                 <?php endwhile; ?>
             </ul>
+            <!-- notification add cart -->
+            <?php get_template_part('templates/notifications/notification-empty'); ?>
+            <!-- notification add cart -->
         </section>
     <?php else : ?>
         <p class="search-result-empty">No products found for your query.</p>

@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       <img src="${product.image}" alt="${product.title}" class="products-blocks-card-preview-image">
                       <div class="search-popup-block-results-info">
                           <p class="products-blocks-card-preview-title">${product.title}</p>
-                          <span class="products-blocks-card-preview-price">от ${product.price}</span>
+                          <span class="products-blocks-card-preview-price">${product.price ? `from ${product.price}` : "Price On Request"}</span>
                       </div>
                   </a>
               </li>`;
