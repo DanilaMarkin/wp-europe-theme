@@ -152,6 +152,37 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <!-- notification add cart -->
             <?php get_template_part('templates/notifications/notification-empty'); ?>
             <!-- notification add cart -->
+            <!-- offer your price -->
+            <aside id="offerModal" class="modal-offer">
+                <div class="modal-offer-content">
+                    <button class="modal-offer-close" aria-label="Close">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="modal-offer-close-img">
+                    </button>
+                    <h2 class="modal-offer-title">Offer Your Price</h2>
+                    <form id="offerForm">
+                        <label for="price">Price</label>
+                        <input type="text" id="price" name="price" placeholder="Enter your price">
+
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity">
+
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name">
+
+                        <label for="phone">Phone (WhatsApp)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone">
+
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" placeholder="Enter your address" rows="3"></textarea>
+
+                        <button type="submit" class="modal-offer-submit">Send</button>
+                    </form>
+                    <div id="loaderOfferPrice" class="loader-blocks-contact hidden">
+                        <span class="loader"></span>
+                    </div>
+                </div>
+            </aside>
+            <!-- offer your price -->
         </div>
         <!-- popup gallery full screen -->
         <aside id="galleryFull" class="galleryfull">
@@ -684,10 +715,116 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 
     // Закрываем при клике на оверлей(за пределеы)
     overlayFull.addEventListener("click", (event) => {
+        if (modalOffer.classList.contains("open")) {
+            modalOffer.classList.remove("open");
+        }
         galleryPopup.classList.remove("open");
         overlayFull.classList.remove("active");
         header.classList.remove("no-zindex");
         document.body.style.overflow = ""; // Возвращаем скролл
     });
     // full size gallery and open/close modal window
+
+    // popup modal offer
+    const modalOffer = document.querySelector("#offerModal");
+    const modalOfferClose = document.querySelector(".modal-offer-close");
+    const offerBtn = document.querySelector(".offer-btn");
+
+    offerBtn.addEventListener("click", () => {
+        modalOffer.classList.add("open");
+        overlayFull.classList.add("active");
+        header.classList.add("no-zindex");
+        document.body.style.overflow = "hidden"; // Возвращаем скролл
+    });
+
+    modalOfferClose.addEventListener("click", () => {
+        modalOffer.classList.remove("open");
+        overlayFull.classList.remove("active");
+        header.classList.remove("no-zindex");
+        document.body.style.overflow = ""; // Возвращаем скролл
+    });
+    // popup modal offer
+
+    // validate form in modale window "Offer Your Price"
+    document.getElementById("offerForm").addEventListener("submit", (event) => {
+        event.preventDefault(); // Отключаем отправку формы для проверки
+
+        let isValid = true;
+
+        // Получаем значения полей
+        const price = document.getElementById("price");
+        const quantity = document.getElementById("quantity");
+        const name = document.getElementById("name");
+        const phone = document.getElementById("phone");
+        const address = document.getElementById("address");
+
+        if (price.value.trim() === "") {
+            price.classList.add("error");
+            isValid = false;
+        } else {
+            price.classList.remove("error");
+        }
+
+        if (quantity.value.trim() === "") {
+            quantity.classList.add("error");
+            isValid = false;
+        } else {
+            quantity.classList.remove("error");
+        }
+
+        if (name.value.trim() === "") {
+            name.classList.add("error");
+            isValid = false;
+        } else {
+            name.classList.remove("error");
+        }
+
+        if (phone.value.trim() === "") {
+            phone.classList.add("error");
+            isValid = false;
+        } else {
+            phone.classList.remove("error");
+        }
+
+        if (address.value.trim() === "") {
+            address.classList.add("error");
+            isValid = false;
+        } else {
+            address.classList.remove("error");
+        }
+
+        if (isValid) {
+
+            jQuery("#loaderOfferPrice").removeClass("hidden");
+            jQuery("#offerForm").addClass("close");
+
+            jQuery.ajax({
+                url: ajaxObject.ajaxurl,
+                type: "POST",
+                data: {
+                    action: "send_offer_price_mail",
+                    offerForm: {
+                        price: price.value.trim(),
+                        quantity: quantity.value.trim(),
+                        name: name.value.trim(),
+                        phone: phone.value.trim(),
+                        address: address.value.trim(),
+                    },
+                },
+                success: function(response) {
+                    jQuery("#loaderOfferPrice").addClass("hidden");
+                    jQuery("#offerForm").removeClass("close");
+                    // Очищаем поля формы
+                    jQuery("#offerForm").find("input[type=text], input[type=number], input[type=tel], textarea").val("");
+
+                },
+                error: function(error) {
+                    jQuery("#loaderOfferPrice").addClass("hidden");
+                    jQuery("#offerForm").removeClass("close");
+                    console.error("Error:", error);
+                }
+            });
+        }
+    });
+    // validate form in modale window "Offer Your Price"
 </script>

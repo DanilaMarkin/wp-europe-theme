@@ -269,8 +269,6 @@ if (filterSortItems.length > 0) {
       applySort(sortType, sortText);
     });
   });
-} else {
-  console.error(".filter-sort-list элементы не найдены!");
 }
 
 // Функция для сортировки товаров через AJAX

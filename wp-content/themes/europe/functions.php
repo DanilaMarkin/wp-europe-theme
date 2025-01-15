@@ -585,8 +585,114 @@ function send_cart_to_woocommerce()
     }
 }
 
+// START sent_offer_price_mail
+function send_offer_price_mail() 
+{
+    if (!isset($_POST['offerForm'])) {
+        wp_send_json_error(['message' => 'Данные не переданы']);
+        return;
+    }
+
+    $offerForm = $_POST['offerForm'];
+
+    if (empty($offerForm)) {
+        wp_send_json_error(['message' => 'Контактные данные не переданы']);
+        return;
+    }
+
+    // Поля из формы
+    $price = sanitize_text_field($offerForm['price']);
+    $quantity = sanitize_text_field($offerForm['quantity']);
+    $name = sanitize_text_field($offerForm['name']);
+    $phone = sanitize_text_field($offerForm['phone']);
+    $address = sanitize_textarea_field($offerForm['address']);
+
+    // Получатели
+    $to = ['gtsv.market@gmail.com', 'thedenbit2004@gmail.com'];
+
+    // Тема письма
+    $subject = 'Европейский сайт - Предложение цены';
+
+    // HTML-шаблон письма
+    $message = "
+    <html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                color: #333;
+                line-height: 1.6;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            th {
+                background-color: #f4f4f4;
+            }
+            h2 {
+                color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Новое предложение цены</h2>
+        <table>
+            <tr>
+                <th>Поле</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>Цена</td>
+                <td>{$price}</td>
+            </tr>
+            <tr>
+                <td>Количество</td>
+                <td>{$quantity}</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>{$name}</td>
+            </tr>
+            <tr>
+                <td>Телефон</td>
+                <td>{$phone}</td>
+            </tr>
+            <tr>
+                <td>Адрес</td>
+                <td>{$address}</td>
+            </tr>
+        </table>
+    </body>
+    </html>";
+
+    // Заголовки письма
+    $headers = [
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Европейский сайт <no-reply@gtsv-market.com>'
+    ];
+
+    // Отправка письма
+    if (wp_mail($to, $subject, $message, $headers)) {
+        wp_send_json_success(['message' => 'Письмо успешно отправлено']);
+    } else {
+        wp_send_json_error(['message' => 'Ошибка при отправке письма']);
+    }
+}
+
+add_action('wp_ajax_ssend_offer_price_mail', 'send_offer_price_mail');
+add_action('wp_ajax_nopriv_send_offer_price_mail', 'send_offer_price_mail');
+// END sent_offer_price_mail
+
 add_action('wp_ajax_woocommerce_product_search', 'handle_product_search');
 add_action('wp_ajax_nopriv_woocommerce_product_search', 'handle_product_search');
+
 
 function handle_product_search()
 {
