@@ -287,7 +287,7 @@ function applySort(sortType, sortText) {
   const params = {
     action: "filter_products_sort",
     sort: sortType,
-    category_id: categoryId,
+    category_id: categoryId,  
   };
   url.search = new URLSearchParams(params).toString();
 

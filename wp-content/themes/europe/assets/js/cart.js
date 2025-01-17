@@ -334,7 +334,7 @@ document.getElementById("checkout").addEventListener("click", (event) => {
         const productPrice = parseFloat(
           item
             .querySelector(".cart-info-block-products-item-info-price")
-            .textContent.replace("$", "")
+            .textContent.replace("€", "")
         );
 
         cartItems.push({

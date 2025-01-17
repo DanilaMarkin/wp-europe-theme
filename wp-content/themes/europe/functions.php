@@ -215,7 +215,6 @@ function get_global_settings($page_id)
 add_action('wp_ajax_filter_products_sort', 'filter_products_sort');
 add_action('wp_ajax_nopriv_filter_products_sort', 'filter_products_sort');
 
-// Добавление в файл functions.php
 function filter_products_sort()
 {
     if (isset($_GET['sort'])) {
@@ -686,7 +685,7 @@ function send_offer_price_mail()
     }
 }
 
-add_action('wp_ajax_ssend_offer_price_mail', 'send_offer_price_mail');
+add_action('wp_ajax_send_offer_price_mail', 'send_offer_price_mail');
 add_action('wp_ajax_nopriv_send_offer_price_mail', 'send_offer_price_mail');
 // END sent_offer_price_mail
 
@@ -845,6 +844,15 @@ function send_form_contact_to_mail()
 add_action('wp_ajax_send_form_contact_to_mail', 'send_form_contact_to_mail');
 add_action('wp_ajax_nopriv_send_form_contact_to_mail', 'send_form_contact_to_mail');
 // Отправка с модального окна контакты на почты
+
+// pagination
+function custom_shop_query($query) {
+    if (!is_admin() && $query->is_main_query() && (is_shop() || is_product_category() || is_product_tag())) {
+        $query->set('posts_per_page', 9); // Укажите количество продуктов на странице
+    }
+}
+add_action('pre_get_posts', 'custom_shop_query');
+// pagination
 
 add_filter('theme_page_templates', function ($templates) {
     // Добавляем новые шаблоны

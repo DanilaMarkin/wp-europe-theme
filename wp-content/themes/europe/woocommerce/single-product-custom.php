@@ -251,7 +251,16 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
     }
     ?>
 
-    <section class="product-single-description">
+    <section class="tabs-blocks">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" data-tab="description">Description</button>
+                <button class="tab" data-tab="specifications">Characteristics</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="description" class="tab-pane active product-single-description">
         <div class="container">
             <h2 class="product-single-description-title">Description</h2>
             <?php
@@ -265,26 +274,28 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         </div>
     </section>
 
-    <section class="product-single-feature container">
-        <h2 class="product-single-feature-title">Characteristics</h2>
-        <?php
-        // Получаем характеристики из мета-данных
-        $characteristics = get_post_meta(get_the_ID(), 'product_characteristics', true);
+    <section id="specifications" class="tab-pane product-single-feature">
+        <div class="container">
+            <h2 class="product-single-feature-title">Characteristics</h2>
+            <?php
+            // Получаем характеристики из мета-данных
+            $characteristics = get_post_meta(get_the_ID(), 'product_characteristics', true);
 
-        if (!empty($characteristics)) {
-            echo '<dl class="product-specs">';
+            if (!empty($characteristics)) {
+                echo '<dl class="product-specs">';
 
-            // Выводим каждую характеристику
-            foreach ($characteristics as $characteristic) {
-                echo '<dt>' . esc_html($characteristic['name']) . '</dt>';
-                echo '<dd>' . esc_html($characteristic['value']) . '</dd>';
+                // Выводим каждую характеристику
+                foreach ($characteristics as $characteristic) {
+                    echo '<dt>' . esc_html($characteristic['name']) . '</dt>';
+                    echo '<dd>' . esc_html($characteristic['value']) . '</dd>';
+                }
+
+                echo '</dl>';
+            } else {
+                echo "<p class='product-single-description-text'>There's nothing here yet.</p>";
             }
-
-            echo '</dl>';
-        } else {
-            echo "<p class='product-single-description-text'>There's nothing here yet.</p>";
-        }
-        ?>
+            ?>
+        </div>
     </section>
 
     <?php
@@ -827,4 +838,19 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         }
     });
     // validate form in modale window "Offer Your Price"
+
+    // switch tab pane
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Сбрасываем активные классы для всех табов и контента
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+            // Активируем текущий таб и связанный контент
+            this.classList.add('active');
+            const target = this.getAttribute('data-tab');
+            document.getElementById(target).classList.add('active');
+        });
+    });
+    // switch tab pane
 </script>

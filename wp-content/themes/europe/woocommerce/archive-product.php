@@ -10,9 +10,12 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 // Проверяем, является ли это магазином, категорией или тегом
 if (is_shop() || is_product_category() || is_product_tag()) {
 
+    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
     $args = array(
         'post_type'      => 'product',
-        'posts_per_page' => -1, // Количество выводимых товаров
+        'posts_per_page' => 9, // Количество продуктов на странице
+        'paged' => $paged, // Передача текущей страницы
     );
 
     // Фильтрация по категории или тегу
@@ -203,6 +206,50 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
         /* --------------END category-banner-------------- */
 
+        /* --------------START pagination-------------- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 60px 0 0 0;
+        }
+
+        .pagination ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .pagination-item a, .pagination-item span {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination-item a:hover, .pagination-item span:hover {
+            background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+            color: #000;
+        }
+
+        .pagination-item-prev a,
+        .pagination-item-next a {
+            font-weight: bold;
+        }
+
+        .pagination-item span[aria-current="page"] {
+            background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+            color: #000;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* --------------END pagingation-------------- */
+
         /* --------------START responsive style-------------- */
         @media (max-width: 768px) {
 
@@ -388,6 +435,29 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             }
 
             /* --------------END category-block-filter-------------- */
+
+            /* --------------START pagination-------------- */
+            .pagination {
+                padding: 30px 0 0 0;
+            }
+
+            .pagination ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .pagination-item a, .pagination-item span {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .pagination-item-prev a,
+            .pagination-item-next a {
+                display: none;
+                /* Скрываем кнопки "Назад" и "Вперед" на мобильных */
+            }
+
+            /* --------------END pagination-------------- */
         }
 
         /* --------------END responsive style-------------- */
@@ -542,6 +612,35 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                             </li>
                         <?php endwhile; ?>
                     </ul>
+                    <!-- pagination -->
+                    <div class="pagination" aria-label="Page navigation">
+                        <ul>
+                            <?php
+                            $pagination_links = paginate_links(array(
+                                'total'        => $products->max_num_pages,
+                                'current'      => max(1, get_query_var('paged')),
+                                'prev_text'    => '<',
+                                'next_text'    => '>',
+                                'type'         => 'array', // Возвращает массив ссылок
+                            ));
+
+                            if ($pagination_links) {
+                                foreach ($pagination_links as $link) {
+                                    // Проверяем, является ли элемент ссылкой на предыдущую/следующую страницу
+                                    if (strpos($link, 'prev') !== false) {
+                                        echo '<li class="pagination-item pagination-item-prev">' . $link . '</li>';
+                                    } elseif (strpos($link, 'next') !== false) {
+                                        echo '<li class="pagination-item pagination-item-next">' . $link . '</li>';
+                                    } else {
+                                        // Для обычных элементов пагинации
+                                        echo '<li class="pagination-item">' . $link . '</li>';
+                                    }
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    <!-- pagination -->
                 <?php else : ?>
                     <p>No products found</p>
                 <?php endif; ?>
