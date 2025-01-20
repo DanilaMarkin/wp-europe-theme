@@ -18,6 +18,9 @@ function enqueue_custom_scripts()
 {
     wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
     wp_enqueue_script('store-script', get_template_directory_uri() . '/assets/js/store.js', array('jquery'), null, true);
+    wp_localize_script('store-script', 'ajaxObject', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+    ]);
 
     if (is_page([258, 262])) {
         wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
@@ -220,24 +223,43 @@ function filter_products_sort()
     if (isset($_GET['sort'])) {
         $sort = sanitize_text_field($_GET['sort']);
         $category = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
+        $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
 
         // Global data all site
         $global_settings = get_global_settings(190);
 
         $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 
-        // Логика фильтрации
-        $args = [
+        // Параметры запроса для продуктов
+        $args = array(
+            'paged' => $paged,
             'post_type' => 'product',
-            'posts_per_page' => -1,
-            'tax_query' => [
-                [
-                    'taxonomy' => 'product_cat',
-                    'field'    => 'term_id',
-                    'terms'    => $category,
-                ],
-            ],
-        ];
+            'posts_per_page' => 3, // Количество товаров (можно задать ограничение)
+            'post_status' => 'publish',
+        );
+
+        // Инициализация запроса
+        $tax_queries = array();
+        // Чтение параметров фильтрации из запроса
+        foreach ($_GET as $key => $value) {
+            if (strpos($key, 'filter_') === 0) { // Если параметр фильтра начинается с "filter_"
+                $attribute_name = substr($key, 7); // Убираем префикс "filter_"
+                $terms = explode(',', sanitize_text_field($value)); // Разделяем значения фильтра на термины
+
+                // Добавляем к запросу фильтрацию по таксономии
+                $tax_queries[] = array(
+                    'taxonomy' => 'pa_' . $attribute_name, // Пример: pa_brand или pa_color
+                    'field'    => 'slug',
+                    'terms'    => $terms,
+                    'operator' => 'IN',
+                );
+            }
+        }
+
+        // Добавляем таксономические запросы, если они есть
+        if (!empty($tax_queries)) {
+            $args['tax_query'] = $tax_queries;
+        }
 
         // Изменение параметров сортировки в зависимости от выбранного варианта
         if ($sort == 'price_asc') {
@@ -253,9 +275,10 @@ function filter_products_sort()
             $args['meta_key'] = 'total_sales';
             $args['order'] = 'DESC';
         }
-
         // Получаем товары по заданным параметрам
         $query = new WP_Query($args);
+
+        ob_start();
 
         if ($query->have_posts()) :
             while ($query->have_posts()) : $query->the_post();
@@ -310,6 +333,17 @@ function filter_products_sort()
 
         wp_reset_postdata();
     }
+
+    $products_html = ob_get_clean();
+    // Генерация HTML для пагинации
+    $pagination_html = generate_custom_pagination($query->max_num_pages, $paged);
+
+    // Возвращаем JSON с товарами и кастомной пагинацией
+    wp_send_json_success([
+        'products'   => $products_html,
+        'pagination' => $pagination_html,
+    ]);
+
     die();
 }
 
@@ -317,6 +351,7 @@ function filter_products_sort()
 function load_filtered_products()
 {
     $tax_queries = array();
+    $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
 
     // Считываем параметры фильтров из AJAX-запроса
     foreach ($_POST as $key => $value) {
@@ -340,7 +375,8 @@ function load_filtered_products()
     $query_args = array(
         'post_type' => 'product',
         'post_status' => 'publish',
-        'posts_per_page' => -1,
+        'posts_per_page' => 3,
+        'paged' => $paged,
     );
 
     if (!empty($tax_queries)) {
@@ -348,6 +384,8 @@ function load_filtered_products()
     }
 
     $query = new WP_Query($query_args);
+
+    ob_start();
 
     if ($query->have_posts()) {
         while ($query->have_posts()) {
@@ -396,13 +434,24 @@ function load_filtered_products()
                     </button>
                 </div>
             </li>
-<?php
+        <?php
         }
     } else {
         echo '<p class="category-blocks-cards-empty">No products</p>';
     }
 
     wp_reset_postdata();
+
+    $products_html = ob_get_clean();
+    // Генерация HTML для пагинации
+    $pagination_html = generate_custom_pagination($query->max_num_pages, $paged);
+
+    // Возвращаем JSON с товарами и кастомной пагинацией
+    wp_send_json_success([
+        'products'   => $products_html,
+        'pagination' => $pagination_html,
+    ]);
+
     wp_die(); // Завершаем выполнение для AJAX
 }
 add_action('wp_ajax_load_filtered_products', 'load_filtered_products');
@@ -585,7 +634,7 @@ function send_cart_to_woocommerce()
 }
 
 // START sent_offer_price_mail
-function send_offer_price_mail() 
+function send_offer_price_mail()
 {
     if (!isset($_POST['offerForm'])) {
         wp_send_json_error(['message' => 'Данные не переданы']);
@@ -846,9 +895,10 @@ add_action('wp_ajax_nopriv_send_form_contact_to_mail', 'send_form_contact_to_mai
 // Отправка с модального окна контакты на почты
 
 // pagination
-function custom_shop_query($query) {
+function custom_shop_query($query)
+{
     if (!is_admin() && $query->is_main_query() && (is_shop() || is_product_category() || is_product_tag())) {
-        $query->set('posts_per_page', 9); // Укажите количество продуктов на странице
+        $query->set('posts_per_page', 3); // Укажите количество продуктов на странице
     }
 }
 add_action('pre_get_posts', 'custom_shop_query');
@@ -1018,3 +1068,205 @@ add_action('woocommerce_before_add_to_cart_form', function () {
     }
 });
 // END additional price in page product
+
+// START ajax pagination page
+function load_more_products()
+{
+    // Global data all site
+    $global_settings = get_global_settings(190);
+    $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
+
+    // Получаем текущую страницу
+    $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
+
+    // Получаем сортировку (если есть, если пусто - оставляем без сортировки)
+    $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : '';
+
+    // Получаем фильтры (если есть)
+    $filters = [];
+    $tax_queries = [];
+    $meta_queries = [];
+
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'filter_') === 0) {
+            $attribute = str_replace('filter_', '', $key);
+            $values = explode(',', sanitize_text_field($value));
+
+            // Проверяем, является ли атрибут таксономией или мета-данными
+            if (taxonomy_exists('pa_' . $attribute)) {
+                // Если это таксономия, добавляем в tax_query
+                $tax_queries[] = [
+                    'taxonomy' => 'pa_' . $attribute,  // Пример: 'pa_brand'
+                    'field'    => 'slug',
+                    'terms'    => $values,
+                    'operator' => 'IN',
+                ];
+            } else {
+                // Если это мета-данные, добавляем в meta_query
+                $meta_key = '_' . $attribute; // Пример: '_brand', '_category' и т.д.
+                $meta_queries[] = [
+                    'key'     => $meta_key,
+                    'value'   => $values,
+                    'compare' => 'IN',
+                ];
+            }
+        }
+    }
+
+    // Создаем базовый массив аргументов для запроса
+    $query_args = [
+        'paged' => $paged,
+        'posts_per_page' => 3, // Количество товаров на странице
+        'post_type' => 'product',
+        'post_status' => 'publish',
+    ];
+
+    // Добавление tax_query (если есть фильтры по таксономиям)
+    if (!empty($tax_queries)) {
+        $query_args['tax_query'] = $tax_queries;
+    }
+
+    // Добавление meta_query (если есть фильтры по мета-данным)
+    if (!empty($meta_queries)) {
+        $query_args['meta_query'] = $meta_queries;
+    }
+
+    // Сортировка (если передана)
+    if ($sort) {
+        if ($sort == 'price_asc') {
+            $query_args['orderby'] = 'meta_value_num';
+            $query_args['meta_key'] = '_price';
+            $query_args['order'] = 'ASC';
+        } elseif ($sort == 'price_desc') {
+            $query_args['orderby'] = 'meta_value_num';
+            $query_args['meta_key'] = '_price';
+            $query_args['order'] = 'DESC';
+        } elseif ($sort == 'popularity') {
+            $query_args['orderby'] = 'meta_value_num';
+            $query_args['meta_key'] = 'total_sales';
+            $query_args['order'] = 'DESC';
+        }
+    }
+
+    // Получаем товары
+    $query = new WP_Query($query_args);
+
+    ob_start();
+
+    if ($query->have_posts()) :
+        while ($query->have_posts()) : $query->the_post();
+            global $product;
+        ?>
+            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
+                <div class="products-blocks-card-preview">
+                    <a href="<?php the_permalink(); ?>">
+                        <?php
+                        $thumbnail_id = $product->get_image_id();
+                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+                        $title_text = get_the_title($thumbnail_id);
+                        ?>
+                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
+                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
+                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
+                            class="products-blocks-card-preview-image">
+                    </a>
+                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
+                    <?php if ($product->get_price_html()) { ?>
+                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
+                    <?php } else { ?>
+                        <span class="products-blocks-card-preview-price">Price On Request</span>
+                    <?php } ?>
+                </div>
+                <div class="products-blocks-card-btn">
+                    <div class="products-blocks-card-btn-contact-full">
+                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
+                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
+                        </a>
+                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
+                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
+                        </a>
+                    </div>
+                    <div class="products-blocks-card-btn-count">
+                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
+                        <span class="count-number">0</span>
+                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
+                    </div>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
+                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
+                    </button>
+                </div>
+            </li>
+<?php
+        endwhile;
+    else :
+        echo '<p>No products found</p>';
+    endif;
+
+    $products_html = ob_get_clean();
+
+    // Генерация новой пагинации
+    // Генерация HTML для пагинации
+    $pagination_html = generate_custom_pagination($query->max_num_pages, $paged);
+
+    // Возвращаем JSON с товарами и кастомной пагинацией
+    wp_send_json_success([
+        'products'   => $products_html,
+        'pagination' => $pagination_html,
+    ]);
+
+    wp_die(); // Останавливает выполнение
+}
+add_action('wp_ajax_load_more_products', 'load_more_products');
+add_action('wp_ajax_nopriv_load_more_products', 'load_more_products');
+// END ajax pagination page
+
+// START custom pagination
+function generate_custom_pagination($total_pages, $current_page)
+{
+    // Проверяем, есть ли больше одной страницы
+    if ($total_pages <= 1) {
+        return '';
+    }
+
+    // Начинаем формировать HTML для пагинации
+    $pagination_html = '<ul>';
+
+    // Добавляем кнопку "назад", если это не первая страница
+    if ($current_page > 1) {
+        $prev_link = get_pagenum_link($current_page - 1);
+        $pagination_html .= '<li class="pagination-item" data-page="' . ($current_page - 1) . '">';
+        $pagination_html .= '<a class="prev page-numbers" href="' . esc_url($prev_link) . '">&lt;</a>';
+        $pagination_html .= '</li>';
+    }
+
+    // Генерация ссылок на страницы
+    for ($i = 1; $i <= $total_pages; $i++) {
+        $is_active = $i == $current_page ? ' active' : '';
+        $aria_current = $i == $current_page ? ' aria-current="page"' : '';
+        $link = get_pagenum_link($i);
+
+        if ($i == $current_page) {
+            $pagination_html .= '<li class="pagination-item' . $is_active . '" data-page="' . $i . '">';
+            $pagination_html .= '<span class="page-numbers current"' . $aria_current . '>' . $i . '</span>';
+            $pagination_html .= '</li>';
+        } else {
+            $pagination_html .= '<li class="pagination-item' . $is_active . '" data-page="' . $i . '">';
+            $pagination_html .= '<a class="page-numbers" href="' . esc_url($link) . '">' . $i . '</a>';
+            $pagination_html .= '</li>';
+        }
+    }
+
+    // Добавляем кнопку "вперед", если это не последняя страница
+    if ($current_page < $total_pages) {
+        $next_link = get_pagenum_link($current_page + 1);
+        $pagination_html .= '<li class="pagination-item" data-page="' . ($current_page + 1) . '">';
+        $pagination_html .= '<a class="next page-numbers" href="' . esc_url($next_link) . '">&gt;</a>';
+        $pagination_html .= '</li>';
+    }
+
+    $pagination_html .= '</ul>';
+
+    return $pagination_html;
+}
+// END custom pagination

@@ -14,7 +14,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
     $args = array(
         'post_type'      => 'product',
-        'posts_per_page' => 9, // Количество продуктов на странице
+        'posts_per_page' => 3, // Количество продуктов на странице
         'paged' => $paged, // Передача текущей страницы
     );
 
@@ -220,7 +220,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             list-style: none;
         }
 
-        .pagination-item a, .pagination-item span {
+        .pagination-item a,
+        .pagination-item span {
             display: inline-block;
             padding: 8px 12px;
             border: 1px solid #ddd;
@@ -231,7 +232,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .pagination-item a:hover, .pagination-item span:hover {
+        .pagination-item a:hover,
+        .pagination-item span:hover {
             background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
             color: #000;
         }
@@ -241,7 +243,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             font-weight: bold;
         }
 
-        .pagination-item span[aria-current="page"] {
+        .pagination-item.active {
             background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
             color: #000;
             cursor: default;
@@ -446,7 +448,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 justify-content: center;
             }
 
-            .pagination-item a, .pagination-item span {
+            .pagination-item a,
+            .pagination-item span {
                 padding: 6px 10px;
                 font-size: 14px;
             }
@@ -613,32 +616,20 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                         <?php endwhile; ?>
                     </ul>
                     <!-- pagination -->
-                    <div class="pagination" aria-label="Page navigation">
-                        <ul>
-                            <?php
-                            $pagination_links = paginate_links(array(
-                                'total'        => $products->max_num_pages,
-                                'current'      => max(1, get_query_var('paged')),
-                                'prev_text'    => '<',
-                                'next_text'    => '>',
-                                'type'         => 'array', // Возвращает массив ссылок
-                            ));
+                    <div class="pagination">
+                        <?php
+                        // Получаем общее количество страниц
+                        global $wp_query;
+                        $total_pages = $wp_query->max_num_pages;
 
-                            if ($pagination_links) {
-                                foreach ($pagination_links as $link) {
-                                    // Проверяем, является ли элемент ссылкой на предыдущую/следующую страницу
-                                    if (strpos($link, 'prev') !== false) {
-                                        echo '<li class="pagination-item pagination-item-prev">' . $link . '</li>';
-                                    } elseif (strpos($link, 'next') !== false) {
-                                        echo '<li class="pagination-item pagination-item-next">' . $link . '</li>';
-                                    } else {
-                                        // Для обычных элементов пагинации
-                                        echo '<li class="pagination-item">' . $link . '</li>';
-                                    }
-                                }
-                            }
-                            ?>
-                        </ul>
+                        // Получаем текущую страницу
+                        $current_page = max(1, get_query_var('paged'));
+
+                        // Генерация пагинации
+                        if ($total_pages > 1) {
+                            echo generate_custom_pagination($total_pages, $current_page);
+                        }
+                        ?>
                     </div>
                     <!-- pagination -->
                 <?php else : ?>

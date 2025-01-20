@@ -200,7 +200,6 @@ const screenWidth = window.innerWidth;
 if (screenWidth > 768) {
   const hideAll = document.querySelector(".category-block-filter-hide");
   if (hideAll) {
-
     hideAll.addEventListener("click", () => {
       categoryToogle.forEach((item) => {
         item.classList.remove("open");
@@ -262,6 +261,8 @@ const filterSortItems = document.querySelectorAll(".filter-sort-list");
 if (filterSortItems.length > 0) {
   filterSortItems.forEach((item) => {
     item.addEventListener("click", (e) => {
+      filterSortItems.forEach((item) => item.classList.remove("active"));
+      item.classList.add("active");
       const sortType = item.getAttribute("data-sort");
       const sortText = item.querySelector("span")
         ? item.querySelector("span").textContent
@@ -283,17 +284,45 @@ function applySort(sortType, sortText) {
   const ajaxUrl = filterSortBtn.getAttribute("data-url");
   const url = new URL(ajaxUrl);
   const categoryId = url.searchParams.get("category_id") || 0;
+  const currentPage =
+    document.querySelector(".pagination .current")?.textContent || 1;
+
+  // Собираем текущие фильтры
+  const checkboxes = document.querySelectorAll(
+    ".category-block-filter-list-full-subfilter-checkbox"
+  );
+  const selectedFilters = {};
+
+  checkboxes.forEach(function (checkbox) {
+    if (checkbox.checked) {
+      const attribute = checkbox.getAttribute("data-filter");
+      const value = checkbox.value;
+
+      if (!selectedFilters[attribute]) {
+        selectedFilters[attribute] = [];
+      }
+
+      selectedFilters[attribute].push(value);
+    }
+  });
 
   const params = {
     action: "filter_products_sort",
     sort: sortType,
-    category_id: categoryId,  
+    category_id: categoryId,
+    paged: currentPage,
   };
+
+  // Добавляем параметры фильтров
+  for (const [key, values] of Object.entries(selectedFilters)) {
+    params["filter_" + key] = values.join(",");
+  }
+
   url.search = new URLSearchParams(params).toString();
 
   fetch(url)
-    .then((response) => response.text())
-    .then((response) => {
+    .then((response) => response.json())
+    .then((data) => {
       // Проверяем наличие .category-blocks-cards перед обновлением
       const categoryBlocksCards = document.querySelector(
         ".category-blocks-cards"
@@ -303,10 +332,15 @@ function applySort(sortType, sortText) {
         filterList.classList.remove("open");
       }
 
+      // Обновляем товары
       if (categoryBlocksCards) {
-        categoryBlocksCards.innerHTML = response;
-      } else {
-        console.error(".category-blocks-cards не найден!");
+        categoryBlocksCards.innerHTML = data.data.products;
+      }
+
+      // Обновляем пагинацию
+      const paginationContainer = document.querySelector(".pagination");
+      if (paginationContainer) {
+        paginationContainer.innerHTML = data.data.pagination;
       }
 
       // Проверяем наличие кнопки перед изменением текста
@@ -333,6 +367,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ".general-main-products-blocks-cards"
   ); // Убедитесь, что у контейнера с продуктами есть этот класс.
   const loaderCategory = document.querySelector(".loader-blocks-category");
+  const currentPage =
+    document.querySelector(".pagination .current")?.textContent || 1;
 
   checkboxes.forEach(function (checkbox) {
     checkbox.addEventListener("change", function () {
@@ -361,6 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
       loaderCategory.classList.add("active");
       productsContainer.classList.add("hidden");
 
+      queryData.append("page", currentPage);
       // Отправляем AJAX-запрос
       fetch("/wp-admin/admin-ajax.php?action=load_filtered_products", {
         method: "POST",
@@ -369,18 +406,142 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: queryData.toString(),
       })
-        .then((response) => response.text())
-        .then((html) => {
+        .then((response) => response.json())
+        .then((data) => {
           loaderCategory.classList.remove("active");
           productsContainer.classList.remove("hidden");
-          // Обновляем контейнер с продуктами
-          productsContainer.innerHTML = html;
+
+          // Обновляем товары
+          if (productsContainer) {
+            productsContainer.innerHTML = data.data.products;
+          }
+
+          // Обновляем пагинацию
+          const paginationContainer = document.querySelector(".pagination");
+          if (paginationContainer) {
+            paginationContainer.innerHTML = data.data.pagination;
+          }
+
           initializeProductEvents();
         })
         .catch((error) => console.error("Ошибка при фильтрации:", error));
     });
   });
 });
+
+// pagination
+// Начальная страница
+let currentPage = 1;
+
+// Получаем кнопки пагинации
+document.addEventListener("DOMContentLoaded", function () {
+  const pagination = document.querySelector(".pagination");
+
+  if (pagination) {
+    // Навешиваем обработчик на каждую кнопку
+    pagination.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Проверяем, был ли клик по элементу с атрибутом data-page
+      const target = e.target.closest(".pagination-item");
+      if (target) {
+        // Удаляем класс "active" у всех элементов
+        document.querySelectorAll(".pagination-item").forEach((el) => {
+          el.classList.remove("active");
+        });
+
+        // Добавляем класс "active" к текущему элементу
+        target.classList.add("active");
+
+        const page = target.getAttribute("data-page"); // Номер страницы из атрибута
+        if (page) {
+          const currentPage = parseInt(page);
+          loadProducts(currentPage);
+        }
+      }
+    });
+  }
+});
+
+function loadProducts(page) {
+  // Собираем текущие фильтры
+  const checkboxes = document.querySelectorAll(
+    ".category-block-filter-list-full-subfilter-checkbox"
+  );
+  const selectedFilters = {};
+
+  checkboxes.forEach(function (checkbox) {
+    if (checkbox.checked) {
+      const attribute = checkbox.getAttribute("data-filter");
+      const value = checkbox.value;
+
+      if (!selectedFilters[attribute]) {
+        selectedFilters[attribute] = [];
+      }
+      selectedFilters[attribute].push(value);
+    }
+  });
+
+  // Собираем текущую сортировку
+  const activeSort = document.querySelector(".filter-sort-list.active");
+  const sortType = activeSort ? activeSort.getAttribute("data-sort") : "";
+
+  // Формируем данные для запроса
+  const params = {
+    action: "load_more_products",
+    paged: page, // Номер текущей страницы
+  };
+
+  // Добавляем сортировку, только если она выбрана
+  if (sortType) {
+    params.sort = sortType; // Тип сортировки
+  }
+
+  // Добавляем фильтры в параметры
+  for (const [key, values] of Object.entries(selectedFilters)) {
+    params["filter_" + key] = values.join(",");
+  }
+
+  // Преобразуем параметры в строку
+  const formData = new URLSearchParams(params);
+
+  // Отправляем fetch-запрос
+  fetch(ajaxObject.ajaxurl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formData.toString(),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Обновляем товары
+      const productContainer = document.querySelector(
+        ".general-main-products-blocks-cards"
+      );
+      if (productContainer) {
+        productContainer.innerHTML = data.data.products;
+      }
+
+      // Обновляем пагинацию
+      const paginationContainer = document.querySelector(".pagination");
+      if (paginationContainer) {
+        paginationContainer.innerHTML = data.data.pagination;
+      }
+
+      initializeProductEvents();
+    })
+    .catch((error) => {
+      console.error("Ошибка загрузки товаров:", error.message);
+    });
+}
+
+// pagination
 
 // Инициализация при первой загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
