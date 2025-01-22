@@ -154,7 +154,7 @@ function displayCartDetails(products) {
       (item) => Number(item.id) === Number(product.id)
     );
     const productCount = cartItem ? cartItem.count : 1;
-    
+
     const cartItemHTML = `
                 <li class="cart-info-block-products-item" data-id="${product.id}">
                     <a href="${product.link}" title="View details for ${product.name}" class="cart-info-block-products-item-img">
@@ -361,7 +361,6 @@ document.getElementById("checkout").addEventListener("click", (event) => {
         },
       },
       success: function (response) {
-        
         if (response.success) {
           // Очистка корзины в локальном хранилище или сессии
           localStorage.removeItem("cart"); // Если корзина хранится в localStorage
@@ -384,3 +383,120 @@ document.getElementById("checkout").addEventListener("click", (event) => {
     });
   }
 });
+
+// popup modal offer
+const header = document.querySelector("header");
+const overlayFull = document.querySelector("#overlay");
+const modalOffer = document.querySelector("#offerModal");
+const modalOfferClose = document.querySelector(".modal-offer-close");
+const offerBtn = document.querySelector(".offer-btn");
+
+offerBtn.addEventListener("click", () => {
+  modalOffer.classList.add("open");
+  overlayFull.classList.add("active");
+  header.classList.add("no-zindex");
+  document.body.style.overflow = "hidden"; // Возвращаем скролл
+});
+
+modalOfferClose.addEventListener("click", () => {
+  modalOffer.classList.remove("open");
+  overlayFull.classList.remove("active");
+  header.classList.remove("no-zindex");
+  document.body.style.overflow = ""; // Возвращаем скролл
+});
+
+ // Закрываем при клике на оверлей(за пределеы)
+ overlayFull.addEventListener("click", (event) => {
+  if (modalOffer.classList.contains("open")) {
+      modalOffer.classList.remove("open");
+  }
+  overlayFull.classList.remove("active");
+  header.classList.remove("no-zindex");
+  document.body.style.overflow = ""; // Возвращаем скролл
+});
+// popup modal offer
+
+// validate form in modale window "Offer Your Price"
+document.getElementById("offerForm").addEventListener("submit", (event) => {
+  event.preventDefault(); // Отключаем отправку формы для проверки
+
+  let isValid = true;
+
+  // Получаем значения полей
+  const price = document.getElementById("priceOffer");
+  const quantity = document.getElementById("quantityOffer");
+  const name = document.getElementById("nameOffer");
+  const phone = document.getElementById("phoneOffer");
+  const address = document.getElementById("addressOffer");
+
+  if (price.value.trim() === "") {
+    price.classList.add("error");
+    isValid = false;
+  } else {
+    price.classList.remove("error");
+  }
+
+  if (quantity.value.trim() === "") {
+    quantity.classList.add("error");
+    isValid = false;
+  } else {
+    quantity.classList.remove("error");
+  }
+
+  if (name.value.trim() === "") {
+    name.classList.add("error");
+    isValid = false;
+  } else {
+    name.classList.remove("error");
+  }
+
+  if (phone.value.trim() === "") {
+    phone.classList.add("error");
+    isValid = false;
+  } else {
+    phone.classList.remove("error");
+  }
+
+  if (address.value.trim() === "") {
+    address.classList.add("error");
+    isValid = false;
+  } else {
+    address.classList.remove("error");
+  }
+
+  if (isValid) {
+    jQuery("#loaderOfferPrice").removeClass("hidden");
+    jQuery("#offerForm").addClass("close");
+
+    jQuery.ajax({
+      url: ajaxObject.ajaxurl,
+      type: "POST",
+      data: {
+        action: "send_offer_price_mail",
+        offerForm: {
+          price: price.value.trim(),
+          quantity: quantity.value.trim(),
+          name: name.value.trim(),
+          phone: phone.value.trim(),
+          address: address.value.trim(),
+        },
+      },
+      success: function (response) {
+        jQuery("#loaderOfferPrice").addClass("hidden");
+        jQuery("#offerForm").removeClass("close");
+        // Очищаем поля формы
+        jQuery("#offerForm")
+          .find(
+            "input[type=text], input[type=number], input[type=tel], textarea"
+          )
+          .val("");
+      },
+      error: function (error) {
+        jQuery("#loaderOfferPrice").addClass("hidden");
+        jQuery("#offerForm").removeClass("close");
+        console.error("Error:", error);
+      },
+    });
+  }
+});
+// validate form in modale window "Offer Your Price"

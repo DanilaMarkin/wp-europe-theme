@@ -10,26 +10,25 @@ footer {
   align-items: center;
 }
 
-
 .footer-social-block-list {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
 }
 
 .footer-social-block-list > li > a {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 55px;
-  height: 55px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background: #3a3a3a;
 }
 
 .footer-social-block-list > li > a > img {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   filter: invert(1);
 }
 
@@ -52,7 +51,7 @@ footer {
 .footer-blocks-contacts-list > li > p,
 .footer-blocks-contacts-list > li > a {
   color: #fff;
-  font-size: 20px;
+  font-size: var(--text-btn);
   font-weight: 600;
 }
 
@@ -93,11 +92,6 @@ footer {
 
   .footer-blocks-contacts-list > li {
     gap: 5px;
-  }
-
-  .footer-blocks-contacts-list > li > p,
-  .footer-blocks-contacts-list > li > a {
-    font-size: 14px;
   }
 
   .footer-blocks-contacts-list > li > span {

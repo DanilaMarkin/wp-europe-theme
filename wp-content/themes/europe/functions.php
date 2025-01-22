@@ -319,7 +319,7 @@ function filter_products_sort()
                             <span class="count-number">0</span>
                             <button class="count-btn plus" aria-label="Увеличить количество">+</button>
                         </div>
-                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
                         <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
                             <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
                         </button>
@@ -428,7 +428,7 @@ function load_filtered_products()
                         <span class="count-number">0</span>
                         <button class="count-btn plus" aria-label="Увеличить количество">+</button>
                     </div>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
                     <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
                         <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
                     </button>
@@ -1191,7 +1191,7 @@ function load_more_products()
                         <span class="count-number">0</span>
                         <button class="count-btn plus" aria-label="Увеличить количество">+</button>
                     </div>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
                     <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
                         <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
                     </button>

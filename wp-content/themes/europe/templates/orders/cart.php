@@ -76,7 +76,10 @@ europe_get_header();
                 </div>
                 <div class="total-blocks-btn">
                     <button id="checkout">Checkout</button>
-                    <button>Get an offer</button>
+                    <button class="offer-btn">Get an offer</button>
+                    <!-- offer your price -->
+                    <?php get_template_part('templates/forms/offer-modal'); ?>
+                    <!-- offer your price -->
                 </div>
             </div>
             <div class="total-blocks-finish">

@@ -242,7 +242,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                             <span class="count-number">0</span>
                                             <button class="count-btn plus" aria-label="Увеличить количество">+</button>
                                         </div>
-                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
                                         <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
                                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
                                         </button>

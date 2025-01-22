@@ -1,7 +1,7 @@
 /* --------------START general-------------- */
 .page-title {
   font-weight: 700;
-  font-size: 32px;
+  font-size: var(--h1-title);
   margin: 47px 0 40px 0;
 }
 
@@ -14,18 +14,18 @@
     .contacts-content-social-list-head,
     .contacts-content-social-list-desc
   ) {
-  font-size: 20px;
+  font-size: var(--text-base);
 }
 
 .page-content h2:not(.contacts-content-social-block-title) {
   font-weight: 600;
-  font-size: 30px;
+  font-size: var(--h2-title);
   margin: 60px 0 40px 0;
 }
 
 .page-content h3 {
   font-weight: 700;
-  font-size: 20px;
+  font-size: var(--h3-title);
   margin-bottom: 15px;
 }
 
@@ -39,7 +39,7 @@
     .brands-blocks-slider-lists-circle,
     .contacts-content-social-list-circle
   ) {
-  font-size: 20px;
+  font-size: var(--text-base);
   list-style: disc;
   margin-left: 20px;
 }
@@ -78,7 +78,7 @@
 .contacts-content-social-list-head > a,
 .contacts-content-social-list-head {
   font-weight: 600;
-  font-size: 20px;
+  font-size: var(--text-btn);
   margin-bottom: 8px;
 }
 
@@ -99,38 +99,21 @@ address {
 
 .contacts-content-social-block-title {
   font-weight: 600;
-  font-size: 26px;
+  font-size: var(--h2-title);
   margin: 20px 0 40px 0;
 }
 /* --------------END contacts.php-------------- */
 
 @media (max-width: 768px) {
   .page-title {
-    font-size: 16px;
     margin: 20px 0 20px 0;
   }
 
-  .page-content
-    p:not(
-      .contacts-content-social-list-head,
-      .contacts-content-social-list-desc
-    ),
-  .page-content
-    ul
-    li:not(
-      .brands-blocks-slider-lists-circle,
-      .contacts-content-social-list-circle
-    ) {
-    font-size: 12px;
-  }
-
   .page-content h2:not(.contacts-content-social-block-title) {
-    font-size: 15px;
     margin: 30px 0 20px 0;
   }
 
   .page-content h3 {
-    font-size: 12px;
     margin-bottom: 10px;
   }
 
@@ -157,10 +140,6 @@ address {
     gap: 30px;
   }
 
-  .contacts-content-social-block-title {
-    font-size: 15px;
-  }
-
   .contacts-content-social-block > .contacts-content-social-block-title {
     margin: 5px 0 20px 0;
   }
@@ -170,7 +149,6 @@ address {
 
   .contacts-content-social-list-head > a,
   .contacts-content-social-list-head {
-    font-size: 14px;
     margin-bottom: 5px;
   }
 

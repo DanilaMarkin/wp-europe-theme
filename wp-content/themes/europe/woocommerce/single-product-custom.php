@@ -28,7 +28,11 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             <p><?= $custom_field["name_price"]; ?></p>
                             <div class="product-single-header-prices-item">
                                 <span>
+                                    <?php 
+                                    if ($custom_field["price"]) {
+                                    ?>
                                     <?= number_format($custom_field["price"], 0, '.', '.'); ?> <?= get_woocommerce_currency_symbol(); ?>
+                                    <?php } ?>
                                 </span>
                                 <?php
                                 if (isset($custom_field["price_message"])) {
@@ -153,35 +157,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <?php get_template_part('templates/notifications/notification-empty'); ?>
             <!-- notification add cart -->
             <!-- offer your price -->
-            <aside id="offerModal" class="modal-offer">
-                <div class="modal-offer-content">
-                    <button class="modal-offer-close" aria-label="Close">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="modal-offer-close-img">
-                    </button>
-                    <h2 class="modal-offer-title">Offer Your Price</h2>
-                    <form id="offerForm">
-                        <label for="price">Price</label>
-                        <input type="text" id="price" name="price" placeholder="Enter your price">
-
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity">
-
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name">
-
-                        <label for="phone">Phone (WhatsApp)</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone">
-
-                        <label for="address">Address</label>
-                        <textarea id="address" name="address" placeholder="Enter your address" rows="3"></textarea>
-
-                        <button type="submit" class="modal-offer-submit">Send</button>
-                    </form>
-                    <div id="loaderOfferPrice" class="loader-blocks-contact hidden">
-                        <span class="loader"></span>
-                    </div>
-                </div>
-            </aside>
+            <?php get_template_part('templates/forms/offer-modal'); ?>
             <!-- offer your price -->
         </div>
         <!-- popup gallery full screen -->
@@ -763,11 +739,11 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         let isValid = true;
 
         // Получаем значения полей
-        const price = document.getElementById("price");
-        const quantity = document.getElementById("quantity");
-        const name = document.getElementById("name");
-        const phone = document.getElementById("phone");
-        const address = document.getElementById("address");
+        const price = document.getElementById("priceOffer");
+        const quantity = document.getElementById("quantityOffer");
+        const name = document.getElementById("nameOffer");
+        const phone = document.getElementById("phoneOffer");
+        const address = document.getElementById("addressOffer");
 
         if (price.value.trim() === "") {
             price.classList.add("error");

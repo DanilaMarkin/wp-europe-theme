@@ -56,10 +56,11 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             grid-template-columns: repeat(3, 1fr);
             justify-content: space-between;
             gap: 40px 20px;
+            margin-bottom: 30px;
         }
 
         .category-blocks {
-            padding-top: 60px;
+            padding: 60px 0;
             display: flex;
             gap: 21px;
 
@@ -188,20 +189,17 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         /* --------------END category-block-filter-------------- */
 
         /* --------------START category-banner-------------- */
-        .category-banner {
-            margin-top: 47px;
-        }
-
         .category-banner-title {
             font-weight: 700;
-            font-size: 30px;
+            font-size: var(--h1-title);
+            margin: 47px 0 40px 0;
         }
 
         .category-banner-description {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 40px;
+            gap: 1rem;
+            font-size: var(--text-base);
         }
 
         /* --------------END category-banner-------------- */
@@ -212,7 +210,6 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             justify-content: center;
             align-items: center;
             gap: 8px;
-            padding: 60px 0 0 0;
         }
 
         .pagination ul {
@@ -234,17 +231,17 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
         .pagination-item a:hover,
         .pagination-item span:hover {
-            background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+            background: linear-gradient(90deg, #f0c814 0%, #f0ac15 100%);
             color: #000;
         }
 
         .pagination-item-prev a,
         .pagination-item-next a {
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .pagination-item.active {
-            background: linear-gradient(90deg, #fedc32 0%, #f0ac15 100%);
+            background: linear-gradient(90deg, #f0c814 0%, #f0ac15 100%);
             color: #000;
             cursor: default;
             pointer-events: none;
@@ -256,18 +253,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         @media (max-width: 768px) {
 
             /* --------------START category-banner-------------- */
-            .category-banner,
-            .category-banner-description {
-                margin-top: 20px;
-            }
-
-            .category-banner-description {
-                gap: 10px;
-                font-size: 12px;
-            }
-
             .category-banner-title {
-                font-size: 15px;
+                margin: 20px 0;
             }
 
             /* --------------END category-banner-------------- */
@@ -284,7 +271,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
             .category-blocks {
                 flex-direction: column;
-                padding-top: 30px;
+                padding: 30px 0;
             }
 
             .loader-blocks-category.active {
@@ -439,10 +426,6 @@ if (is_shop() || is_product_category() || is_product_tag()) {
             /* --------------END category-block-filter-------------- */
 
             /* --------------START pagination-------------- */
-            .pagination {
-                padding: 30px 0 0 0;
-            }
-
             .pagination ul {
                 flex-wrap: wrap;
                 justify-content: center;
@@ -472,11 +455,19 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 <h1 class="category-banner-title"><?= $category->name; ?></h1>
             <?php } ?>
             <div class="category-banner-description">
-                <?php if ($category->description) { ?>
-                    <?= wp_kses_post(wpautop($category->description)); ?>
+                <?php if ($category->description) {
+                    // Обрезаем текст на две части
+                    $description = $category->description;
+                    $parts = explode('.', $description, 2); // Разделяем на две части по первой точке
+                    $firstPart = $parts[0] ?? ''; // Первая часть до точки
+                    $secondPart = $parts[1] ?? ''; // Оставшаяся часть
+                ?>
+                        <?= wp_kses_post(wpautop($firstPart . '.')); // Добавляем точку обратно 
+                        ?>
                 <?php } ?>
             </div>
         </section>
+
         <section class="category-blocks">
             <div class="filter-head-mob">
                 <div class="filter-sort-blocks">
@@ -607,7 +598,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                                         <span class="count-number">0</span>
                                         <button class="count-btn plus" aria-label="Увеличить количество">+</button>
                                     </div>
-                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Contact us</button>
+                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
                                     <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
                                         <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
                                     </button>
@@ -639,6 +630,14 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                 <?php get_template_part('templates/notifications/notification-empty'); ?>
                 <!-- notification add cart -->
             </section>
+        </section>
+
+        <section class="category-banner">
+            <div class="category-banner-description">
+                <?php if (!empty($secondPart)) { ?>
+                        <?= wp_kses_post(wpautop($secondPart)); ?>
+                    </div>
+                <?php } ?>
         </section>
     </main>
 <?php
