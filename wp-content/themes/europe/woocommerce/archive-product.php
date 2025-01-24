@@ -462,8 +462,8 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                     $firstPart = $parts[0] ?? ''; // Первая часть до точки
                     $secondPart = $parts[1] ?? ''; // Оставшаяся часть
                 ?>
-                        <?= wp_kses_post(wpautop($firstPart . '.')); // Добавляем точку обратно 
-                        ?>
+                    <?= wp_kses_post(wpautop($firstPart . '.')); // Добавляем точку обратно 
+                    ?>
                 <?php } ?>
             </div>
         </section>
@@ -483,31 +483,31 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
                     <ul class="filter-sort-lists">
                         <li class="filter-sort-list" data-sort="price_asc">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-low.svg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-low.svg" alt="Sort by price low to high" title="Sort by price (low to high)">
                             <span>Sort by Price (Low to High)</span>
                         </li>
                         <li class="filter-sort-list" data-sort="price_desc">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="Sort by price high to low" title="Sort by price (high to low)">
                             <span>Sort by Price (High to Low)</span>
                         </li>
                         <li class="filter-sort-list" data-sort="popularity">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="Sort by popularity" title="Sort by popularity">
                             <span>Sort by Popularity</span>
                         </li>
                         <li class="filter-sort-list" data-sort="date">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/sort-hight.svg" alt="Sort by news" title="Sort by news">
                             <span>Sort by News</span>
                         </li>
                     </ul>
                 </div>
-                <button class="filter-head-mob-btn filter-btn-mob">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/filters-config.svg" alt="">
+                <button class="filter-head-mob-btn filter-btn-mob" aria-label="Open filters">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/filters-config.svg" alt="Filters icon" title="Open filters">
                     Filters
                 </button>
             </div>
             <aside class="category-block-filter">
                 <button class="category-block-filter-mob-close-action">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="category-block-filter-mob-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close icon" title="Close the filter" class="category-block-filter-mob-close">
                 </button>
                 <span class="category-block-filter-hide" role="button" aria-label="Hide All Filters"></span>
                 <div class="category-blocks-filter-head-lists">
@@ -563,47 +563,9 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                     <ul class="general-main-products-blocks-cards category-blocks-cards">
                         <?php while ($products->have_posts()) : $products->the_post();
                             global $product; ?>
-                            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                                <div class="products-blocks-card-preview">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php
-                                        $thumbnail_id = $product->get_image_id();
-                                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                                        $title_text = get_the_title($thumbnail_id);
-                                        ?>
-                                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'thumbnail'); ?>"
-                                            srcset="<?php echo wp_get_attachment_image_srcset($thumbnail_id); ?>"
-                                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
-                                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
-                                            class="products-blocks-card-preview-image">
-                                    </a>
-                                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                                    <?php if ($product->get_price_html()) { ?>
-                                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                                    <?php } else { ?>
-                                        <span class="products-blocks-card-preview-price">Price On Request</span>
-                                    <?php } ?>
-                                </div>
-                                <div class="products-blocks-card-btn">
-                                    <div class="products-blocks-card-btn-contact-full">
-                                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
-                                        </a>
-                                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
-                                        </a>
-                                    </div>
-                                    <div class="products-blocks-card-btn-count">
-                                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                                        <span class="count-number">0</span>
-                                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                                    </div>
-                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
-                                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                                    </button>
-                                </div>
-                            </li>
+                            <!-- product cart -->
+                            <?php get_template_part('templates/partials/product-card'); ?>
+                            <!-- product cart -->
                         <?php endwhile; ?>
                     </ul>
                     <!-- pagination -->
@@ -635,9 +597,9 @@ if (is_shop() || is_product_category() || is_product_tag()) {
         <section class="category-banner">
             <div class="category-banner-description">
                 <?php if (!empty($secondPart)) { ?>
-                        <?= wp_kses_post(wpautop($secondPart)); ?>
-                    </div>
-                <?php } ?>
+                    <?= wp_kses_post(wpautop($secondPart)); ?>
+            </div>
+        <?php } ?>
         </section>
     </main>
 <?php

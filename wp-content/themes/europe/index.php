@@ -14,7 +14,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <div class="banner-content-buttons">
             <button class="button-content-general button-content-contact">Contact us</button>
             <button class="button-content-general button-content-download">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/download.svg" alt="Download icon"> Download Price List
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/download.svg" title="Click to download the price list" alt="Download icon"> Download Price List
             </button>
         </div>
     </div>
@@ -42,7 +42,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <div class="contact-popup-blocks-header">
                 <p>Contact Us</p>
                 <button class="contact-popup-blocks-header-btn">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="contact-popup-blocks-header-btn-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" title="Close the popup" class="contact-popup-blocks-header-btn-close">
                 </button>
             </div>
             <div class="contact-popup-blocks-form">
@@ -64,23 +64,41 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     </div>
                     <ul class="menu-blocks-social-blocks">
                         <li>
-                            <a href="#">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                            <a href="https://t.me/<?php echo esc_attr($phone_number); ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
+                                aria-label="Contact us on Telegram">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg"
+                                    alt="Telegram icon to contact us">
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="">
+                            <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
+                                aria-label="Message us on WhatsApp">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg"
+                                    alt="WhatsApp icon to message us">
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="">
+                            <a href="tel:<?php echo esc_attr($phone_number); ?>"
+                                title="Call us at <?php echo esc_attr($phone_number); ?>"
+                                aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg"
+                                    alt="Phone icon to call us">
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="">
+                            <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
+                                aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail-sidemenu.svg"
+                                    alt="Email icon to contact us">
                             </a>
                         </li>
                     </ul>
@@ -96,20 +114,20 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <div class="contact-popup-blocks-header">
                 <p>Download Price List</p>
                 <button class="price-popup-blocks-header-btn contact-popup-blocks-header-btn">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="contact-popup-blocks-header-btn-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close icon" title="Close the popup" class="contact-popup-blocks-header-btn-close">
                 </button>
             </div>
             <div class="contact-popup-blocks-form">
-                <form action="">
+                <form id="priceForm">
                     <p class="contact-popup-blocks-form-head">Provide your phone number and get the opportunity to download a price list for all offered Apple products.
                     </p>
                     <div class="price-popup-blocks-form-action">
-                        <input type="tel" placeholder="+7 (999) 999 99 99" name="" id="">
+                        <input id="phonePrice" type="tel" placeholder="+7 (999) 999 99 99" name="phone">
                         <button class="price-popup-blocks-form-action-btn" aria-label="Press to Contact me button">Download Price List</button>
                     </div>
                     <div class="price-checkbox-wrapper">
-                        <label class="custom-checkbox-label">
-                            <input type="checkbox" class="custom-checkbox">
+                        <label id="priceLabelCheckbox" class="custom-checkbox-label">
+                            <input id="priceCheckbox" type="checkbox" class="custom-checkbox">
                             <span class="custom-check-icon"></span>
                             <div class="custom-checkbox-label-text-agree">
                                 I have read and agree to the <a href="#" class="custom-check-policy"> data processing policy</a>
@@ -127,9 +145,6 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <div class="brands-blocks container">
             <h2 class="brands-title">Our Brands</h2>
             <div class="brands-blocks-slider">
-                <button class="brands-blocks-slider-down">
-                    <img src="" alt="">
-                </button>
                 <ul class="brands-blocks-slider-lists">
                     <li class="brands-blocks-slider-lists-circle">
                         <a href="#">
@@ -162,9 +177,6 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         </a>
                     </li>
                 </ul>
-                <button class="brands-blocks-slider-next">
-                    <img src="" alt="">
-                </button>
             </div>
         </div>
     </section>
@@ -184,7 +196,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         <h2 class="products-blocks-header-title"><?php echo esc_html($category->name); ?></h2>
                         <a href="<?php echo esc_url(get_term_link($category)); ?>" class="products-blocks-header-all-link">
                             <span class="products-blocks-header-all">View All Products</span>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="Arrow icon" title="Navigate to all sections">
                         </a>
                     </div>
                     <ul class="general-main-products-blocks-cards products-blocks-cards">
@@ -207,47 +219,9 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                 $loop->the_post();
                                 global $product;
                         ?>
-                                <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                                    <div class="products-blocks-card-preview">
-                                        <a href="<?php echo get_permalink($product->get_id()); ?>">
-                                            <?php
-                                            $thumbnail_id = $product->get_image_id();
-                                            $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                                            $title_text = get_the_title($thumbnail_id);
-                                            ?>
-                                            <img src="<?php echo wp_get_attachment_image_url($thumbnail_id, 'thumbnail'); ?>"
-                                                srcset="<?php echo wp_get_attachment_image_srcset($thumbnail_id); ?>"
-                                                alt="<?php echo esc_attr($alt_text ?: $product->get_name()); ?>"
-                                                title="<?php echo esc_attr($title_text ?: $product->get_name()); ?>"
-                                                class="products-blocks-card-preview-image">
-                                        </a>
-                                        <h3 class="products-blocks-card-preview-title"><?php the_title(); ?></h3>
-                                        <?php if ($product->get_price_html()) { ?>
-                                            <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                                        <?php } else { ?>
-                                            <span class="products-blocks-card-preview-price">Price On Request</span>
-                                        <?php } ?>
-                                    </div>
-                                    <div class="products-blocks-card-btn">
-                                        <div class="products-blocks-card-btn-contact-full">
-                                            <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
-                                            </a>
-                                            <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
-                                            </a>
-                                        </div>
-                                        <div class="products-blocks-card-btn-count">
-                                            <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                                            <span class="count-number">0</span>
-                                            <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                                        </div>
-                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
-                                        <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                                        </button>
-                                    </div>
-                                </li>
+                                <!-- product cart -->
+                                <?php get_template_part('templates/partials/product-card'); ?>
+                                <!-- product cart -->
                         <?php }
                         } else {
                             echo '<p>No products found in this category</p>';
@@ -270,7 +244,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <a href="#" class="all-categories-blocks" title="View all categories">
             <h2 class="all-categories-blocks-title">View All Categories</h2>
             <div class="all-categories-blocks-arrow">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="View all categories" class="all-categories-blocks-arrow-img">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="View all categories" title="View all categories" class="all-categories-blocks-arrow-img">
             </div>
         </a>
     </section>

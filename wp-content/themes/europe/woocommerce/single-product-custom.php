@@ -28,10 +28,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             <p><?= $custom_field["name_price"]; ?></p>
                             <div class="product-single-header-prices-item">
                                 <span>
-                                    <?php 
+                                    <?php
                                     if ($custom_field["price"]) {
                                     ?>
-                                    <?= number_format($custom_field["price"], 0, '.', '.'); ?> <?= get_woocommerce_currency_symbol(); ?>
+                                        <?= number_format($custom_field["price"], 0, '.', '.'); ?> <?= get_woocommerce_currency_symbol(); ?>
                                     <?php } ?>
                                 </span>
                                 <?php
@@ -120,7 +120,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 echo '
                 <div class="thumbnail-gallery-wrapper">
                     <button class="arrow-left hidden">
-                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="">
+                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
                     </button>
                         <ul class="thumbnail-gallery">
                             <li class="thumbnail-gallery-item">
@@ -143,7 +143,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 echo '
                         </ul>
                     <button class="arrow-right hidden">
-                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="">
+                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
                     </button>
                 </div>';
             } else {
@@ -163,11 +163,11 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <!-- popup gallery full screen -->
         <aside id="galleryFull" class="galleryfull">
             <button class="galleryfull-close" aria-label="Close gallery">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" class="galleryfull-close-img">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" title="Close the gallery" class="galleryfull-close-img">
             </button>
             <div class="galleryfull-blocks">
                 <div class="gallery-block-main">
-                    <img src="" alt="" loading="lazy">
+                    <img src="<?= get_the_post_thumbnail_url(get_the_ID(), "large"); ?>" title="<?= get_the_title($thumbnail_id); ?>" alt="<?= get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true); ?>" loading="lazy">
                 </div>
                 <div class="gallery-block-info">
                     <p><?php the_title(); ?></p>

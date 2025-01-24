@@ -490,11 +490,11 @@ body {
   outline: 1px solid #000;
 }
 
-.contact-popup-blocks-form-action > input.error {
+.contact-popup-blocks-form-action > input.error, .price-popup-blocks-form-action > input.error {
   outline: 1px solid #a32a2a;
 }
 
-.contact-popup-blocks-form-action > input.error::placeholder {
+.contact-popup-blocks-form-action > input.error::placeholder, .price-popup-blocks-form-action > input.error::placeholder {
   color: #a32a2a;
 }
 
@@ -1357,7 +1357,7 @@ body {
   }
 
   .button-content-general {
-    padding: 9px 0 10px 0;
+    padding: 9px 0 9px 0;
   }
 
   .button-content-download img {

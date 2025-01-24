@@ -39,37 +39,70 @@ document.getElementById("contactForm").addEventListener("submit", (event) => {
 
   // Если все поля прошли проверку выполнить отравку на почту
   if (isValid) {
-
     jQuery("#loaderContact").removeClass("hidden");
     jQuery("#contactForm").addClass("open");
 
     jQuery.ajax({
-        url: ajaxObject.ajaxurl,
-        type: "POST",
-        data: {
-            action: "send_form_contact_to_mail",
-            form: {
-                phone: phone.value.trim(),
-                name: name.value.trim(),
-            }
+      url: ajaxObject.ajaxurl,
+      type: "POST",
+      data: {
+        action: "send_form_contact_to_mail",
+        form: {
+          phone: phone.value.trim(),
+          name: name.value.trim(),
         },
-        success: function(response) {
-            jQuery("#loaderContact").addClass("hidden");
-            jQuery("#contactForm").removeClass("open");
+      },
+      success: function (response) {
+        jQuery("#loaderContact").addClass("hidden");
+        jQuery("#contactForm").removeClass("open");
 
-            // Очищаем поля формы
-            jQuery("#contactForm").find("input[type=text], input[type=tel]").val("");
+        // Очищаем поля формы
+        jQuery("#contactForm")
+          .find("input[type=text], input[type=tel]")
+          .val("");
 
-            // Сбрасываем флажок
-            jQuery("#contactForm").find("input[type=checkbox]").prop("checked", false);
-        },
-        error: function(error) {
-            // При ошибке скрываем loader и закрываем форму
-            jQuery("#loaderContact").addClass("hidden");
-            jQuery("#contactForm").removeClass("open");
+        // Сбрасываем флажок
+        jQuery("#contactForm")
+          .find("input[type=checkbox]")
+          .prop("checked", false);
+      },
+      error: function (error) {
+        // При ошибке скрываем loader и закрываем форму
+        jQuery("#loaderContact").addClass("hidden");
+        jQuery("#contactForm").removeClass("open");
 
-            console.log("Error:", error);
-        }
-    })
+        console.log("Error:", error);
+      },
+    });
+  }
+});
+
+// Валидация модального окна на главной странице - Price List
+document.getElementById("priceForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  let isValid = true; // переменная для валидации
+
+  const phone = document.getElementById("phonePrice");
+
+  const labelCheckBoxPrice = document.getElementById("priceLabelCheckbox");
+  const checkboxPrice = document.getElementById("priceCheckbox");
+
+  // Валдиация телефона
+  if (phone.value.trim() === "") {
+    phone.classList.add("error");
+    isValid = false;
+  } else {
+    phone.classList.remove("error");
+  }
+
+  // Валдиация пользовательское соглащения
+  if (!checkboxPrice.checked) {
+    labelCheckBoxPrice.classList.add("error");
+    checkboxPrice.classList.add("error");
+    isValid = false;
+  } else {
+    labelCheckBoxPrice.classList.remove("error");
+    checkboxPrice.classList.remove("error");
   }
 });

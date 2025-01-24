@@ -285,46 +285,9 @@ function filter_products_sort()
                 global $product;
                 // Выводим карточку товара
 ?>
-                <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                    <div class="products-blocks-card-preview">
-                        <a href="<?php the_permalink(); ?>">
-                            <?php
-                            $thumbnail_id = $product->get_image_id();
-                            $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                            $title_text = get_the_title($thumbnail_id);
-                            ?>
-                            <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
-                                alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
-                                title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
-                                class="products-blocks-card-preview-image">
-                        </a>
-                        <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                        <?php if ($product->get_price_html()) { ?>
-                            <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                        <?php } else { ?>
-                            <span class="products-blocks-card-preview-price">Price On Request</span>
-                        <?php } ?>
-                    </div>
-                    <div class="products-blocks-card-btn">
-                        <div class="products-blocks-card-btn-contact-full">
-                            <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
-                            </a>
-                            <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                                <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
-                            </a>
-                        </div>
-                        <div class="products-blocks-card-btn-count">
-                            <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                            <span class="count-number">0</span>
-                            <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                        </div>
-                        <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
-                        <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                        </button>
-                    </div>
-                </li>
+                <!-- product cart -->
+                <?php get_template_part('templates/partials/product-card'); ?>
+                <!-- product cart -->
             <?php
             endwhile;
         else :
@@ -394,46 +357,9 @@ function load_filtered_products()
 
             // Генерация вашей вёрстки для товара
             ?>
-            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                <div class="products-blocks-card-preview">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php
-                        $thumbnail_id = $product->get_image_id();
-                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                        $title_text = get_the_title($thumbnail_id);
-                        ?>
-                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
-                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
-                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
-                            class="products-blocks-card-preview-image">
-                    </a>
-                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                    <?php if ($product->get_price_html()) { ?>
-                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                    <?php } else { ?>
-                        <span class="products-blocks-card-preview-price">Price On Request</span>
-                    <?php } ?>
-                </div>
-                <div class="products-blocks-card-btn">
-                    <div class="products-blocks-card-btn-contact-full">
-                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
-                        </a>
-                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
-                        </a>
-                    </div>
-                    <div class="products-blocks-card-btn-count">
-                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                        <span class="count-number">0</span>
-                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                    </div>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                    </button>
-                </div>
-            </li>
+            <!-- product cart -->
+            <?php get_template_part('templates/partials/product-card'); ?>
+            <!-- product cart -->
         <?php
         }
     } else {
@@ -511,8 +437,8 @@ function send_cart_to_woocommerce()
 
         // E-mail
         // Отправка email на несколько почтовых адресов
-        $to = ['gtsv.market@gmail.com', 'thedenbit2004@gmail.com']; // Укажите здесь почтовые адреса
-        $subject = 'Европейский сайт - Корзина';
+        $to = ['gtsv.market@gmail.com', 'info@osodoso-store.com']; // Укажите здесь почтовые адреса
+        $subject = 'osodoso-store.com - Корзина';
 
         // Подсчитываем итоговое количество товаров и общую сумму
         $total_quantity = 0;
@@ -656,10 +582,10 @@ function send_offer_price_mail()
     $address = sanitize_textarea_field($offerForm['address']);
 
     // Получатели
-    $to = ['gtsv.market@gmail.com', 'thedenbit2004@gmail.com'];
+    $to = ['gtsv.market@gmail.com', 'info@osodoso-store.com'];
 
     // Тема письма
-    $subject = 'Европейский сайт - Предложение цены';
+    $subject = 'osodoso-store.com - Предложение цены';
 
     // HTML-шаблон письма
     $message = "
@@ -723,7 +649,7 @@ function send_offer_price_mail()
     // Заголовки письма
     $headers = [
         'Content-Type: text/html; charset=UTF-8',
-        'From: Европейский сайт <no-reply@gtsv-market.com>'
+        'From: osodoso-store.com <no-reply@gtsv-market.com>'
     ];
 
     // Отправка письма
@@ -809,14 +735,14 @@ function send_form_contact_to_mail()
     $name = sanitize_text_field($_POST["form"]["name"]);
 
     // Почтовые адреса для отправки
-    $to = ['gtsv.market@gmasil.com', 'thedenbit2004@gmail.com'];
-    $subject = 'Европейский сайт - Заявка с контактной формы';
+    $to = ['gtsv.market@gmail.com', 'info@osodoso-store.com'];
+    $subject = 'osodoso-store.com - Заявка с контактной формы';
 
     // Шаблон HTML письма
     $message = "
         <html>
         <head>
-            <title>Европейский сайт - Заявка с контактной формы</title>
+            <title>osodoso-store.com - Заявка с контактной формы</title>
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -1157,46 +1083,9 @@ function load_more_products()
         while ($query->have_posts()) : $query->the_post();
             global $product;
         ?>
-            <li class="products-blocks-id products-blocks-card" data-id="<?= $product->get_id(); ?>">
-                <div class="products-blocks-card-preview">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php
-                        $thumbnail_id = $product->get_image_id();
-                        $alt_text = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-                        $title_text = get_the_title($thumbnail_id);
-                        ?>
-                        <img src="<?= wp_get_attachment_image_url($thumbnail_id, 'medium'); ?>"
-                            alt="<?= esc_attr($alt_text ?: $product->get_name()); ?>"
-                            title="<?= esc_attr($title_text ?: $product->get_name()); ?>"
-                            class="products-blocks-card-preview-image">
-                    </a>
-                    <h2 class="products-blocks-card-preview-title"><?php the_title(); ?></h2>
-                    <?php if ($product->get_price_html()) { ?>
-                        <span class="products-blocks-card-preview-price">from <?php echo $product->get_price_html(); ?></span>
-                    <?php } else { ?>
-                        <span class="products-blocks-card-preview-price">Price On Request</span>
-                    <?php } ?>
-                </div>
-                <div class="products-blocks-card-btn">
-                    <div class="products-blocks-card-btn-contact-full">
-                        <a href="https://wa.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-wa">
-                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/whatsapp.svg" alt="Open WhatsApp chat with <?php echo htmlspecialchars($phone_number); ?>">
-                        </a>
-                        <a href="https://t.me/<?php echo esc_attr($phone_number); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" title="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>" class="products-blocks-card-btn-contact-full-general products-blocks-card-btn-contact-full-tg">
-                            <img src="<?= get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Open Telegram chat with <?php echo htmlspecialchars($phone_number); ?>">
-                        </a>
-                    </div>
-                    <div class="products-blocks-card-btn-count">
-                        <button class="count-btn minus" aria-label="Уменьшить количество">-</button>
-                        <span class="count-number">0</span>
-                        <button class="count-btn plus" aria-label="Увеличить количество">+</button>
-                    </div>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-contact">Request</button>
-                    <button class="products-blocks-card-btn-general products-blocks-card-btn-cart">
-                        <img src="<?= get_template_directory_uri(); ?>/assets/icons/cart.svg" alt="">
-                    </button>
-                </div>
-            </li>
+            <!-- product cart -->
+            <?php get_template_part('templates/partials/product-card'); ?>
+            <!-- product cart -->
 <?php
         endwhile;
     else :

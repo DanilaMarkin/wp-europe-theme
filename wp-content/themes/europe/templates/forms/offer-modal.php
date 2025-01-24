@@ -1,7 +1,7 @@
 <aside id="offerModal" class="modal-offer">
     <div class="modal-offer-content">
         <button class="modal-offer-close" aria-label="Close">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="" class="modal-offer-close-img">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close icon" title="Close the offer" class="modal-offer-close-img">
         </button>
         <h2 class="modal-offer-title">Offer Your Price</h2>
         <form id="offerForm">
