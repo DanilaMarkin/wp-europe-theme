@@ -12,8 +12,12 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo wp_get_document_title(); ?></title>
     <?php
-    // Получаем мета-заголовок и ключевые слова через Rank Math
-    $meta_keywords = get_post_meta($post->ID, 'rank_math_focus_keyword', true);
+    global $post;
+    if (isset($post) && !empty($post)) {
+        $meta_keywords = get_post_meta($post->ID, 'rank_math_focus_keyword', true);
+    } else {
+        $meta_keywords = ''; // Значение по умолчанию, если $post не существует
+    }
 
     // Выводим <meta name="keywords">
     if (!empty($meta_keywords)) {

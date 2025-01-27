@@ -186,6 +186,16 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         $categories = get_terms(array(
             'taxonomy' => 'product_cat',
             'hide_empty' => true,
+            'meta_query' => array(
+                array(
+                    'key' => 'show_on_homepage',
+                    'value' => '1',
+                    'compare' => '='
+                ),
+            ),
+            'orderby' => 'meta_value_num',
+            'meta_key' => 'display_order',
+            'order' => 'ASC'
         ));
 
         if (!empty($categories) && !is_wp_error($categories)) {

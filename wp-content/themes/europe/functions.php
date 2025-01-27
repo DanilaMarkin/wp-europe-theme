@@ -836,6 +836,7 @@ add_filter('theme_page_templates', function ($templates) {
     $templates['templates/pages/about.php'] = 'About Us';
     $templates['templates/pages/contacts.php'] = 'Contacts';
     $templates['templates/pages/search-results.php'] = 'Search Results';
+    $templates['templates/pages/404.php'] = '404';
     $templates['templates/orders/cart.php'] = 'Cart';
     $templates['templates/orders/success.php'] = 'Cart Success';
     return $templates;
@@ -1159,3 +1160,69 @@ function generate_custom_pagination($total_pages, $current_page)
     return $pagination_html;
 }
 // END custom pagination
+
+// START show in main page is categories WooCommerce
+// Добавляем поле "Выводить на главной" и "Порядок" в админке при создании категории
+function add_category_fields() {
+    ?>
+    <div class="form-field">
+        <label for="show_on_homepage"><?php _e('Выводить на главной', 'textdomain'); ?></label>
+        <input type="checkbox" name="show_on_homepage" id="show_on_homepage" value="1">
+        <p><?php _e('Отметьте, если категория должна отображаться на главной странице.', 'textdomain'); ?></p>
+    </div>
+    <div class="form-field">
+        <label for="display_order"><?php _e('Порядок вывода', 'textdomain'); ?></label>
+        <input type="number" name="display_order" id="display_order" value="0">
+        <p><?php _e('Чем меньше значение, тем выше категория.', 'textdomain'); ?></p>
+    </div>
+    <?php
+}
+add_action('product_cat_add_form_fields', 'add_category_fields');
+
+// Добавляем поля для редактирования категории
+function edit_category_fields($term) {
+    $show_on_homepage = get_term_meta($term->term_id, 'show_on_homepage', true);
+    $display_order = get_term_meta($term->term_id, 'display_order', true);
+    ?>
+    <tr class="form-field">
+        <th scope="row"><label for="show_on_homepage"><?php _e('Выводить на главной', 'textdomain'); ?></label></th>
+        <td>
+            <input type="checkbox" name="show_on_homepage" id="show_on_homepage" value="1" <?php checked($show_on_homepage, '1'); ?>>
+            <p class="description"><?php _e('Отметьте, если категория должна отображаться на главной странице.', 'textdomain'); ?></p>
+        </td>
+    </tr>
+    <tr class="form-field">
+        <th scope="row"><label for="display_order"><?php _e('Порядок вывода', 'textdomain'); ?></label></th>
+        <td>
+            <input type="number" name="display_order" id="display_order" value="<?php echo esc_attr($display_order); ?>">
+            <p class="description"><?php _e('Чем меньше значение, тем выше категория.', 'textdomain'); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+add_action('product_cat_edit_form_fields', 'edit_category_fields');
+
+// Сохраняем данные мета-полей
+function save_category_fields($term_id) {
+    if (isset($_POST['show_on_homepage'])) {
+        update_term_meta($term_id, 'show_on_homepage', '1');
+    } else {
+        update_term_meta($term_id, 'show_on_homepage', '');
+    }
+    if (isset($_POST['display_order'])) {
+        update_term_meta($term_id, 'display_order', sanitize_text_field($_POST['display_order']));
+    }
+}
+add_action('edited_product_cat', 'save_category_fields');
+add_action('create_product_cat', 'save_category_fields');
+// END show in main page is categories WooCommerce
+
+// START 404 page
+function custom_404_page() {
+    if (is_404()) { // Проверяем, что это страница 404
+        include(get_template_directory() . '/templates/pages/404.php'); // Подключаем ваш файл 404.php
+        exit; // Останавливаем дальнейшую загрузку WordPress
+    }
+}
+add_action('template_redirect', 'custom_404_page');
+// END 404 page
