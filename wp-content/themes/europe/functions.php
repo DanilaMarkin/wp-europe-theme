@@ -80,6 +80,7 @@ function include_custom_walkers()
     require_once get_template_directory() . '/includes/walkers/custom-walker-side-menu.php';
     require_once get_template_directory() . '/includes/walkers/custom-walker-nav-menu.php';
     require_once get_template_directory() . '/includes/walkers/custom-walker-nav-menu-pages.php';
+    require_once get_template_directory() . '/includes/walkers/custom-walker-brands.php';
 }
 
 add_action('after_setup_theme', 'include_custom_walkers');

@@ -16,3 +16,15 @@ europe_get_header();
 <?php
 europe_get_footer();
 ?>
+
+<script>
+    // check page flag isBuy
+    const isBuy = localStorage.getItem("isBuy");
+
+    if (isBuy !== "on") {
+        window.location.href = "/";
+    } else {
+        localStorage.removeItem("isBuy");
+    }
+    // check page flag isBuy
+</script>

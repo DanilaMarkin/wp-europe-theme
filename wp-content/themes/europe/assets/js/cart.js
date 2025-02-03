@@ -364,11 +364,10 @@ document.getElementById("checkout").addEventListener("click", (event) => {
         if (response.success) {
           // Очистка корзины в локальном хранилище или сессии
           localStorage.removeItem("cart"); // Если корзина хранится в localStorage
-          sessionStorage.removeItem("cart"); // Если корзина хранится в sessionStorage
+          localStorage.setItem("isBuy", "on"); // Если купили, то флаг о покупки
 
           // Проверяем, существует ли redirect_url
           if (response.data.redirect_url) {
-            console.log("Redirect URL:", response.data.redirect_url); // Логируем URL
             window.location.href = response.data.redirect_url; // Редирект на переданный URL
           } else {
             console.error("Redirect URL не найден в ответе");

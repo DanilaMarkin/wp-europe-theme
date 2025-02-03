@@ -353,6 +353,7 @@ header.no-zindex {
 }
 
 .menu-blocks-link-toggle > span,
+.menu-blocks-link > a,
 .menu-blocks-pages-general > li > a,
 .menu-blocks-contact > li > a,
 .menu-blocks-contact > li > p {
@@ -570,6 +571,7 @@ header.no-zindex {
   }
 
   .menu-blocks-link-toggle > span,
+  .menu-blocks-link > a,
   .menu-blocks-pages-general > li > a,
   .menu-blocks-contact > li > a,
   .menu-blocks-contact > li > p {

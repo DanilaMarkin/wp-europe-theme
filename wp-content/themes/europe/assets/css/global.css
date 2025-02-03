@@ -182,7 +182,6 @@ body {
 .brands-blocks-slider-lists {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: nowrap;
   gap: 2rem;
 }
