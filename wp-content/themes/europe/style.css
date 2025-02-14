@@ -38,6 +38,7 @@ Text Domain: europe
 }
 
 .product-info__cta {
+  color: #fff;
   background-color: #333333;
   padding: 20px;
 }

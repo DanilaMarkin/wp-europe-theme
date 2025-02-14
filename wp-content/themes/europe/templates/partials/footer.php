@@ -16,7 +16,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
                         aria-label="Contact us on Telegram">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg"
-                            alt="Telegram icon to contact us">
+                            alt="Telegram icon to contact us"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="hidden--accessible">Contact us on Telegram</span>
                     </a>
                 </li>
                 <li>
@@ -26,7 +29,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
                         aria-label="Message us on WhatsApp">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
-                            alt="WhatsApp icon to message us">
+                            alt="WhatsApp icon to message us"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="hidden--accessible">Message us on WhatsApp</span>
                     </a>
                 </li>
                 <li>
@@ -34,7 +40,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         title="Call us at <?php echo esc_attr($phone_number); ?>"
                         aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone_footer.svg"
-                            alt="Phone icon to call us">
+                            alt="Phone icon to call us"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="hidden--accessible">Call us at <?php echo esc_attr($phone_number); ?></span>
                     </a>
                 </li>
                 <li>
@@ -44,7 +53,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
                         aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
-                            alt="Email icon to contact us">
+                            alt="Email icon to contact us"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="hidden--accessible">Email us at <?php echo esc_attr($global_settings['email']); ?></span>
                     </a>
                 </li>
             </ul>
@@ -76,25 +88,25 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <ul class="bottom-tab-bar-lists">
             <li class="bottom-tab-bar-list">
                 <a href="/" class="bottom-tab-bar-list-action" title="Go to Home Page" aria-label="Home Page">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/home.svg" alt="Home Icon" class="bottom-tab-bar-list-action-img">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/home.svg" alt="Home Icon" class="bottom-tab-bar-list-action-img" loading="lazy">
                     <span class="bottom-tab-bar-list-action-title">Home</span>
                 </a>
             </li>
             <li class="bottom-tab-bar-list">
                 <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-catalog" title="View Catalog" aria-label="Catalog">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/catalog.svg" alt="Catalog Icon" class="bottom-tab-bar-list-action-img">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/catalog.svg" alt="Catalog Icon" class="bottom-tab-bar-list-action-img" loading="lazy">
                     <span class="bottom-tab-bar-list-action-title">Catalog</span>
                 </button>
             </li>
             <li class="bottom-tab-bar-list">
                 <button class="bottom-tab-bar-list-action" title="Open Assistant" aria-label="Assistant">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/assistant.svg" alt="Assistant Icon" class="bottom-tab-bar-list-action-img">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/assistant.svg" alt="Assistant Icon" class="bottom-tab-bar-list-action-img" loading="lazy">
                     <span class="bottom-tab-bar-list-action-title">Assistant</span>
                 </button>
             </li>
             <li class="bottom-tab-bar-list">
                 <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-contacts" title="Open Contacts" aria-label="Contacts">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/contacts-people.svg" alt="Contacts Icon" class="bottom-tab-bar-list-action-img">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/contacts-people.svg" alt="Contacts Icon" class="bottom-tab-bar-list-action-img" loading="lazy">
                     <span class="bottom-tab-bar-list-action-title">Contacts</span>
                 </button>
                 <ul class="bottom-tab-bar-list-contacts">
@@ -105,7 +117,8 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
                             aria-label="Contact us on Telegram">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram_footer.svg"
-                                alt="Telegram icon to contact us">
+                                alt="Telegram icon to contact us"
+                                loading="lazy">
                         </a>
                     </li>
                     <li>
@@ -115,7 +128,8 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
                             aria-label="Message us on WhatsApp">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
-                                alt="WhatsApp icon to message us">
+                                alt="WhatsApp icon to message us"
+                                loading="lazy">
                         </a>
                     </li>
                     <li>
@@ -123,7 +137,8 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             title="Call us at <?php echo esc_attr($phone_number); ?>"
                             aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone_footer.svg"
-                                alt="Phone icon to call us">
+                                alt="Phone icon to call us"
+                                loading="lazy">
                         </a>
                     </li>
                     <li>
@@ -133,14 +148,15 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
                             aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
-                                alt="Email icon to contact us">
+                                alt="Email icon to contact us"
+                                loading="lazy">
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="bottom-tab-bar-list">
                 <button class="bottom-tab-bar-list-action bottom-tab-bar-list-action-more" title="View More Options" aria-label="More">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/more.svg" alt="More Options Icon" class="bottom-tab-bar-list-action-img">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/more.svg" alt="More Options Icon" class="bottom-tab-bar-list-action-img" loading="lazy">
                     <span class="bottom-tab-bar-list-action-title">More</span>
                 </button>
             </li>

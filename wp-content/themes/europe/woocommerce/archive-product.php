@@ -14,7 +14,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
     $args = array(
         'post_type'      => 'product',
-        'posts_per_page' => 3, // Количество продуктов на странице
+        'posts_per_page' => 12, // Количество продуктов на странице
         'paged' => $paged, // Передача текущей страницы
     );
 
@@ -323,6 +323,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
 
             .filter-sort-lists.open {
                 position: absolute;
+                z-index: 10;
                 top: 28px;
                 left: 0;
                 width: 100%;
@@ -573,6 +574,7 @@ if (is_shop() || is_product_category() || is_product_tag()) {
                         <?php
                         // Получаем общее количество страниц
                         global $wp_query;
+
                         $total_pages = $wp_query->max_num_pages;
 
                         // Получаем текущую страницу

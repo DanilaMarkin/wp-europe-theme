@@ -370,6 +370,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentPage =
     document.querySelector(".pagination .current")?.textContent || 1;
 
+  const filterSortBtn = document.querySelector(".filter-sort-btn-mob");
+  if (!filterSortBtn) {
+    console.error("Элемент .filter-sort-btn-mob не найден!");
+    return; // Выходим, если элемента нет
+  }
+  const ajaxUrl = filterSortBtn.getAttribute("data-url");
+  const url = new URL(ajaxUrl);
+  const categoryId = url.searchParams.get("category_id") || 0;
+
   checkboxes.forEach(function (checkbox) {
     checkbox.addEventListener("change", function () {
       const selectedFilters = {};
@@ -398,6 +407,7 @@ document.addEventListener("DOMContentLoaded", function () {
       productsContainer.classList.add("hidden");
 
       queryData.append("page", currentPage);
+      queryData.append("category_id", categoryId);
       // Отправляем AJAX-запрос
       fetch("/wp-admin/admin-ajax.php?action=load_filtered_products", {
         method: "POST",
@@ -486,10 +496,20 @@ function loadProducts(page) {
   const activeSort = document.querySelector(".filter-sort-list.active");
   const sortType = activeSort ? activeSort.getAttribute("data-sort") : "";
 
+  const filterSortBtn = document.querySelector(".filter-sort-btn-mob");
+  if (!filterSortBtn) {
+    console.error("Элемент .filter-sort-btn-mob не найден!");
+    return; // Выходим, если элемента нет
+  }
+  const ajaxUrl = filterSortBtn.getAttribute("data-url");
+  const url = new URL(ajaxUrl);
+  const categoryId = url.searchParams.get("category_id") || 0;
+
   // Формируем данные для запроса
   const params = {
     action: "load_more_products",
     paged: page, // Номер текущей страницы
+    category_id: categoryId, // Номер текущей страницы
   };
 
   // Добавляем сортировку, только если она выбрана

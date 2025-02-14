@@ -24,6 +24,7 @@
   font-weight: 700;
   font-size: 20px;
   text-align: center;
+  color: #000000;
   background: linear-gradient(90deg, #f0c814 0%, #f0ac15 100%);
   border-radius: 20px;
 }
@@ -90,6 +91,7 @@
 }
 
 .cart-info-block-products-item-info-title > a {
+  color: #000000;
   font-weight: 700;
   display: -webkit-box;
   display: box;

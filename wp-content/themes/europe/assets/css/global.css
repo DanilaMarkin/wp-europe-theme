@@ -55,7 +55,7 @@
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.25;
-  color: #000000;
+  /* color: #000000; */
 }
 
 .container {
@@ -94,6 +94,21 @@ body {
   display: none !important;
 }
 
+.hidden--accessible {
+  position: absolute !important;
+  inline-size: 1px !important;
+  block-size: 1px !important;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
 /* --------------START banner-------------- */
 .banner {
   position: relative;
@@ -238,6 +253,7 @@ body {
 }
 
 .products-blocks-header-all {
+  color: #000000;
   font-weight: 400;
   font-size: var(--text-base);
 }
@@ -263,6 +279,7 @@ body {
 }
 
 .products-blocks-card-preview {
+  position: relative;
   display: block;
   text-align: center;
   outline: 1px solid #dddddd;
@@ -287,8 +304,19 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 2rem 0 0.7rem 0;
+  color: #000000;
   font-weight: 700;
   font-size: var(--h3-title);
+}
+
+.products-blocks-card-preview a.products-blocks-card-preview-title-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
 .products-blocks-card-preview-price {
@@ -489,11 +517,13 @@ body {
   outline: 1px solid #000;
 }
 
-.contact-popup-blocks-form-action > input.error, .price-popup-blocks-form-action > input.error {
+.contact-popup-blocks-form-action > input.error,
+.price-popup-blocks-form-action > input.error {
   outline: 1px solid #a32a2a;
 }
 
-.contact-popup-blocks-form-action > input.error::placeholder, .price-popup-blocks-form-action > input.error::placeholder {
+.contact-popup-blocks-form-action > input.error::placeholder,
+.price-popup-blocks-form-action > input.error::placeholder {
   color: #a32a2a;
 }
 
@@ -575,6 +605,7 @@ body {
   text-decoration-color: #000;
   text-decoration-thickness: 1px;
   text-underline-offset: 1px;
+  color: #000000;
 }
 
 /* --------------END contactPopup-------------- */
@@ -1044,6 +1075,10 @@ body {
   margin-bottom: 20px;
   border: 1px solid #7d7d7d;
   border-radius: 20px;
+}
+
+.related-products-item-info {
+  color: #000000;
 }
 
 .related-products-item-preview-img {

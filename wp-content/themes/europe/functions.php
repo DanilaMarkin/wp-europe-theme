@@ -2,41 +2,82 @@
 // Подключаем стили темы
 function europe_enqueue_styles()
 {
-    wp_enqueue_style('europe-style', get_stylesheet_uri());
-    wp_enqueue_style('europe-reset', get_template_directory_uri() . '/assets/css/reset.css');
-    wp_enqueue_style('europe-global', get_template_directory_uri() . '/assets/css/global.css');
-    wp_enqueue_style('europe-header', get_template_directory_uri() . '/assets/css/header.css');
-    wp_enqueue_style('europe-footer', get_template_directory_uri() . '/assets/css/footer.css');
-    wp_enqueue_style('europe-pages', get_template_directory_uri() . '/assets/css/pages.css');
-    wp_enqueue_style('europe-order', get_template_directory_uri() . '/assets/css/order.css');
-    wp_enqueue_style('europe-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css');
+    $theme_version = wp_get_theme()->get('Version'); // Берем версию темы
+
+    wp_enqueue_style('europe-style', get_stylesheet_uri(), array(), filemtime(get_stylesheet_directory() . '/style.css'));
+    wp_enqueue_style('europe-reset', get_template_directory_uri() . '/assets/css/reset.css', array(), filemtime(get_template_directory() . '/assets/css/reset.css'));
+    wp_enqueue_style('europe-global', get_template_directory_uri() . '/assets/css/global.css', array(), filemtime(get_template_directory() . '/assets/css/global.css'));
+    wp_enqueue_style('europe-header', get_template_directory_uri() . '/assets/css/header.css', array(), filemtime(get_template_directory() . '/assets/css/header.css'));
+    wp_enqueue_style('europe-footer', get_template_directory_uri() . '/assets/css/footer.css', array(), filemtime(get_template_directory() . '/assets/css/footer.css'));
+    wp_enqueue_style('europe-pages', get_template_directory_uri() . '/assets/css/pages.css', array(), filemtime(get_template_directory() . '/assets/css/pages.css'));
+    wp_enqueue_style('europe-order', get_template_directory_uri() . '/assets/css/order.css', array(), filemtime(get_template_directory() . '/assets/css/order.css'));
 }
 add_action('wp_enqueue_scripts', 'europe_enqueue_styles');
+
+//  Стили для guttenberga
+function mytheme_enqueue_block_editor_assets()
+{
+    wp_enqueue_style(
+        'mytheme-editor-styles',
+        get_template_directory_uri() . '/style.css',
+        array(),
+        wp_get_theme()->get('Version')
+    );
+}
+add_action('enqueue_block_editor_assets', 'mytheme_enqueue_block_editor_assets');
 
 // Подключаем скрипты темы
 function enqueue_custom_scripts()
 {
-    wp_enqueue_script('main-script', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
-    wp_enqueue_script('store-script', get_template_directory_uri() . '/assets/js/store.js', array('jquery'), null, true);
+    $theme_version = wp_get_theme()->get('Version'); // Берем версию темы
+
+    // Основные скрипты
+    wp_enqueue_script(
+        'main-script',
+        get_template_directory_uri() . '/assets/js/main.js',
+        ['jquery'],
+        filemtime(get_template_directory() . '/assets/js/main.js'), // Кэш обновляется при изменении файла
+        true
+    );
+
+    wp_enqueue_script(
+        'store-script',
+        get_template_directory_uri() . '/assets/js/store.js',
+        ['jquery'],
+        filemtime(get_template_directory() . '/assets/js/store.js'),
+        true
+    );
+
     wp_localize_script('store-script', 'ajaxObject', [
         'ajaxurl' => admin_url('admin-ajax.php'),
     ]);
 
+    // Подключаем cart.js на определенных страницах
     if (is_page([258, 262])) {
-        wp_enqueue_script('cart-script', get_template_directory_uri() . '/assets/js/cart.js', ['jquery'], null, true);
+        wp_enqueue_script(
+            'cart-script',
+            get_template_directory_uri() . '/assets/js/cart.js',
+            ['jquery'],
+            filemtime(get_template_directory() . '/assets/js/cart.js'),
+            true
+        );
 
-        // Добавляем ajaxurl для использования в JavaScript
         wp_localize_script('cart-script', 'ajaxObject', [
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'pageTitle' => get_the_title(), // Передаем заголовок страницы
+            'pageTitle' => get_the_title(),
         ]);
     }
 
-    // Подключаем скрипт только на страницах записи
+    // Подключаем mainPageForms.js только на главной и блоге
     if (is_front_page() || is_home()) {
-        wp_enqueue_script('main-page-script', get_template_directory_uri() . '/assets/js/mainPageForms.js', ['jquery'], null, true);
+        wp_enqueue_script(
+            'main-page-script',
+            get_template_directory_uri() . '/assets/js/mainPageForms.js',
+            ['jquery'],
+            filemtime(get_template_directory() . '/assets/js/mainPageForms.js'),
+            true
+        );
 
-        // Добавляем ajaxurl и дополнительные данные для main-page-script
         wp_localize_script('main-page-script', 'ajaxObject', [
             'ajaxurl' => admin_url('admin-ajax.php'),
         ]);
@@ -235,7 +276,7 @@ function filter_products_sort()
         $args = array(
             'paged' => $paged,
             'post_type' => 'product',
-            'posts_per_page' => 3, // Количество товаров (можно задать ограничение)
+            'posts_per_page' => 12, // Количество товаров (можно задать ограничение)
             'post_status' => 'publish',
         );
 
@@ -257,9 +298,27 @@ function filter_products_sort()
             }
         }
 
+        // Фильтр по категории, если передан ID
+        if ($category > 0) {
+            $args['tax_query'][] = [
+                'taxonomy' => 'product_cat', // Таксономия WooCommerce для категорий товаров
+                'field'    => 'id',
+                'terms'    => $category,
+            ];
+        }
+
         // Добавляем таксономические запросы, если они есть
         if (!empty($tax_queries)) {
             $args['tax_query'] = $tax_queries;
+        }
+
+        // Проверяем, передана ли категория
+        if (!empty($_POST['category_slug'])) {
+            $tax_queries[] = [
+                'taxonomy' => 'product_cat', // Таксономия категорий товаров
+                'field'    => 'slug',
+                'terms'    => sanitize_text_field($_POST['category_slug']),
+            ];
         }
 
         // Изменение параметров сортировки в зависимости от выбранного варианта
@@ -316,6 +375,7 @@ function load_filtered_products()
 {
     $tax_queries = array();
     $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
+    $category = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
 
     // Считываем параметры фильтров из AJAX-запроса
     foreach ($_POST as $key => $value) {
@@ -339,13 +399,24 @@ function load_filtered_products()
     $query_args = array(
         'post_type' => 'product',
         'post_status' => 'publish',
-        'posts_per_page' => 3,
+        'posts_per_page' => 12,
         'paged' => $paged,
     );
+
+    // Фильтр по категории, если передан ID
+    if ($category > 0) {
+        $query_args['tax_query'][] = [
+            'taxonomy' => 'product_cat', // Таксономия WooCommerce для категорий товаров
+            'field'    => 'id',
+            'terms'    => $category,
+        ];
+    }
 
     if (!empty($tax_queries)) {
         $query_args['tax_query'] = $tax_queries;
     }
+
+
 
     $query = new WP_Query($query_args);
 
@@ -825,7 +896,7 @@ add_action('wp_ajax_nopriv_send_form_contact_to_mail', 'send_form_contact_to_mai
 function custom_shop_query($query)
 {
     if (!is_admin() && $query->is_main_query() && (is_shop() || is_product_category() || is_product_tag())) {
-        $query->set('posts_per_page', 3); // Укажите количество продуктов на странице
+        $query->set('posts_per_page', 12); // Укажите количество продуктов на странице
     }
 }
 add_action('pre_get_posts', 'custom_shop_query');
@@ -1007,6 +1078,9 @@ function load_more_products()
     // Получаем текущую страницу
     $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
 
+    // ID категории
+    $category = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+
     // Получаем сортировку (если есть, если пусто - оставляем без сортировки)
     $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : '';
 
@@ -1044,10 +1118,19 @@ function load_more_products()
     // Создаем базовый массив аргументов для запроса
     $query_args = [
         'paged' => $paged,
-        'posts_per_page' => 3, // Количество товаров на странице
+        'posts_per_page' => 12, // Количество товаров на странице
         'post_type' => 'product',
         'post_status' => 'publish',
     ];
+
+    // Фильтр по категории, если передан ID
+    if ($category > 0) {
+        $query_args['tax_query'][] = [
+            'taxonomy' => 'product_cat', // Таксономия WooCommerce для категорий товаров
+            'field'    => 'id',
+            'terms'    => $category,
+        ];
+    }
 
     // Добавление tax_query (если есть фильтры по таксономиям)
     if (!empty($tax_queries)) {
@@ -1088,7 +1171,7 @@ function load_more_products()
             <!-- product cart -->
             <?php get_template_part('templates/partials/product-card'); ?>
             <!-- product cart -->
-<?php
+    <?php
         endwhile;
     else :
         echo '<p>No products found</p>';
@@ -1164,7 +1247,8 @@ function generate_custom_pagination($total_pages, $current_page)
 
 // START show in main page is categories WooCommerce
 // Добавляем поле "Выводить на главной" и "Порядок" в админке при создании категории
-function add_category_fields() {
+function add_category_fields()
+{
     ?>
     <div class="form-field">
         <label for="show_on_homepage"><?php _e('Выводить на главной', 'textdomain'); ?></label>
@@ -1176,15 +1260,16 @@ function add_category_fields() {
         <input type="number" name="display_order" id="display_order" value="0">
         <p><?php _e('Чем меньше значение, тем выше категория.', 'textdomain'); ?></p>
     </div>
-    <?php
+<?php
 }
 add_action('product_cat_add_form_fields', 'add_category_fields');
 
 // Добавляем поля для редактирования категории
-function edit_category_fields($term) {
+function edit_category_fields($term)
+{
     $show_on_homepage = get_term_meta($term->term_id, 'show_on_homepage', true);
     $display_order = get_term_meta($term->term_id, 'display_order', true);
-    ?>
+?>
     <tr class="form-field">
         <th scope="row"><label for="show_on_homepage"><?php _e('Выводить на главной', 'textdomain'); ?></label></th>
         <td>
@@ -1199,12 +1284,13 @@ function edit_category_fields($term) {
             <p class="description"><?php _e('Чем меньше значение, тем выше категория.', 'textdomain'); ?></p>
         </td>
     </tr>
-    <?php
+<?php
 }
 add_action('product_cat_edit_form_fields', 'edit_category_fields');
 
 // Сохраняем данные мета-полей
-function save_category_fields($term_id) {
+function save_category_fields($term_id)
+{
     if (isset($_POST['show_on_homepage'])) {
         update_term_meta($term_id, 'show_on_homepage', '1');
     } else {
@@ -1219,7 +1305,8 @@ add_action('create_product_cat', 'save_category_fields');
 // END show in main page is categories WooCommerce
 
 // START 404 page
-function custom_404_page() {
+function custom_404_page()
+{
     if (is_404()) { // Проверяем, что это страница 404
         include(get_template_directory() . '/templates/pages/404.php'); // Подключаем ваш файл 404.php
         exit; // Останавливаем дальнейшую загрузку WordPress
@@ -1227,3 +1314,52 @@ function custom_404_page() {
 }
 add_action('template_redirect', 'custom_404_page');
 // END 404 page
+
+// START pattern block description
+function my_custom_block_patterns()
+{
+    if (function_exists('register_block_pattern')) {
+        $domain = get_site_url();
+        register_block_pattern(
+            'mytheme/product-info',
+            array(
+                'title'       => __('Product Info', 'mytheme'),
+                'description' => _x('Блок информации о продукте', 'Block pattern description', 'mytheme'),
+                'content'     => '
+<div class="product-info">
+    <div class="product-info__section">
+        <div class="product-info__text">
+            <h2>Why Buy the Lenovo Legion Pro 7 from Us?</h2>
+            <p>
+                When you purchase the Intel Xeon 6710E from us, you’re choosing reliability, value, and quality service. As a trusted supplier, we ensure direct imports from official sources, guaranteeing the authenticity of every processor. With our competitive pricing, you’ll find this high-performance CPU available for less than the recommended price on the official website. Enjoy fast shipping, expert customer support, and a hassle-free purchasing experience tailored to your needs.
+            </p>
+        </div>
+        <div class="product-info__image">
+            <img src="' . esc_url($domain . '/wp-content/uploads/2024/12/macbook-air-m3-16gb-512gb-5.webp') . '" alt="" width="200" height="200"/>
+        </div>
+    </div>
+
+    <div class="product-info__section product-info__section--reverse">
+        <div class="product-info__image">щы
+            <img src="' . esc_url($domain . '/wp-content/uploads/2024/12/macbook-air-m3-16gb-512gb-5.webp') . '" alt="" width="200" height="200"/>
+        </div>
+        <div class="product-info__text">
+            <h3>Boost your gaming experience with <strong>Lenovo Legion Pro 7</strong></h3>
+            <p>
+                The Intel Xeon 6710E is a cutting-edge processor designed for enterprise workloads and advanced computing environments. Featuring up to <strong>32 cores</strong> and <strong>64 threads</strong>, it delivers unparalleled multitasking capabilities, ensuring optimal performance for demanding applications. Built on Intel’s <strong>advanced 10nm technology</strong>, it supports <strong>DDR5 memory</strong> and <strong>PCIe 5.0</strong>, enabling faster data transfer and improved efficiency. With enhanced security features and a power-efficient architecture, the Xeon 6710E is perfect for modern data centers, AI tasks, and high-performance computing.
+            </p>
+        </div>
+    </div>
+
+    <div class="product-info__cta">
+        <h4>Order Your Intel Xeon 6710E Today!</h4>
+        <p>Upgrade your system with the Intel Xeon 6710E and experience next-level performance. Don’t miss out on this incredible offer—shop with us today and power your workloads with confidence!</p>
+    </div>
+</div>',
+            )
+        );
+    }
+}
+add_action('init', 'my_custom_block_patterns');
+
+// END pattern block description

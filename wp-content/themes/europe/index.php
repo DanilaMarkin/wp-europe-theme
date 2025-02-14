@@ -14,7 +14,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <div class="banner-content-buttons">
             <button class="button-content-general button-content-contact">Contact us</button>
             <button class="button-content-general button-content-download">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/download.svg" title="Click to download the price list" alt="Download icon"> Download Price List
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/download.svg" title="Click to download the price list" alt="Download icon" loading="lazy"> Download Price List
             </button>
         </div>
     </div>
@@ -42,7 +42,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <div class="contact-popup-blocks-header">
                 <p>Contact Us</p>
                 <button class="contact-popup-blocks-header-btn">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" title="Close the popup" class="contact-popup-blocks-header-btn-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close button" title="Close the popup" class="contact-popup-blocks-header-btn-close" loading="lazy">
                 </button>
             </div>
             <div class="contact-popup-blocks-form">
@@ -70,7 +70,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                 title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
                                 aria-label="Contact us on Telegram">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg"
-                                    alt="Telegram icon to contact us">
+                                    alt="Telegram icon to contact us" loading="lazy">
                             </a>
                         </li>
                         <li>
@@ -80,7 +80,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                 title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
                                 aria-label="Message us on WhatsApp">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg"
-                                    alt="WhatsApp icon to message us">
+                                    alt="WhatsApp icon to message us" loading="lazy">
                             </a>
                         </li>
                         <li>
@@ -88,7 +88,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                 title="Call us at <?php echo esc_attr($phone_number); ?>"
                                 aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg"
-                                    alt="Phone icon to call us">
+                                    alt="Phone icon to call us" loading="lazy">
                             </a>
                         </li>
                         <li>
@@ -98,7 +98,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                 title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
                                 aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail-sidemenu.svg"
-                                    alt="Email icon to contact us">
+                                    alt="Email icon to contact us" loading="lazy">
                             </a>
                         </li>
                     </ul>
@@ -114,7 +114,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             <div class="contact-popup-blocks-header">
                 <p>Download Price List</p>
                 <button class="price-popup-blocks-header-btn contact-popup-blocks-header-btn">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close icon" title="Close the popup" class="contact-popup-blocks-header-btn-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close icon" title="Close the popup" class="contact-popup-blocks-header-btn-close" loading="lazy">
                 </button>
             </div>
             <div class="contact-popup-blocks-form">
@@ -170,7 +170,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         <h2 class="products-blocks-header-title"><?php echo esc_html($category->name); ?></h2>
                         <a href="<?php echo esc_url(get_term_link($category)); ?>" class="products-blocks-header-all-link">
                             <span class="products-blocks-header-all">View All Products</span>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="Arrow icon" title="Navigate to all sections">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="Arrow icon" title="Navigate to all sections" loading="lazy">
                         </a>
                     </div>
                     <ul class="general-main-products-blocks-cards products-blocks-cards">
@@ -218,7 +218,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         <a href="#" class="all-categories-blocks" title="View all categories">
             <h2 class="all-categories-blocks-title">View All Categories</h2>
             <div class="all-categories-blocks-arrow">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="View all categories" title="View all categories" class="all-categories-blocks-arrow-img">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow_all.svg" alt="View all categories" title="View all categories" class="all-categories-blocks-arrow-img" loading="lazy">
             </div>
         </a>
     </section>

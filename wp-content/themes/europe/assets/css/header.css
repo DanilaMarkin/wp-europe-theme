@@ -47,6 +47,7 @@ header.no-zindex {
 .header-block-main-general-lists > li > a {
   font-size: 14px;
   transition: 0.3s;
+  color: #000000;
 }
 
 .header-block-main-general-lists > li > a:hover {
@@ -98,6 +99,7 @@ header.no-zindex {
   font-weight: 400;
   letter-spacing: inherit;
   transition: 0.3s;
+  color: #000000;
 }
 
 .nav-block-catalog-lists > li > a:hover {
@@ -194,10 +196,10 @@ header.no-zindex {
   width: 100%;
   color: #000;
   font-weight: 700;
-  font-size: 20px;
-  padding: 19px 0;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #f0c814 0%, #f0ac15 100%);
+  font-size: var(--text-btn);
+  height: 45px;
+  border-radius: 15px;
+  background: var(--bg-color);
   margin-bottom: 40px;
 }
 
@@ -238,6 +240,10 @@ header.no-zindex {
 
 .search-popup-block-results-products {
   margin-bottom: 40px;
+}
+
+.search-popup-block-results-info {
+  color: #000000;
 }
 
 .search-popup-block-results-header-count-offers {

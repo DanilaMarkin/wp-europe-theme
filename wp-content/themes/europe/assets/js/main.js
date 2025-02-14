@@ -26,6 +26,7 @@ const overlay = document.getElementById("overlay");
 // Переключение overlay
 function toggleOverlay(isVisible) {
   if (overlay) overlay.classList.toggle("active", isVisible);
+  document.body.classList.toggle('no-scroll');
 }
 
 // Обновление состояния overlay

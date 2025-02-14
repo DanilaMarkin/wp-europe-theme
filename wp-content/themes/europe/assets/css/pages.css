@@ -80,6 +80,7 @@
   font-weight: 600;
   font-size: var(--text-btn);
   margin-bottom: 8px;
+  color: #000000;
 }
 
 .contacts-content-social-list-desc,

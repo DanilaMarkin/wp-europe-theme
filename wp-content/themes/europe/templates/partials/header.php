@@ -9,12 +9,23 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 
 <head>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MZHK235N');</script>
-<!-- End Google Tag Manager -->
+    <script async>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MZHK235N');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo wp_get_document_title(); ?></title>
@@ -33,7 +44,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     ?>
     <?php wp_head(); ?>
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
+    <script defer type="text/javascript">
         (function(m, e, t, r, i, k, a) {
             m[i] = m[i] || function() {
                 (m[i].a = m[i].a || []).push(arguments)
@@ -63,9 +74,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <body <?php body_class(); ?>>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZHK235N"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZHK235N"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="overlay" class="overlay"></div>
     <header>
         <div class="header-general">
@@ -74,7 +85,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="header-block-main">
                         <nav class="header-block-main-menu">
                             <button id="menuToogle" class="menu-toggle-button" title="Open Menu" aria-label="Open Menu">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu Icon">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/menu.svg" alt="Menu Icon" loading="lazy">
                                 <span class="menu-toggle-text">Menu</span>
                             </button>
                         </nav>
@@ -102,7 +113,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
                                     aria-label="Contact us on Telegram">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram.svg"
-                                        alt="Telegram icon to contact us">
+                                        alt="Telegram icon to contact us"
+                                        aria-hidden="true"
+                                        loading="lazy">
+                                    <span class="hidden--accessible">Contact us on Telegram</span>
                                 </a>
                             </li>
                             <li>
@@ -112,7 +126,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
                                     aria-label="Message us on WhatsApp">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp.svg"
-                                        alt="WhatsApp icon to message us">
+                                        alt="WhatsApp icon to message us"
+                                        aria-hidden="true"
+                                        loading="lazy">
+                                    <span class="hidden--accessible">Message us on WhatsApp</span>
                                 </a>
                             </li>
                             <li>
@@ -120,7 +137,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     title="Call us at <?php echo esc_attr($phone_number); ?>"
                                     aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone.svg"
-                                        alt="Phone icon to call us">
+                                        alt="Phone icon to call us"
+                                        aria-hidden="true"
+                                        loading="lazy">
+                                    <span class="hidden--accessible">Call us at <?php echo esc_attr($phone_number); ?></span>
                                 </a>
                             </li>
                             <li>
@@ -130,7 +150,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
                                     aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/mail.svg"
-                                        alt="Email icon to contact us">
+                                        alt="Email icon to contact us"
+                                        aria-hidden="true"
+                                        loading="lazy">
+                                    <span class="hidden--accessible">Email us at <?php echo esc_attr($global_settings['email']); ?></span>
                                 </a>
                             </li>
                         </ul>
@@ -157,11 +180,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="nav-blocks-detail">
                         <div class="nav-blocks-cart-search">
                             <input type="search" name="" id="" placeholder="Search on the Site" class="nav-blocks-detail-search-input">
-                            <img id="searchToogle" src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search Icon" title="Search" aria-label="Search">
+                            <img id="searchToogle" src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" alt="Search Icon" title="Search" aria-label="Search" loading="lazy">
                         </div>
                         <div class="nav-block-cart">
                             <a href="<?= get_permalink(258); ?>" title="Go to cart" class="nav-block-cart-link">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" class="nav-block-cart-img" alt="Shopping Cart Icon" title="View Cart" aria-label="Shopping Cart">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/cart.svg" class="nav-block-cart-img" alt="Shopping Cart Icon" title="View Cart" aria-label="Shopping Cart" loading="lazy">
                             </a>
                             <span class="nav-block-cart-count">0</span>
                         </div>
@@ -170,7 +193,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </nav>
         </div>
         <aside id="sideMenu" aria-label="Site navigation">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close Menu" title="Close Menu" class="menu-close">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" alt="Close Menu" title="Close Menu" class="menu-close" loading="lazy">
             <div class="menu-blocks">
                 <div class="menu-blocks-header">
                     <button class="menu-blocks-header-btn-general active menu-blocks-header-categories" aria-label="Categories section">Categories</button>
@@ -211,13 +234,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
                 <ul class="menu-blocks-contact">
                     <li>
-                        <a href="tel:<?php echo esc_attr($phone_number); ?>" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Phone number">
+                        <a href="tel:<?php echo esc_attr($phone_number); ?>" rel="noopener noreferrer" title="Call us at <?php echo esc_attr($global_settings['phone']); ?>" aria-label="Phone number">
                             <?php echo esc_html($global_settings['phone']); ?>
                         </a>
                         <span><?php echo esc_html($global_settings['phone_desc']); ?></span>
                     </li>
                     <li>
-                        <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email address">
+                        <a href="mailto:<?php echo esc_attr($global_settings['email']); ?>" rel="noopener noreferrer" title="Email us at <?php echo esc_attr($global_settings['email']); ?>" aria-label="Email address">
                             <?php echo esc_html($global_settings['email']); ?>
                         </a>
                         <span><?php echo esc_html($global_settings['email_desc']); ?></span>
@@ -234,7 +257,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <a href="tel:<?php echo esc_attr($phone_number); ?>"
                             title="Call us at <?php echo esc_attr($phone_number); ?>"
                             aria-label="Call us at <?php echo esc_attr($phone_number); ?>">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Phone icon to call us">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Phone icon to call us" aria-hidden="true" loading="lazy">
+                            <span class="hidden--accessible">Call us at <?php echo esc_attr($phone_number); ?></span>
                         </a>
                     </li>
                     <li>
@@ -243,7 +267,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             rel="noopener noreferrer"
                             title="Message us on WhatsApp via <?php echo esc_attr($phone_number); ?>"
                             aria-label="Message us on WhatsApp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="WhatsApp icon to message us">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/whatsapp-sidemenu.svg" alt="WhatsApp icon to message us" aria-hidden="true" loading="lazy">
+                            <span class="hidden--accessible">Message us on WhatsApp</span>
                         </a>
                     </li>
                     <li>
@@ -252,7 +277,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             rel="noopener noreferrer"
                             title="Contact us on Telegram via <?php echo esc_attr($phone_number); ?>"
                             aria-label="Contact us on Telegram">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Telegram icon to contact us">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/telegram-sidemenu.svg" alt="Telegram icon to contact us" aria-hidden="true" loading="lazy">
+                            <span class="hidden--accessible">Contact us on Telegram</span>
                         </a>
                     </li>
                     <li>
@@ -261,7 +287,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             rel="noopener noreferrer"
                             title="Email us at <?php echo esc_attr($global_settings['email']); ?>"
                             aria-label="Email us at <?php echo esc_attr($global_settings['email']); ?>">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Email icon to contact us">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/phone-sidemenu.svg" alt="Email icon to contact us" aria-hidden="true" loading="lazy">
+                            <span class="hidden--accessible">Email us at <?php echo esc_attr($global_settings['email']); ?></span>
                         </a>
                     </li>
                 </ul>
@@ -271,10 +298,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="search-popup-blocks container">
                 <div class="search-popup-block">
                     <div class="search-popup-block-action">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" title="Search" aria-label="Search" alt="Search icon Popup" class="search-popup-block-icon">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/search.svg" title="Search" aria-label="Search" alt="Search icon Popup" class="search-popup-block-icon" loading="lazy">
                         <input type="search" placeholder="Search on the Site" class="search-popup-block-inlet">
                     </div>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" title="Close Popup" aria-label="Close Popup" alt="Close Search Popup" class="search-popup-block-close">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/close.svg" title="Close Popup" aria-label="Close Popup" alt="Close Search Popup" class="search-popup-block-close" loading="lazy">
                 </div>
                 <div class="search-popup-block-results">
                     <p class="search-popup-block-results-header-empty hidden">No results were found for your request</p>

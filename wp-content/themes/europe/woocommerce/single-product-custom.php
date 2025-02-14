@@ -101,64 +101,80 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         </div>
 
         <div class="product-gallery">
-            <figure class="main-image">
-                <?php if (has_post_thumbnail()) :
-                    // Получаем ID миниатюры
-                    $thumbnail_id = get_post_thumbnail_id(get_the_ID());
-                ?>
-                    <img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>"
-                        alt="<?php echo esc_attr(get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true)); ?>"
-                        title="<?php echo esc_attr(get_the_title($thumbnail_id)); ?>"
-                        loading="lazy">
-                <?php endif; ?>
-            </figure>
             <?php
+            // Получаем галерею изображений
             $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
-            $gallery_ids = explode(',', $gallery);
+            $gallery_ids = !empty($gallery) ? explode(',', $gallery) : array();
 
             if (!empty($gallery_ids)) {
-                echo '
+                // Берем первое изображение из галереи как основное
+                $main_image_id = array_shift($gallery_ids);
+                $main_image_url = wp_get_attachment_url($main_image_id);
+                $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
+                $main_image_title = get_post($main_image_id)->post_title;
+            } elseif (has_post_thumbnail()) {
+                // Если галерея пуста, берем featured image
+                $main_image_id = get_post_thumbnail_id(get_the_ID());
+                $main_image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
+                $main_image_title = get_the_title($main_image_id);
+            }
+
+            // Вывод главного изображения
+            if (!empty($main_image_url)) :
+            ?>
+                <figure class="main-image">
+                    <img src="<?php echo esc_url($main_image_url); ?>"
+                        alt="<?php echo esc_attr($main_image_alt); ?>"
+                        title="<?php echo esc_attr($main_image_title); ?>"
+                        loading="lazy">
+                </figure>
+            <?php endif; ?>
+
+            <?php if (!empty($gallery_ids)) : ?>
                 <div class="thumbnail-gallery-wrapper">
                     <button class="arrow-left hidden">
-                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
                     </button>
-                        <ul class="thumbnail-gallery">
-                            <li class="thumbnail-gallery-item">
-                                <figure>
-                                    <img src="' . get_the_post_thumbnail_url(get_the_ID(), "large") . '"
-                                    alt="' . esc_attr(get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true)) . '"
-                                    title="' . esc_attr(get_the_title($thumbnail_id)) . '"
+                    <ul class="thumbnail-gallery">
+                        <li class="thumbnail-gallery-item">
+                            <figure>
+                                <img src="<?php echo esc_url($main_image_url); ?>"
+                                    alt="<?php echo esc_attr($main_image_alt); ?>"
+                                    title="<?php echo esc_attr($main_image_title); ?>"
                                     loading="lazy">
-                                </figure>
-                            </li>
-                ';
-                foreach ($gallery_ids as $attachment_id) {
-                    $image_url = wp_get_attachment_url($attachment_id);
-                    $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
-                    $image_title = get_post($attachment_id)->post_title;
-                    echo '<li class="thumbnail-gallery-item">
-                            <figure><img src="' . esc_url($image_url) . '" title="' . esc_attr($image_title) . '"  alt="' . esc_attr($image_alt) . '" loading="lazy"></figure>
-                        </li>';
-                }
-                echo '
-                        </ul>
+                            </figure>
+                        </li>
+                        <?php
+                        // Вывод оставшихся изображений галереи
+                        foreach ($gallery_ids as $attachment_id) {
+                            $image_url = wp_get_attachment_url($attachment_id);
+                            $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+                            $image_title = get_post($attachment_id)->post_title;
+                            echo '<li class="thumbnail-gallery-item">
+                            <figure>
+                                <img src="' . esc_url($image_url) . '" title="' . esc_attr($image_title) . '" alt="' . esc_attr($image_alt) . '" loading="lazy">
+                            </figure>
+                          </li>';
+                        }
+                        ?>
+                    </ul>
                     <button class="arrow-right hidden">
-                        <img src="' . get_template_directory_uri() . '/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
                     </button>
-                </div>';
-            } else {
-                echo 'Галерея пуста.';
-            }
-            ?>
-            <div id="product-notification" class="hidden">
-                <span>Item successfully added to cart</span>
-            </div>
-            <!-- notification add cart -->
-            <?php get_template_part('templates/notifications/notification-empty'); ?>
-            <!-- notification add cart -->
-            <!-- offer your price -->
-            <?php get_template_part('templates/forms/offer-modal'); ?>
-            <!-- offer your price -->
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div id="product-notification" class="hidden">
+            <span>Item successfully added to cart</span>
+        </div>
+        <!-- notification add cart -->
+        <?php get_template_part('templates/notifications/notification-empty'); ?>
+        <!-- notification add cart -->
+        <!-- offer your price -->
+        <?php get_template_part('templates/forms/offer-modal'); ?>
+        <!-- offer your price -->
         </div>
         <!-- popup gallery full screen -->
         <aside id="galleryFull" class="galleryfull">
@@ -167,18 +183,22 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             </button>
             <div class="galleryfull-blocks">
                 <div class="gallery-block-main">
-                    <img src="<?= get_the_post_thumbnail_url(get_the_ID(), "large"); ?>" title="<?= get_the_title($thumbnail_id); ?>" alt="<?= get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true); ?>" loading="lazy">
+                    <img src="<?php echo esc_url($main_image_url); ?>"
+                        alt="<?php echo esc_attr($main_image_alt); ?>"
+                        title="<?php echo esc_attr($main_image_title); ?>"
+                        loading="lazy">
                 </div>
                 <div class="gallery-block-info">
                     <p><?php the_title(); ?></p>
                     <ul class="gallery-block-info-lists">
-                        <!-- main image in gallery -->
                         <li class="gallery-block-info-list">
                             <figure>
-                                <img src="<?= get_the_post_thumbnail_url(get_the_ID(), "large"); ?>" title="<?= get_the_title($thumbnail_id); ?>" alt="<?= get_post_meta($thumbnail_id, "_wp_attachment_image_alt", true); ?>" loading="lazy">
+                                <img src="<?php echo esc_url($main_image_url); ?>"
+                                    alt="<?php echo esc_attr($main_image_alt); ?>"
+                                    title="<?php echo esc_attr($main_image_title); ?>"
+                                    loading="lazy">
                             </figure>
                         </li>
-                        <!-- main image in gallery -->
                         <?php
                         if (!empty($gallery_ids)) {
                             foreach ($gallery_ids as $attachment_id) {
@@ -238,7 +258,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 
     <section id="description" class="tab-pane active product-single-description">
         <div class="container">
-            <h2 class="product-single-description-title">Description</h2>
+            <!-- <h2 class="product-single-description-title">Description</h2> -->
             <?php
             $descr = get_the_content();
             if (!empty(trim($descr))) {
@@ -252,7 +272,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
 
     <section id="specifications" class="tab-pane product-single-feature">
         <div class="container">
-            <h2 class="product-single-feature-title">Characteristics</h2>
+            <!-- <h2 class="product-single-feature-title">Characteristics</h2> -->
             <?php
             // Получаем характеристики из мета-данных
             $characteristics = get_post_meta(get_the_ID(), 'product_characteristics', true);
@@ -411,98 +431,110 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
     function updateArrows() {
         if (isVerticalMode()) {
             // Вертикальная ориентация
-            const visibleHeight = gallery.offsetHeight;
-            arrowLeft.classList.toggle("hidden", gallery.scrollTop <= 0);
-            arrowRight.classList.toggle("hidden", gallery.scrollTop + visibleHeight >= gallery.scrollHeight);
+            if (gallery) {
+                const visibleHeight = gallery.offsetHeight;
+                arrowLeft.classList.toggle("hidden", gallery.scrollTop <= 0);
+                arrowRight.classList.toggle("hidden", gallery.scrollTop + visibleHeight >= gallery.scrollHeight);
+            }
+
         } else {
             // Горизонтальная ориентация
-            const visibleWidth = gallery.offsetWidth;
-            arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
-            arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
+            if (gallery) {
+                const visibleWidth = gallery.offsetWidth;
+                arrowLeft.classList.toggle("hidden", gallery.scrollLeft <= 0);
+                arrowRight.classList.toggle("hidden", gallery.scrollLeft + visibleWidth >= gallery.scrollWidth);
+            }
         }
     }
 
     // Перемещение галереи
-    arrowLeft.addEventListener("click", () => {
-        if (isVerticalMode()) {
-            const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
-            gallery.scrollTop -= itemHeight * 3; // Сдвиг на 3 элемента вверх
-        } else {
-            const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
-            gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
-        }
-        updateArrows();
-    });
+    if (arrowLeft) {
+        arrowLeft.addEventListener("click", () => {
+            if (isVerticalMode()) {
+                const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+                gallery.scrollTop -= itemHeight * 3; // Сдвиг на 3 элемента вверх
+            } else {
+                const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+                gallery.scrollLeft -= itemWidth * 3; // Сдвиг на 3 элемента влево
+            }
+            updateArrows();
+        });
+    }
 
-    arrowRight.addEventListener("click", () => {
-        if (isVerticalMode()) {
-            const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
-            gallery.scrollTop += itemHeight * 3; // Сдвиг на 3 элемента вниз
-        } else {
-            const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
-            gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
-        }
-        updateArrows();
-    });
+    if (arrowRight) {
+        arrowRight.addEventListener("click", () => {
+            if (isVerticalMode()) {
+                const itemHeight = document.querySelector(".thumbnail-gallery-item").offsetHeight;
+                gallery.scrollTop += itemHeight * 3; // Сдвиг на 3 элемента вниз
+            } else {
+                const itemWidth = document.querySelector(".thumbnail-gallery-item").offsetWidth;
+                gallery.scrollLeft += itemWidth * 3; // Сдвиг на 3 элемента вправо
+            }
+            updateArrows();
+        });
+    }
 
     // Свайп для горизонтальной ориентации
-    gallery.addEventListener("touchstart", (e) => {
-        if (isVerticalMode()) {
-            // Вертикальная ориентация
-            startY = e.touches[0].clientY;
+    if (gallery) {
+        gallery.addEventListener("touchstart", (e) => {
+            if (isVerticalMode()) {
+                // Вертикальная ориентация
+                startY = e.touches[0].clientY;
+                scrollStartY = gallery.scrollTop;
+            } else {
+                // Горизонтальная ориентация
+                startX = e.touches[0].clientX;
+                scrollStartX = gallery.scrollLeft;
+            }
+        });
+
+        gallery.addEventListener("touchmove", (e) => {
+            if (isVerticalMode()) {
+                // Вертикальная ориентация
+                const deltaY = e.touches[0].clientY - startY;
+                gallery.scrollTop = scrollStartY - deltaY;
+            } else {
+                // Горизонтальная ориентация
+                const deltaX = e.touches[0].clientX - startX;
+                gallery.scrollLeft = scrollStartX - deltaX;
+            }
+        });
+
+        gallery.addEventListener("touchend", () => {
+            updateArrows(); // Обновляем состояние стрелок
+        });
+
+        // События для мыши на ПК
+        gallery.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            startY = e.clientY;
             scrollStartY = gallery.scrollTop;
-        } else {
-            // Горизонтальная ориентация
-            startX = e.touches[0].clientX;
-            scrollStartX = gallery.scrollLeft;
-        }
-    });
+            gallery.style.cursor = "grabbing"; // Меняем курсор на "захват"
+        });
 
-    gallery.addEventListener("touchmove", (e) => {
-        if (isVerticalMode()) {
-            // Вертикальная ориентация
-            const deltaY = e.touches[0].clientY - startY;
-            gallery.scrollTop = scrollStartY - deltaY;
-        } else {
-            // Горизонтальная ориентация
-            const deltaX = e.touches[0].clientX - startX;
-            gallery.scrollLeft = scrollStartX - deltaX;
-        }
-    });
+        gallery.addEventListener("mousemove", (e) => {
+            if (isDragging && isVerticalMode()) {
+                const deltaY = e.clientY - startY;
+                gallery.scrollTop = scrollStartY - deltaY;
+            }
+        });
 
-    gallery.addEventListener("touchend", () => {
-        updateArrows(); // Обновляем состояние стрелок
-    });
+        gallery.addEventListener("mouseup", () => {
+            isDragging = false;
+            gallery.style.cursor = "default"; // Возвращаем стандартный курсор
+        });
 
-    // События для мыши на ПК
-    gallery.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        startY = e.clientY;
-        scrollStartY = gallery.scrollTop;
-        gallery.style.cursor = "grabbing"; // Меняем курсор на "захват"
-    });
+        gallery.addEventListener("mouseleave", () => {
+            isDragging = false; // Сбрасываем флаг, если мышь уходит за пределы галереи
+        });
 
-    gallery.addEventListener("mousemove", (e) => {
-        if (isDragging && isVerticalMode()) {
-            const deltaY = e.clientY - startY;
-            gallery.scrollTop = scrollStartY - deltaY;
-        }
-    });
-
-    gallery.addEventListener("mouseup", () => {
-        isDragging = false;
-        gallery.style.cursor = "default"; // Возвращаем стандартный курсор
-    });
-
-    gallery.addEventListener("mouseleave", () => {
-        isDragging = false; // Сбрасываем флаг, если мышь уходит за пределы галереи
-    });
+        gallery.addEventListener("scroll", updateArrows);
+    }
 
     // Обновляем стрелки при загрузке
     updateArrows();
 
     // Обновляем стрелки при прокрутке вручную (например, через тачскрин)
-    gallery.addEventListener("scroll", updateArrows);
 
     // Слушаем изменения размера экрана
     window.addEventListener("resize", updateArrows);

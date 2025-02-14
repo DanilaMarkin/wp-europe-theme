@@ -13,6 +13,7 @@ europe_get_header();
                     <li class="contacts-content-social-list-circle">
                         <p class="contacts-content-social-list-head">
                             <a href="tel:<?= str_replace(" ", "", get_field("contact_info_phone")); ?>"
+                                rel="noopener noreferrer"
                                 title="Call via Phone, WhatsApp, or Telegram"
                                 aria-label="Call via Phone"><?= get_field("contact_info_phone"); ?></a>
                         </p>
@@ -21,6 +22,7 @@ europe_get_header();
                     <li class="contacts-content-social-list-circle">
                         <p class="contacts-content-social-list-head">
                             <a href="mailto:<?= get_field("contact_info_email"); ?>"
+                                rel="noopener noreferrer"
                                 title="Send an email to <?= get_field("contact_info_email"); ?>"
                                 aria-label="Send an email"><?= get_field("contact_info_email"); ?></a>
                         </p>
