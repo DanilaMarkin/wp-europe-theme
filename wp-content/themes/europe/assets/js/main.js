@@ -9,16 +9,26 @@ const searchCloseBtn = document.querySelector(".search-popup-block-close");
 // Variadble contact popup
 const contactPopupOpen = document.querySelector(".button-content-contact");
 const contactPopupForm = document.getElementById("contactPopup");
-const contactPopupСlose = document.querySelector(".contact-popup-blocks-header-btn");
+const contactPopupСlose = document.querySelector(
+  ".contact-popup-blocks-header-btn"
+);
 // Variadble price popup
 const pricePopupOpen = document.querySelector(".button-content-download");
 const pricePopupForm = document.getElementById("pricePopup");
-const pricePopupСlose = document.querySelector(".price-popup-blocks-header-btn");
+const pricePopupСlose = document.querySelector(
+  ".price-popup-blocks-header-btn"
+);
 // action bottom-tab-bar Catalog
-const bottomTabBarListActionCatalog = document.querySelector(".bottom-tab-bar-list-action-catalog");
-const bottomTabBarListActionMore = document.querySelector(".bottom-tab-bar-list-action-more");
+const bottomTabBarListActionCatalog = document.querySelector(
+  ".bottom-tab-bar-list-action-catalog"
+);
+const bottomTabBarListActionMore = document.querySelector(
+  ".bottom-tab-bar-list-action-more"
+);
 const menuBlocksContact = document.querySelector(".menu-blocks-contact");
-const menuBlocksPagesGeneral = document.querySelector(".menu-blocks-pages-general");
+const menuBlocksPagesGeneral = document.querySelector(
+  ".menu-blocks-pages-general"
+);
 const menuBlocksHeader = document.querySelector(".menu-blocks-header");
 // Variadble general
 const overlay = document.getElementById("overlay");
@@ -26,7 +36,7 @@ const overlay = document.getElementById("overlay");
 // Переключение overlay
 function toggleOverlay(isVisible) {
   if (overlay) overlay.classList.toggle("active", isVisible);
-  document.body.classList.toggle('no-scroll');
+  document.body.classList.toggle("no-scroll");
 }
 
 // Обновление состояния overlay
@@ -121,10 +131,10 @@ if (pricePopupСlose && pricePopupForm) {
 // Закрытие по клику вне блока или на overlay
 document.addEventListener("click", (event) => {
   if (overlay && event.target === overlay) {
-    (sideMenu && sideMenu.classList.remove("open"));
-    (searchPopup && searchPopup.classList.remove("open"));
-    (contactPopupForm && contactPopupForm.classList.remove("open"));
-    (pricePopupForm && pricePopupForm.classList.remove("open"));
+    sideMenu && sideMenu.classList.remove("open");
+    searchPopup && searchPopup.classList.remove("open");
+    contactPopupForm && contactPopupForm.classList.remove("open");
+    pricePopupForm && pricePopupForm.classList.remove("open");
     toggleOverlay(false);
   }
 });
@@ -141,7 +151,9 @@ menuListMain.forEach((key, value) => {
 });
 
 // in menu toogle categories
-const categoriesMenuBtn = document.querySelector(".menu-blocks-header-categories");
+const categoriesMenuBtn = document.querySelector(
+  ".menu-blocks-header-categories"
+);
 const categoriesMenu = document.getElementById("categoriesMenu");
 const brandsMenu = document.getElementById("brandsMenu");
 const brandsMenuBtn = document.querySelector(".menu-blocks-header-brands");
@@ -237,7 +249,9 @@ if (bottomTabBarListActionMore) {
 
     // Скрываем элементы для Catalog
     menuBlocksHeader.classList.add("hidden");
-    brandsMenu.classList.add("hidden");
+    if (brandsMenu) {
+      brandsMenu.classList.add("hidden");
+    }
     categoriesMenu.classList.add("hidden");
   });
 }
