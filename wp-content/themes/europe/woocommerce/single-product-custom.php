@@ -100,159 +100,113 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             </button>
         </div>
 
-        <?php if (!$product->is_type('variable')) { ?>
-            <div class="product-gallery">
-                <?php
-                // Получаем галерею изображений
-                $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
-                $gallery_ids = !empty($gallery) ? explode(',', $gallery) : array();
+        <div class="product-gallery">
+            <?php
+            // Получаем галерею изображений
+            $gallery = get_post_meta(get_the_ID(), '_product_image_gallery', true);
+            $gallery_ids = !empty($gallery) ? explode(',', $gallery) : array();
 
-                if (!empty($gallery_ids)) {
-                    // Берем первое изображение из галереи как основное
-                    $main_image_id = array_shift($gallery_ids);
-                    $main_image_url = wp_get_attachment_url($main_image_id);
-                    $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
-                    $main_image_title = get_post($main_image_id)->post_title;
-                } elseif (has_post_thumbnail()) {
-                    // Если галерея пуста, берем featured image
-                    $main_image_id = get_post_thumbnail_id(get_the_ID());
-                    $main_image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                    $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
-                    $main_image_title = get_the_title($main_image_id);
-                }
+            if (!empty($gallery_ids)) {
+                // Берем первое изображение из галереи как основное
+                $main_image_id = array_shift($gallery_ids);
+                $main_image_url = wp_get_attachment_url($main_image_id);
+                $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
+                $main_image_title = get_post($main_image_id)->post_title;
+            } elseif (has_post_thumbnail()) {
+                // Если галерея пуста, берем featured image
+                $main_image_id = get_post_thumbnail_id(get_the_ID());
+                $main_image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                $main_image_alt = get_post_meta($main_image_id, '_wp_attachment_image_alt', true) ?: get_the_title($main_image_id);
+                $main_image_title = get_the_title($main_image_id);
+            }
 
-                // Вывод главного изображения
-                if (!empty($main_image_url)) :
-                ?>
-                    <figure class="main-image">
-                        <img src="<?php echo esc_url($main_image_url); ?>"
-                            alt="<?php echo esc_attr($main_image_alt); ?>"
-                            title="<?php echo esc_attr($main_image_title); ?>"
-                            loading="lazy">
-                    </figure>
-                <?php endif; ?>
+            // Вывод главного изображения
+            if (!empty($main_image_url)) :
+            ?>
+                <figure class="main-image">
+                    <img src="<?php echo esc_url($main_image_url); ?>"
+                        alt="<?php echo esc_attr($main_image_alt); ?>"
+                        title="<?php echo esc_attr($main_image_title); ?>"
+                        loading="lazy">
+                </figure>
+            <?php endif; ?>
 
-                <?php if (!empty($gallery_ids)) : ?>
-                    <div class="thumbnail-gallery-wrapper">
-                        <button class="arrow-left hidden">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
-                        </button>
-                        <ul class="thumbnail-gallery">
-                            <li class="thumbnail-gallery-item">
-                                <figure>
-                                    <img src="<?php echo esc_url($main_image_url); ?>"
-                                        alt="<?php echo esc_attr($main_image_alt); ?>"
-                                        title="<?php echo esc_attr($main_image_title); ?>"
-                                        loading="lazy">
-                                </figure>
-                            </li>
-                            <?php
-                            // Вывод оставшихся изображений галереи
-                            foreach ($gallery_ids as $attachment_id) {
-                                $image_url = wp_get_attachment_url($attachment_id);
-                                $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
-                                $image_title = get_post($attachment_id)->post_title;
-                                echo '<li class="thumbnail-gallery-item">
-                                        <figure>
-                                            <img src="' . esc_url($image_url) . '" title="' . esc_attr($image_title) . '" alt="' . esc_attr($image_alt) . '" loading="lazy">
-                                        </figure>
-                                    </li>';
-                            }
-                            ?>
-                        </ul>
-                        <button class="arrow-right hidden">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
-                        </button>
-                    </div>
-                <?php endif; ?>
-            </div>
-        <?php } else { ?>
-            <div class="product-gallery">
-                <?php
-                // Получаем все вариации для переменного продукта
-                $variation_ids = $product->get_children();
-                $variation_images = [];
+            <?php if (!empty($gallery_ids)) : ?>
+                <div class="thumbnail-gallery-wrapper">
+                    <button class="arrow-left hidden">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
+                    </button>
+                    <ul class="thumbnail-gallery">
+                        <?php
+                        global $post;
+                        $product = wc_get_product($post->ID);
+                        $attributes = $product->get_attributes();
+                        $variations = $product->is_type('variable') ? $product->get_children() : []; // Получаем ID вариаций
 
+                        // Массив для хранения соответствий "значение атрибута" => "изображение"
+                        $variation_images = [];
 
-                // Если есть вариации
-                if (!empty($variation_ids)) :
-                    // Перебираем вариации и получаем изображения для каждой
-                    foreach ($variation_ids as $variation_id) {
-                        $variation = wc_get_product($variation_id);
-                        $attributes = $variation->get_attributes(); // Получаем атрибуты вариации
-                        $image_url = wp_get_attachment_url($variation->get_image_id());
+                        if (!empty($variations)) {
+                            foreach ($variations as $variation_id) {
+                                $variation = wc_get_product($variation_id);
+                                $image_url = wp_get_attachment_url($variation->get_image_id());
 
-                        // Если изображение существует, добавляем в массив
-                        if ($image_url) {
-                            $image_alt = get_post_meta($variation->get_image_id(), '_wp_attachment_image_alt', true) ?: $variation->get_title();
-                            $image_title = $variation->get_title();
+                                if ($image_url) {
+                                    // Получаем атрибуты этой вариации
+                                    $variation_attributes = $variation->get_attributes();
 
-                            // Перебираем атрибуты и выводим их для каждой картинки
-                            foreach ($attributes as $attribute_name => $attribute_value) {
-                                $variation_images[] = [
-                                    'url' => $image_url,
-                                    'alt' => $image_alt,
-                                    'title' => $image_title,
-                                    'attribute_name' => $attribute_name,
-                                    'attribute_value' => $attribute_value
-                                ];
+                                    // Добавляем изображения в массив соответствий
+                                    foreach ($variation_attributes as $attr_name => $attr_value) {
+                                        $variation_images[$attr_value] = $image_url; // Привязываем изображение к значению атрибута
+                                    }
+
+                                    // Выводим изображения вариаций в галерею
+                                    echo '<li class="thumbnail-gallery-item">
+                        <figure>
+                            <img src="' . esc_url($image_url) . '" 
+                                alt="' . esc_attr($variation->get_name()) . '" 
+                                title="' . esc_attr($variation->get_name()) . '" 
+                                loading="lazy">
+                        </figure>
+                      </li>';
+                                }
                             }
                         }
-                    }
-                endif;
 
+                        // Вывод основного изображения
+                        ?>
+                        <li class="thumbnail-gallery-item">
+                            <figure>
+                                <img src="<?php echo esc_url($main_image_url); ?>"
+                                    alt="<?php echo esc_attr($main_image_alt); ?>"
+                                    title="<?php echo esc_attr($main_image_title); ?>"
+                                    loading="lazy">
+                            </figure>
+                        </li>
 
-                // Проверяем количество изображений
-                if (count($variation_images) > 0) :
-                    // Если изображений больше одного, то первое будет основным
-                    $main_image = $variation_images[0];
-
-                    // Получаем атрибуты для основной картинки
-                    $attribute_name = isset($main_image['attribute_name']) ? $main_image['attribute_name'] : '';
-                    $attribute_value = isset($main_image['attribute_value']) ? $main_image['attribute_value'] : '';
-                ?>
-                    <figure class="main-image">
-                        <img src="<?php echo esc_url($main_image['url']); ?>"
-                            alt="<?php echo esc_attr($main_image['alt']); ?>"
-                            title="<?php echo esc_attr($main_image['title']); ?>"
-                            loading="lazy"
-                            data-attribute-gallery="<?php echo esc_attr($attribute_name); ?>"
-                            data-value-gallery="<?php echo esc_attr($attribute_value); ?>">
-                    </figure>
-
-                    <?php if (count($variation_images) > 1) : ?>
-                        <div class="thumbnail-gallery-wrapper">
-                            <button class="arrow-left hidden">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
-                            </button>
-                            <ul class="thumbnail-gallery">
-                                <?php
-                                // Выводим оставшиеся изображения
-                                foreach ($variation_images as $image) {
-                                ?>
-                                    <li class="thumbnail-gallery-item"
-                                        data-attribute-gallery="<?php echo esc_attr($image['attribute_name']); ?>"
-                                        data-value-gallery="<?php echo esc_attr($image['attribute_value']); ?>">
-                                        <figure>
-                                            <img src="<?php echo esc_url($image['url']); ?>"
-                                                title="<?php echo esc_attr($image['title']); ?>"
-                                                alt="<?php echo esc_attr($image['alt']); ?>"
-                                                loading="lazy">
-                                        </figure>
-                                    </li>
-                                <?php
-                                }
-                                ?>
-                            </ul>
-                            <button class="arrow-right hidden">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
-                            </button>
-                        </div>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
-        <?php } ?>
-
+                        <?php
+                        // Вывод оставшихся изображений галереи
+                        foreach ($gallery_ids as $attachment_id) {
+                            $image_url = wp_get_attachment_url($attachment_id);
+                            $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
+                            $image_title = get_post($attachment_id)->post_title;
+                            echo '<li class="thumbnail-gallery-item">
+                <figure>
+                    <img src="' . esc_url($image_url) . '" 
+                        title="' . esc_attr($image_title) . '" 
+                        alt="' . esc_attr($image_alt) . '" 
+                        loading="lazy">
+                </figure>
+              </li>';
+                        }
+                        ?>
+                    </ul>
+                    <button class="arrow-right hidden">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Next">
+                    </button>
+                </div>
+            <?php endif; ?>
+        </div>
 
         <div id="product-notification" class="hidden">
             <span>Item successfully added to cart</span>
@@ -279,6 +233,32 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 <div class="gallery-block-info">
                     <p><?php the_title(); ?></p>
                     <ul class="gallery-block-info-lists">
+                        <?php
+                        global $post;
+                        $product = wc_get_product($post->ID);
+                        $variations = $product->is_type('variable') ? $product->get_children() : []; // Получаем ID вариаций
+
+                        // Массив для хранения изображений вариаций
+                        $variation_images = [];
+
+                        if (!empty($variations)) {
+                            foreach ($variations as $variation_id) {
+                                $variation = wc_get_product($variation_id);
+                                $image_url = wp_get_attachment_url($variation->get_image_id());
+
+                                if ($image_url) {
+                                    // Добавляем изображение вариации в массив
+                                    $variation_images[] = [
+                                        'url'   => $image_url,
+                                        'alt'   => esc_attr($variation->get_name()),
+                                        'title' => esc_attr($variation->get_name()),
+                                    ];
+                                }
+                            }
+                        }
+
+                        // Вывод основного изображенияe
+                        ?>
                         <li class="gallery-block-info-list">
                             <figure>
                                 <img src="<?php echo esc_url($main_image_url); ?>"
@@ -287,7 +267,23 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                     loading="lazy">
                             </figure>
                         </li>
+
                         <?php
+                        // Вывод изображений вариаций (если есть)
+                        if (!empty($variation_images)) {
+                            foreach ($variation_images as $var_img) {
+                                echo '<li class="gallery-block-info-list">
+                                    <figure>
+                                        <img src="' . esc_url($var_img['url']) . '" 
+                                            alt="' . esc_attr($var_img['alt']) . '" 
+                                            title="' . esc_attr($var_img['title']) . '" 
+                                            loading="lazy">
+                                    </figure>
+                                </li>';
+                            }
+                        }
+
+                        // Вывод остальных изображений галереи
                         if (!empty($gallery_ids)) {
                             foreach ($gallery_ids as $attachment_id) {
                                 $image_url = wp_get_attachment_url($attachment_id);
@@ -296,7 +292,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         ?>
                                 <li class="gallery-block-info-list">
                                     <figure>
-                                        <img src="<?= $image_url; ?>" title=" <?= $image_title ?>" alt="<?= $image_alt; ?>" loading="lazy">
+                                        <img src="<?= esc_url($image_url); ?>"
+                                            title="<?= esc_attr($image_title); ?>"
+                                            alt="<?= esc_attr($image_alt); ?>"
+                                            loading="lazy">
                                     </figure>
                                 </li>
                         <?php

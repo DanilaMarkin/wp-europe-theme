@@ -1907,7 +1907,7 @@ body {
   }
 
   .gallery-block-info-list > figure > img {
-    max-height: 100px;
+    max-width: 100px;
     height: 100%;
   }
 
