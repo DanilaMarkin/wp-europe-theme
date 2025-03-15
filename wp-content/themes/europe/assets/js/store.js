@@ -65,6 +65,15 @@ function initializeProductEvents() {
           // Добавляем в корзину и обновляем её
           addProductToCart(productId, countNumber);
           updateCartQuantity();
+          // Уведомление о добавление товара в корзину
+          const notyf = new Notyf({
+            duration: 3000,
+            ripple: true,
+            dismissible: true, // Уведомления можно закрывать
+            position: { x: "right", y: "top" },
+          });
+
+          notyf.success("Product added to cart!");
         }
 
         if (

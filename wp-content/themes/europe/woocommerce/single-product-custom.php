@@ -137,44 +137,6 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/icons/arrow.svg" alt="Arrow icon" title="Navigate">
                     </button>
                     <ul class="thumbnail-gallery">
-                        <?php
-                        global $post;
-                        $product = wc_get_product($post->ID);
-                        $attributes = $product->get_attributes();
-                        $variations = $product->is_type('variable') ? $product->get_children() : []; // Получаем ID вариаций
-
-                        // Массив для хранения соответствий "значение атрибута" => "изображение"
-                        $variation_images = [];
-
-                        if (!empty($variations)) {
-                            foreach ($variations as $variation_id) {
-                                $variation = wc_get_product($variation_id);
-                                $image_url = wp_get_attachment_url($variation->get_image_id());
-
-                                if ($image_url) {
-                                    // Получаем атрибуты этой вариации
-                                    $variation_attributes = $variation->get_attributes();
-
-                                    // Добавляем изображения в массив соответствий
-                                    foreach ($variation_attributes as $attr_name => $attr_value) {
-                                        $variation_images[$attr_value] = $image_url; // Привязываем изображение к значению атрибута
-                                    }
-
-                                    // Выводим изображения вариаций в галерею
-                                    echo '<li class="thumbnail-gallery-item">
-                        <figure>
-                            <img src="' . esc_url($image_url) . '" 
-                                alt="' . esc_attr($variation->get_name()) . '" 
-                                title="' . esc_attr($variation->get_name()) . '" 
-                                loading="lazy">
-                        </figure>
-                      </li>';
-                                }
-                            }
-                        }
-
-                        // Вывод основного изображения
-                        ?>
                         <li class="thumbnail-gallery-item">
                             <figure>
                                 <img src="<?php echo esc_url($main_image_url); ?>"
@@ -183,7 +145,6 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                     loading="lazy">
                             </figure>
                         </li>
-
                         <?php
                         // Вывод оставшихся изображений галереи
                         foreach ($gallery_ids as $attachment_id) {
@@ -191,13 +152,10 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                             $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true) ?: get_the_title($attachment_id);
                             $image_title = get_post($attachment_id)->post_title;
                             echo '<li class="thumbnail-gallery-item">
-                <figure>
-                    <img src="' . esc_url($image_url) . '" 
-                        title="' . esc_attr($image_title) . '" 
-                        alt="' . esc_attr($image_alt) . '" 
-                        loading="lazy">
-                </figure>
-              </li>';
+                                        <figure>
+                                            <img src="' . esc_url($image_url) . '" title="' . esc_attr($image_title) . '" alt="' . esc_attr($image_alt) . '" loading="lazy">
+                                        </figure>
+                                    </li>';
                         }
                         ?>
                     </ul>
@@ -206,11 +164,13 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     </button>
                 </div>
             <?php endif; ?>
+            <!-- product add notification -->
+            <div id="product-notification" class="hidden">
+                <span>Item successfully added to cart</span>
+            </div>
+            <!-- product add notification -->
         </div>
 
-        <div id="product-notification" class="hidden">
-            <span>Item successfully added to cart</span>
-        </div>
         <!-- notification add cart -->
         <?php get_template_part('templates/notifications/notification-empty'); ?>
         <!-- notification add cart -->
@@ -233,32 +193,6 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 <div class="gallery-block-info">
                     <p><?php the_title(); ?></p>
                     <ul class="gallery-block-info-lists">
-                        <?php
-                        global $post;
-                        $product = wc_get_product($post->ID);
-                        $variations = $product->is_type('variable') ? $product->get_children() : []; // Получаем ID вариаций
-
-                        // Массив для хранения изображений вариаций
-                        $variation_images = [];
-
-                        if (!empty($variations)) {
-                            foreach ($variations as $variation_id) {
-                                $variation = wc_get_product($variation_id);
-                                $image_url = wp_get_attachment_url($variation->get_image_id());
-
-                                if ($image_url) {
-                                    // Добавляем изображение вариации в массив
-                                    $variation_images[] = [
-                                        'url'   => $image_url,
-                                        'alt'   => esc_attr($variation->get_name()),
-                                        'title' => esc_attr($variation->get_name()),
-                                    ];
-                                }
-                            }
-                        }
-
-                        // Вывод основного изображенияe
-                        ?>
                         <li class="gallery-block-info-list">
                             <figure>
                                 <img src="<?php echo esc_url($main_image_url); ?>"
@@ -267,23 +201,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                                     loading="lazy">
                             </figure>
                         </li>
-
                         <?php
-                        // Вывод изображений вариаций (если есть)
-                        if (!empty($variation_images)) {
-                            foreach ($variation_images as $var_img) {
-                                echo '<li class="gallery-block-info-list">
-                                    <figure>
-                                        <img src="' . esc_url($var_img['url']) . '" 
-                                            alt="' . esc_attr($var_img['alt']) . '" 
-                                            title="' . esc_attr($var_img['title']) . '" 
-                                            loading="lazy">
-                                    </figure>
-                                </li>';
-                            }
-                        }
-
-                        // Вывод остальных изображений галереи
                         if (!empty($gallery_ids)) {
                             foreach ($gallery_ids as $attachment_id) {
                                 $image_url = wp_get_attachment_url($attachment_id);
@@ -292,10 +210,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                         ?>
                                 <li class="gallery-block-info-list">
                                     <figure>
-                                        <img src="<?= esc_url($image_url); ?>"
-                                            title="<?= esc_attr($image_title); ?>"
-                                            alt="<?= esc_attr($image_alt); ?>"
-                                            loading="lazy">
+                                        <img src="<?= $image_url; ?>" title=" <?= $image_title ?>" alt="<?= $image_alt; ?>" loading="lazy">
                                     </figure>
                                 </li>
                         <?php
@@ -853,7 +768,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
             galleryPopup.classList.add("open");
             overlayFull.classList.add("active");
             header.classList.add("no-zindex");
-            document.body.style.overflow = "hidden"; // Блокируем скролл страницы
+            document.body.classList.add("no-scroll");
         });
     }
 
@@ -862,7 +777,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         galleryPopup.classList.remove("open");
         overlayFull.classList.remove("active");
         header.classList.remove("no-zindex");
-        document.body.style.overflow = ""; // Возвращаем скролл
+        document.body.classList.remove("no-scroll");
     });
 
     // Закрываем при клике на оверлей(за пределеы)
@@ -873,7 +788,8 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         galleryPopup.classList.remove("open");
         overlayFull.classList.remove("active");
         header.classList.remove("no-zindex");
-        document.body.style.overflow = ""; // Возвращаем скролл
+        document.body.classList.remove("no-scroll");
+        updateOverlayState();
     });
     // full size gallery and open/close modal window
 
@@ -886,14 +802,14 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
         modalOffer.classList.add("open");
         overlayFull.classList.add("active");
         header.classList.add("no-zindex");
-        document.body.style.overflow = "hidden"; // Возвращаем скролл
+        updateOverlayState();
     });
 
     modalOfferClose.addEventListener("click", () => {
         modalOffer.classList.remove("open");
         overlayFull.classList.remove("active");
         header.classList.remove("no-zindex");
-        document.body.style.overflow = ""; // Возвращаем скролл
+        updateOverlayState();
     });
     // popup modal offer
 
@@ -968,6 +884,18 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     jQuery("#offerForm").removeClass("close");
                     // Очищаем поля формы
                     jQuery("#offerForm").find("input[type=text], input[type=number], input[type=tel], textarea").val("");
+                    // Обратная связь для пользователя об отправке
+                    Swal.fire({
+                        title: "Form Submitted!",
+                        text: "Your message has been successfully sent. We will get back to you soon.",
+                        icon: "success",
+                        confirmButtonText: "Close",
+                        customClass: {
+                            confirmButton: "custom-confirm-button",
+                        },
+                        timer: 4000, // Закрытие через 4 секунды
+                        timerProgressBar: true, // Показывает индикатор времени
+                    });
 
                 },
                 error: function(error) {

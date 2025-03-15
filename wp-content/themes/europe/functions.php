@@ -11,6 +11,8 @@ function europe_enqueue_styles()
     wp_enqueue_style('europe-footer', get_template_directory_uri() . '/assets/css/footer.css', array(), filemtime(get_template_directory() . '/assets/css/footer.css'));
     wp_enqueue_style('europe-pages', get_template_directory_uri() . '/assets/css/pages.css', array(), filemtime(get_template_directory() . '/assets/css/pages.css'));
     wp_enqueue_style('europe-order', get_template_directory_uri() . '/assets/css/order.css', array(), filemtime(get_template_directory() . '/assets/css/order.css'));
+    // Стили для отображение уведомлений
+    wp_enqueue_style('notyf-css', 'https://cdn.jsdelivr.net/npm/notyf/notyf.min.css', array(), null);
 }
 add_action('wp_enqueue_scripts', 'europe_enqueue_styles');
 
@@ -47,6 +49,12 @@ function enqueue_custom_scripts()
         filemtime(get_template_directory() . '/assets/js/store.js'),
         true
     );
+
+    // Отображение уведомлений
+    wp_enqueue_script('notyf-js', 'https://cdn.jsdelivr.net/npm/notyf/notyf.min.js', array(), null, true);
+    
+    // Cтили для отображение форм
+    wp_enqueue_script('swettalert-js', 'https://cdn.jsdelivr.net/npm/sweetalert2@11', array(), null, true);
 
     wp_localize_script('store-script', 'ajaxObject', [
         'ajaxurl' => admin_url('admin-ajax.php'),

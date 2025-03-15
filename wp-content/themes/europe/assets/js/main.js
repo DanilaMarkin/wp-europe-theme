@@ -18,6 +18,12 @@ const pricePopupForm = document.getElementById("pricePopup");
 const pricePopupСlose = document.querySelector(
   ".price-popup-blocks-header-btn"
 );
+
+// Gallery Popup
+const galleryPopupWindow = document.querySelector(".galleryfull");
+
+// Offer Popup
+const offerPopupWindow = document.querySelector(".modal-offer");
 // action bottom-tab-bar Catalog
 const bottomTabBarListActionCatalog = document.querySelector(
   ".bottom-tab-bar-list-action-catalog"
@@ -45,6 +51,8 @@ function updateOverlayState() {
     (sideMenu && sideMenu.classList.contains("open")) ||
     (searchPopup && searchPopup.classList.contains("open")) ||
     (contactPopupForm && contactPopupForm.classList.contains("open")) ||
+    (galleryPopupWindow && galleryPopupWindow.classList.contains("open")) ||
+    (offerPopupWindow && offerPopupWindow.classList.contains("open")) ||
     (pricePopupForm && pricePopupForm.classList.contains("open"));
   toggleOverlay(isOverlayActive);
 }

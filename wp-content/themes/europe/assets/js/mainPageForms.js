@@ -8,11 +8,17 @@ document.getElementById("contactForm").addEventListener("submit", (event) => {
   const phone = document.getElementById("phoneContact");
   const name = document.getElementById("nameContact");
 
+  // Валдиация телефона
+  const phonePatternContact = /^[+\d\s()-]+$/; // Разрешает только цифры, пробелы и символы + ( ) -
+
   const labelCheckBoxContact = document.getElementById("contactLabelCheckbox");
   const checkboxContact = document.getElementById("contactCheckbox");
 
   // Валдиация телефона
-  if (phone.value.trim() === "") {
+  if (
+    phone.value.trim() === "" ||
+    !phonePatternContact.test(phone.value.trim())
+  ) {
     phone.classList.add("error");
     isValid = false;
   } else {
@@ -65,6 +71,18 @@ document.getElementById("contactForm").addEventListener("submit", (event) => {
         jQuery("#contactForm")
           .find("input[type=checkbox]")
           .prop("checked", false);
+        // Обратная связь для пользователя
+        Swal.fire({
+          title: "Form Submitted!",
+          text: "Your message has been successfully sent. We will get back to you soon.",
+          icon: "success",
+          confirmButtonText: "Close",
+          customClass: {
+            confirmButton: "custom-confirm-button",
+          },
+          timer: 4000, // Закрытие через 4 секунды
+          timerProgressBar: true, // Показывает индикатор времени
+        });
       },
       error: function (error) {
         // При ошибке скрываем loader и закрываем форму
@@ -89,7 +107,9 @@ document.getElementById("priceForm").addEventListener("submit", (e) => {
   const checkboxPrice = document.getElementById("priceCheckbox");
 
   // Валдиация телефона
-  if (phone.value.trim() === "") {
+  const phonePattern = /^[+\d\s()-]+$/; // Разрешает только цифры, пробелы и символы + ( ) -
+
+  if (phone.value.trim() === "" || !phonePattern.test(phone.value.trim())) {
     phone.classList.add("error");
     isValid = false;
   } else {

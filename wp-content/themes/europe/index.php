@@ -49,7 +49,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                 <form id="contactForm">
                     <p class="contact-popup-blocks-form-head">Provide your phone number for contact or contact us yourself</p>
                     <div class="contact-popup-blocks-form-action">
-                        <input type="tel" placeholder="+7 (999) 999 99 99" name="phone" id="phoneContact">
+                        <input type="tel" placeholder="+49 1523 4567890" name="phone" id="phoneContact">
                         <input type="text" placeholder="Name" name="name" id="nameContact">
                         <button class="contact-popup-blocks-form-action-btn" aria-label="Press to Contact me button">Contact me</button>
                     </div>
@@ -122,7 +122,7 @@ $phone_number = preg_replace('/\s+/', '', $global_settings['phone']);
                     <p class="contact-popup-blocks-form-head">Provide your phone number and get the opportunity to download a price list for all offered Apple products.
                     </p>
                     <div class="price-popup-blocks-form-action">
-                        <input id="phonePrice" type="tel" placeholder="+7 (999) 999 99 99" name="phone">
+                        <input id="phonePrice" type="tel" placeholder="+49 1523 4567890" name="phone">
                         <button class="price-popup-blocks-form-action-btn" aria-label="Press to Contact me button">Download Price List</button>
                     </div>
                     <div class="price-checkbox-wrapper">
